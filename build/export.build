@@ -1,0 +1,6 @@
+$out_root/
+{
+  include src/libcppdotnet/
+}
+
+export $out_root/src/libcppdotnet/$import.target
