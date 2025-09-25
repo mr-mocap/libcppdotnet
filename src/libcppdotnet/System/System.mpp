@@ -12,32 +12,32 @@ export import :IComparable;
 
 // Things that only depend on system-headers...
 // export import :IDisposable;
-export import :Exception;
+//export import :Exception;
 // export import :Version;
-export import :Delegate;
-export import :Private_enum;
-export import :ValueTuple;
+//export import :Delegate;
+//export import :Private_enum;
+//export import :ValueTuple;
 // export import :TimeSpan;
 
 // Depends on System/Private/Delegate.hpp...
-export import :Action;
-export import :Comparison;
-export import :Converter;
-export import :Func;
-export import :Predicate;
-export import :EventHandler;
+//export import :Action;
+//export import :Comparison;
+//export import :Converter;
+//export import :Func;
+//export import :Predicate;
+//export import :EventHandler;
 
 // Depends on System/Private/enum.hpp...
-export import :Base;
-export import :Base64FormattingOptions;
-export import :ConsoleColor;
-export import :ConsoleModifiers;
-export import :ConsoleKey;
-export import :DateTimeKind;
-export import :DayOfWeek;
-export import :EnvironmentVariableTarget;
-export import :PlatformID;
-export import :TypeCode;
+//export import :Base;
+//export import :Base64FormattingOptions;
+//export import :ConsoleColor;
+//export import :ConsoleModifiers;
+//export import :ConsoleKey;
+//export import :DateTimeKind;
+//export import :DayOfWeek;
+//export import :EnvironmentVariableTarget;
+//export import :PlatformID;
+//export import :TypeCode;
 
 // Depends on Other System/. files...
 // export import :BitConverter;
@@ -56,7 +56,7 @@ export import :TypeCode;
 // Not Included Yet!
 //export import "Boolean.hpp";
 //export import "Byte.hpp";
-export import :Concepts;
+//export import :Concepts;
 //export import "Console.hpp";
 
 // export import :TimeOnly;
