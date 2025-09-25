@@ -1,7 +1,7 @@
 export module System:Func;
 
-export import :Delegate;
 import <concepts>;
+export import :Delegate;
 
 namespace System
 {

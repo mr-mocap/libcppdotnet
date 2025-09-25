@@ -1,8 +1,8 @@
 export module System:EventHandler;
 
+import <concepts>;
 export import :Delegate;
 export import :EventArgs;
-import <concepts>;
 
 
 namespace System

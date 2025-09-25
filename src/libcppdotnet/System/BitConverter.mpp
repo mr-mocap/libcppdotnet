@@ -1,6 +1,5 @@
 export module System:BitConverter;
 
-import :Exception;
 export import <vector>;
 export import <array>;
 export import <span>;
@@ -9,6 +8,7 @@ import <cstdint>;
 export import <cstddef>;
 import <cstring>;
 import <bit>;
+import :Exception;
 
 namespace System
 {

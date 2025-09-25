@@ -14,8 +14,8 @@ export
 class TimeSpan
 {
 public:
-    TimeSpan() { }
-   ~TimeSpan() { }
+    TimeSpan() = default;
+   ~TimeSpan() = default;
     explicit TimeSpan(int hours, int minutes, int seconds)
         :
         TimeSpan(0, hours, minutes, seconds)
@@ -111,7 +111,8 @@ public:
 
     long Ticks() const { return _time_span.count() / NanosecondsPerTick(); }
 
-    constexpr operator std::chrono::system_clock::duration() const { return _time_span; }
+    //constexpr operator std::chrono::system_clock::duration() const { return _time_span; }
+    operator std::chrono::system_clock::duration() const { return _time_span; }
 
     int Days() const;
     int Hours() const;

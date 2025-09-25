@@ -1,12 +1,10 @@
-module;
-
 export module System:DateTime;
 
-export import System:DayOfWeek;
-export import System:DateTimeKind;
-export import System:DateOnly;
-export import System:TimeOnly;
-export import System:TimeSpan;
+export import :DayOfWeek;
+export import :DateTimeKind;
+export import :DateOnly;
+export import :TimeOnly;
+export import :TimeSpan;
 
 
 namespace System

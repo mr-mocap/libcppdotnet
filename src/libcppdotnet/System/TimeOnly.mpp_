@@ -1,12 +1,10 @@
-module;
-
 export module System:TimeOnly;
 
-export import System:TimeSpan;
 export import <format>;
 export import <chrono>;
 export import <string>;
 import <cmath>;
+export import :TimeSpan;
 
 
 namespace System
@@ -18,14 +16,14 @@ export
 class TimeOnly
 {
 public:
-    TimeOnly();
+    TimeOnly() = default;
     explicit TimeOnly(int h, int m, int s = 0, int ms = 0, int micros = 0);
     explicit TimeOnly(long ticks);
     TimeOnly(std::chrono::system_clock::duration value) : _time_span( value ) { }
-   ~TimeOnly();
+   ~TimeOnly() = default;
 
-    TimeOnly(const TimeOnly &);
-    TimeOnly &operator =(const TimeOnly &);
+    TimeOnly(const TimeOnly &) = default;
+    TimeOnly &operator =(const TimeOnly &) = default;
 
     int Hour() const { return _time_span.Hours(); }
     int Minute() const { return _time_span.Minutes(); }
@@ -87,10 +85,6 @@ protected:
 namespace System
 {
 
-TimeOnly::TimeOnly()
-{
-}
-
 TimeOnly::TimeOnly(int h, int m, int s, int ms, int micros)
     :
     _time_span( std::chrono::hours(h) +
@@ -121,22 +115,6 @@ TimeOnly::TimeOnly(long ticks)
 {
 }
 
-TimeOnly::TimeOnly(const TimeOnly &other)
-    :
-    _time_span( other._time_span )
-{
-}
-
-TimeOnly &TimeOnly::operator =(const TimeOnly &other)
-{
-    _time_span = other._time_span;
-    return *this;
-}
-
-TimeOnly::~TimeOnly()
-{
-}
-
 TimeOnly TimeOnly::Add(const TimeSpan &value, int &out_excess_days) const
 {
     TimeSpan ts = _time_span + value;
@@ -149,7 +127,7 @@ TimeOnly TimeOnly::AddHours(double hours_to_add) const
 {
     double ipart;
     double fraction = std::modf( hours_to_add, &ipart );
-    TimeSpan ts_whole_hours{ hours{ static_cast<int>(ipart) } };
+    TimeSpan ts_whole_hours{ std::chrono::hours{ static_cast<int>(ipart) } };
     long fractional_hours_in_ticks = static_cast<long>(fraction * TimeSpan::TicksPerHour());
 
     return Add( ts_whole_hours ).Add( TimeSpan( fractional_hours_in_ticks ) );
@@ -157,12 +135,10 @@ TimeOnly TimeOnly::AddHours(double hours_to_add) const
 
 TimeOnly TimeOnly::AddHours(double hours_to_add, int &out_excess_days) const
 {
-    using std::chrono::hours;
-
     TimeOnly result = AddHours( hours_to_add );
-    system_clock::duration result_duration{ result._time_span };
+    std::chrono::system_clock::duration result_duration{ result._time_span };
     bool negative = ( result_duration.count() < 0);
-    long h = (negative) ? std::ceil<hours>( result_duration ).count() : std::floor<hours>( result_duration ).count();
+    long h = (negative) ? std::ceil<std::chrono::hours>( result_duration ).count() : std::floor<std::chrono::hours>( result_duration ).count();
     std::ldiv_t  d = std::div( h, static_cast<long>(TimeSpan::HoursPerDay()) );
 
     out_excess_days = d.quot;
@@ -182,7 +158,7 @@ TimeOnly TimeOnly::AddMinutes(double minutes_to_add, int &out_excess_minutes) co
 
     double ipart;
     double fraction = std::modf( minutes_to_add, &ipart );
-    TimeSpan ts_whole_minutes{ minutes{ static_cast<int>(ipart) } };
+    TimeSpan ts_whole_minutes{ std::chrono::minutes{ static_cast<int>(ipart) } };
     long fractional_minutes_in_ticks = static_cast<long>(fraction * TimeSpan::TicksPerMinute());
 
     return Add( ts_whole_minutes ).Add( TimeSpan( fractional_minutes_in_ticks ) );
@@ -232,6 +208,8 @@ void TimeOnly::Deconstruct(int &hour, int &minute) const
 
 std::string TimeOnly::ToString() const
 {
+    using namespace std::chrono;
+
     system_clock::duration d = _time_span;
     hh_mm_ss<seconds> tod( duration_cast<seconds>(d) );
 

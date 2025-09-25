@@ -1,5 +1,3 @@
-module;
-
 export module System:DateOnly;
 
 export import <chrono>;
@@ -10,7 +8,7 @@ namespace System
 {
 
 export class DateTime;
-enum class DayOfWeek;
+export enum class DayOfWeek;
 
 export
 class DateOnly

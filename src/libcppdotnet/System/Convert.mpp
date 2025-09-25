@@ -1,11 +1,5 @@
-module;
-
 export module System:Convert;
 
-import System:Exception;
-export import System:Base;
-//import System:Boolean;
-import System:BitConverter;
 import <map>;
 export import <span>;
 import <charconv>;
@@ -20,6 +14,10 @@ export import <vector>;
 export import <array>;
 import <cstdint>;
 export import <cstddef>;
+export import :Exception;
+export import :Base;
+//import System:Boolean;
+import :BitConverter;
 
 // #include "System/Diagnostics/SourceLevels.hpp"
 // #include "System/Diagnostics/TraceLevel.hpp"
@@ -59,10 +57,7 @@ public:
     }
     static std::string            ToHexString(std::span<const std::byte> input_bytes, bool uppercase = true);
 
-    static std::string            ToBase64String(std::string_view input_ascii_string)
-    {
-        return ToBase64String( std::as_bytes( std::span<const char>(input_ascii_string) ) );
-    }
+    static std::string            ToBase64String(std::string_view input_ascii_string);
     static std::string            ToBase64String(std::span<const std::byte> input_bytes);
 
     static std::vector<std::byte> FromBase64String(const char *input_ascii_string)
@@ -139,17 +134,22 @@ public:
 namespace System
 {
 
+inline std::string Convert::ToBase64String(std::string_view input_ascii_string)
+{
+    return ToBase64String( std::as_bytes( std::span<const char>(input_ascii_string) ) );
+}
+
 // From RFC 4648
-static       std::string_view Base64Table = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-static const char             Base64PadChar = '=';
+std::string_view Base64Table = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+const char             Base64PadChar = '=';
 
-static       std::string_view Base85Table = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstu";
-static const char             Base85SpecialCase1 = 'z';
-static const char             Base85SpecialCase2 = 'y';
-static const std::uint32_t    Base85SpecialCaseValue1 = 0u;
-static const std::uint32_t    Base85SpecialCaseValue2 = 0x20202020u; // All spaces
+std::string_view Base85Table = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstu";
+const char             Base85SpecialCase1 = 'z';
+const char             Base85SpecialCase2 = 'y';
+const std::uint32_t    Base85SpecialCaseValue1 = 0u;
+const std::uint32_t    Base85SpecialCaseValue2 = 0x20202020u; // All spaces
 
-static       std::string_view Ascii85_RFC_1924 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$%&()*+-;<=>?@^_`{|}~";
+std::string_view Ascii85_RFC_1924 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$%&()*+-;<=>?@^_`{|}~";
 
 inline bool IsValidBase64(const char input)
 {

@@ -1,10 +1,8 @@
-module;
-
 export module System:DateTimeOffset;
 
-export import System:DateTime;
-export import System:TimeSpan;
-export import System:DayOfWeek;
+export import :DateTime;
+export import :TimeSpan;
+export import :DayOfWeek;
 
 
 namespace System

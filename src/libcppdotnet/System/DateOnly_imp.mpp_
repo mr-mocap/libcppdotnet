@@ -1,12 +1,10 @@
-module;
-
 module System:DateOnly;
 
-import System:Exception;
-import System:DateTime;
-import System:DayOfWeek;
 import <chrono>;
 import <format>;
+import :Exception;
+import :DateTime;
+import :DayOfWeek;
 
 namespace System
 {

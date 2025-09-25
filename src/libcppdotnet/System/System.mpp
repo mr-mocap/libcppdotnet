@@ -11,9 +11,8 @@ export import :EventArgs;
 export import :IComparable;
 
 // Things that only depend on system-headers...
- export import :IDisposable;
+export import :IDisposable;
 export import :Exception;
-// export import :Version;
 export import :Delegate;
 export import :Private_enum;
 export import :ValueTuple;
@@ -39,32 +38,33 @@ export import :PlatformID;
 export import :TypeCode;
 
 // Depends on other System Partitions...
-//export import :TimeSpan;
-//export import :Enum;
-
-// Depends on Other System/. files...
+export import :Enum;
 export import :BitConverter;
-// export import "System/Convert.hpp";
+export import :Convert;
+export import :IConvertible;
+export import :Version;
 export import :ConsoleKeyInfo;
 export import :Span;
 //export import :ReadOnlySpan;
 export import :Nullable;
-// export import :Guid;
-// export import :IConvertible;
-//export import :OperatingSystem;
+export import :OperatingSystem;
 export import :IObserver;
 export import :IObservable;
+
+// export import :TimeSpan;
+// export import :TimeOnly;
+// export import :DateOnly;
+// export import :DateTime;
+// export import :DateTimeOffset;
+
+// Depends on Other System/. files...
+// export import :Guid;
 
 // Not Included Yet!
 //export import "Boolean.hpp";
 //export import "Byte.hpp";
 //export import :Concepts;
 //export import "Console.hpp";
-
-// export import :TimeOnly;
-// export import :DateOnly;
-// export import :DateTime;
-// export import :DateTimeOffset;
 
 // export import :Environment;
 //export import "Int16.hpp";

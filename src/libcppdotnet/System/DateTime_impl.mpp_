@@ -1,17 +1,15 @@
-module;
-
 module System:DateTime;
 
-import System:Exception;
-import System:DateOnly;
-import System:TimeOnly;
-import System:TimeSpan;
-import System:DateTimeKind;
 import <chrono>;
 import <string>;
 import <compare>;
 import <format>;
 import <cmath>;
+import :Exception;
+import :DateOnly;
+import :TimeOnly;
+import :TimeSpan;
+import :DateTimeKind;
 
 namespace System
 {

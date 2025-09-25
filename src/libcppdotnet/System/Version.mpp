@@ -1,12 +1,13 @@
 export module System:Version;
 
-import :Exception;
-import :Convert;
 export import <string>;
 export import <string_view>;
 import <vector>;
 import <cstring>;
 import <cstdlib>;
+import <format>;
+import :Exception;
+import :Convert;
 
 
 namespace System
@@ -65,14 +66,14 @@ protected:
 namespace System
 {
 
-static std::vector<int> Append(std::vector<int> &&input, const std::vector<int> &other)
+std::vector<int> Append(std::vector<int> &&input, const std::vector<int> &other)
 {
     for (int i : other)
         input.push_back( i );
     return std::move(input);
 }
 
-static std::vector<int> ToInts(std::string_view input, const char separator = '.')
+std::vector<int> ToInts(std::string_view input, const char separator = '.')
 {
     auto pos = input.find_first_of( separator );
 
@@ -120,62 +121,45 @@ Version Version::Parse(std::string_view input)
 
 std::string Version::ToString() const
 {
-#if 0
-    Text::StringBuilder result;
-
-    result.Append( Major() ).Append('.').Append( Minor() );
+    std::string result = std::format("{}.{}", Major(), Minor() );
 
     if ( Build() != -1 )
-        result.Append('.').Append( Build() );
-
+        result.append( std::format(".{}", Build()) );
+    
     if ( Revision() != -1 )
-        result.Append('.').Append( Revision() );
+        result.append( std::format(".{}", Revision()) );
     
     return result;
-#else
-    return {};
-#endif
 }
 
 std::string Version::ToString(int field_count) const
 {
-    using namespace std::literals;
-
     if ( (field_count < 0) || (field_count > 4) )
-        ThrowWithTarget( ArgumentOutOfRangeException{ "field_count"sv } );
+        ThrowWithTarget( ArgumentOutOfRangeException{ "field_count" } );
     
     if ( field_count == 0 )
         return {};
 
     if ( field_count == 1 )
-        return Convert::ToChars( Major() );
+        return std::format("{}", Major());
 
     if ( field_count == 2 )
-#if 0
-        return Text::StringBuilder().Append( Major() ).Append('.').Append( Minor() );
-#else
-        return {};
-#endif
+        return std::format("{}.{}", Major(), Minor() );
 
     if ( field_count == 3 )
     {
         if ( Build() == -1 )
-            ThrowWithTarget( ArgumentOutOfRangeException{ "field_count"sv, "Build() is not set"sv } );
+            ThrowWithTarget( ArgumentOutOfRangeException{ "field_count", "Build() is not set" } );
 
-        return Text::StringBuilder().Append( Major() ).Append('.')
-                                    .Append( Minor() ).Append('.')
-                                    .Append( Build() );
+        return std::format("{}.{}.{}", Major(), Minor(), Build() );
     }
 
     if ( field_count == 4 )
     {
         if ( Revision() == -1 )
-            ThrowWithTarget( ArgumentOutOfRangeException{ "field_count"sv, "Revision() is not set"sv } );
+            ThrowWithTarget( ArgumentOutOfRangeException{ "field_count", "Revision() is not set" } );
 
-        return Text::StringBuilder().Append( Major() ).Append('.')
-                                    .Append( Minor() ).Append('.')
-                                    .Append( Build() ).Append('.')
-                                    .Append( Revision() );
+        return std::format("{}.{}.{}.{}", Major(), Minor(), Build(), Revision());
     }
 
     return {};

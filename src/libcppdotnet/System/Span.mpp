@@ -4,14 +4,12 @@ export import <span>;
 export import <array>;
 import <type_traits>;
 import <algorithm>;
-import :Exception;
-
-export
-{
+export import :Exception;
 
 namespace System
 {
 
+export
 template <typename Type, std::size_t Extent = std::dynamic_extent>
 class Span
 {
@@ -178,7 +176,5 @@ Span(std::array<Type, ArrayExtent> &) -> Span<Type, ArrayExtent>;
 
 template <typename Type, size_t ArrayExtent>
 Span(const std::array<Type, ArrayExtent> &) -> Span<const Type, ArrayExtent>;
-
-}
 
 }

@@ -1,10 +1,10 @@
 export module System:ReadOnlySpan;
 
-import <cstddef>;
+export import <span>;
+export import <array>;
 import <type_traits>;
-export import :Span;
-
-{
+import <algorithm>;
+import :Span;
 
 namespace System
 {
@@ -163,7 +163,5 @@ ReadOnlySpan(std::array<Type, ArrayExtent> &) -> ReadOnlySpan<Type, ArrayExtent>
 
 template <typename Type, size_t ArrayExtent>
 ReadOnlySpan(const std::array<Type, ArrayExtent> &) -> ReadOnlySpan<Type, ArrayExtent>;
-
-}
 
 }
