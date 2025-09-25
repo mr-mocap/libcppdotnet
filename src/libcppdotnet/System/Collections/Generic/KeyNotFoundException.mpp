@@ -1,9 +1,12 @@
-#include "System/Exception.hpp"
+export module System:KeyNotFoundException;
+
+export import :Exception;
 
 
 namespace System::Collections::Generic
 {
 
+export
 class KeyNotFoundException : public SystemException
 {
 public:
@@ -52,5 +55,15 @@ public:
 
     std::string_view ClassName() const override;
 };
+
+}
+
+namespace System::Collections::Generic
+{
+
+std::string_view KeyNotFoundException::ClassName() const
+{
+    return "KeyNotFoundException";
+}
 
 }

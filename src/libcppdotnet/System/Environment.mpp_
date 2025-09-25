@@ -1,6 +1,5 @@
 export module System:Environment;
 
-import System:Exception;
 import <tuple>;
 import <cstring>;
 import <stdlib.h>;
@@ -8,10 +7,11 @@ import <stdlib.h>;
 #include <stacktrace>
 #endif
 
-#include "System/Collections/Specialized/StringDictionary.hpp"
+//#include "System/Collections/Specialized/StringDictionary.hpp"
 export import <string>;
 export import <string_view>;
 import <map>;
+export import :Exception;
 
 namespace System
 {

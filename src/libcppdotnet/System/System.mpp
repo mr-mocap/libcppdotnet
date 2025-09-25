@@ -50,6 +50,7 @@ export import :Nullable;
 export import :OperatingSystem;
 export import :IObserver;
 export import :IObservable;
+//export import :Environment;
 
 // export import :TimeSpan;
 // export import :TimeOnly;
@@ -60,13 +61,17 @@ export import :IObservable;
 // Depends on Other System/. files...
 // export import :Guid;
 
+export import :KeyValuePair;
+export import :List;
+export import :KeyNotFoundException;
+export import :Dictionary;
+
 // Not Included Yet!
 //export import "Boolean.hpp";
 //export import "Byte.hpp";
 //export import :Concepts;
 //export import "Console.hpp";
 
-// export import :Environment;
 //export import "Int16.hpp";
 //export import "Int32.hpp";
 //export import "Int64.hpp";

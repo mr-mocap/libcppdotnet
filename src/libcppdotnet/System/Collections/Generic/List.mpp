@@ -1,14 +1,16 @@
-#include "System/Exception.hpp"
-#include "System/Predicate.hpp"
-#include <vector>
-#include <initializer_list>
-#include <string_view>
-#include <algorithm>
+export module System:List;
 
+export import <vector>;
+export import <initializer_list>;
+import <algorithm>;
+
+export import :Exception;
+export import :Predicate;
 
 namespace System::Collections::Generic
 {
 
+export
 template <class T>
 class List
 {
@@ -171,12 +173,10 @@ public:
 
     void Insert(size_type index, const T&item)
     {
-        using namespace std::literals;
-
         if ( IsReadOnly() )
-            ThrowWithTarget( System::NotSupportedException( "List is read-only"sv ) );
+            ThrowWithTarget( System::NotSupportedException( "List is read-only" ) );
         if ( index > Count() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException( "index"sv, "Index out-of-range"sv ) );
+            ThrowWithTarget( System::ArgumentOutOfRangeException( "index", "Index out-of-range" ) );
         
         // OK to insert at end(), which is when index == Count()
         _list.insert( std::next( begin(), index ), item );
@@ -184,12 +184,10 @@ public:
 
     void RemoveAt(size_type index)
     {
-        using namespace std::literals;
-
         if ( IsReadOnly() )
-            ThrowWithTarget( System::NotSupportedException( "List is read-only"sv ) );
+            ThrowWithTarget( System::NotSupportedException( "List is read-only" ) );
         if ( index >= Count() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException( "index"sv, "Index out-of-range"sv ) );
+            ThrowWithTarget( System::ArgumentOutOfRangeException( "index", "Index out-of-range" ) );
       
         _list.erase( std::next( begin(), index ) );
     }

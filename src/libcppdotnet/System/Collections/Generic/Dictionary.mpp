@@ -1,19 +1,24 @@
-#include "System/Collections/Generic/KeyNotFoundException.hpp"
-#include "System/Collections/Generic/List.hpp"
-#include "System/Collections/Generic/KeyValuePair.hpp"
-#include "System/Exception.hpp"
-#include "System/Private/private.hpp"
-#include <unordered_map>
-#include <functional>
-#include <iterator>
-#include <format>
-#include <ranges>
-#include <compare>
-#include <algorithm>
+export module System:Dictionary;
+
+export import <unordered_map>;
+export import <utility>;
+import <functional>;
+import <iterator>;
+import <format>;
+import <ranges>;
+import <compare>;
+import <algorithm>;
+#include <libcppdotnet/System/Private/private.hpp>
+
+export import :Exception;
+export import :KeyNotFoundException;
+export import :List;
+export import :KeyValuePair;
 
 namespace System::Collections::Generic
 {
 
+export
 template <class TKey,
           class TValue,
           class Hash      = std::hash<TKey>,

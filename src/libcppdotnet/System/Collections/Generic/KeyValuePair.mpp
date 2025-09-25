@@ -1,10 +1,14 @@
-#include <string>
-#include <format>
+export module System:KeyValuePair;
+
+export import <utility>;
+export import <string>;
+import <format>;
 
 
 namespace System::Collections::Generic
 {
 
+export
 template <class TKey, class TValue>
 struct KeyValuePair : std::pair<const TKey, TValue>
 {
