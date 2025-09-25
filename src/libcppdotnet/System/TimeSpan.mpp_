@@ -1,5 +1,3 @@
-module;
-
 export module System:TimeSpan;
 
 export import <chrono>;
@@ -7,7 +5,7 @@ export import <compare>;
 export import <string>;
 export import <format>;
 import <cstdlib>;
-import System:Exception;
+import :Exception;
 
 namespace System
 {

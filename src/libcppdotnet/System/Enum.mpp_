@@ -1,7 +1,7 @@
 export module System:Enum;
 
-import System:Exception;
-export import System:TypeCode;
+import :Exception;
+export import :TypeCode;
 export import <optional>;
 import <algorithm>;
 import <array>;

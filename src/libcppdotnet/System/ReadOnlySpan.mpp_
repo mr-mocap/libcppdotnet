@@ -1,17 +1,15 @@
-module;
-
 export module System:ReadOnlySpan;
 
 import <cstddef>;
 import <type_traits>;
-export import System:Span;
+export import :Span;
 
-export
 {
 
 namespace System
 {
 
+export
 template <typename Type, std::size_t Extent = std::dynamic_extent>
 class ReadOnlySpan
 {
@@ -144,6 +142,7 @@ protected:
     std::span<const Type, Extent> _data;
 };
 
+export
 template <typename SpecializedType, std::size_t Extent>
 class ReadOnlySpan<const SpecializedType, Extent> : public ReadOnlySpan<SpecializedType, Extent>
 {

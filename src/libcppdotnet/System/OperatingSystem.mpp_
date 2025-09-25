@@ -1,7 +1,7 @@
 export module System:OperatingSystem;
 
-import System:PlatformID;
-import System:Version;
+import :PlatformID;
+import :Version;
 
 
 namespace System

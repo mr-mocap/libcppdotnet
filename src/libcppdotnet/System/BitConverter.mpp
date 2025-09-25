@@ -1,8 +1,6 @@
-module;
-
 export module System:BitConverter;
 
-import System:Exception;
+import :Exception;
 export import <vector>;
 export import <array>;
 export import <span>;

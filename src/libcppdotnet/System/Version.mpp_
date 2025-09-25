@@ -1,9 +1,7 @@
-module;
-
 export module System:Version;
 
-import System:Exception;
-import System:Convert;
+import :Exception;
+import :Convert;
 export import <string>;
 export import <string_view>;
 import <vector>;
