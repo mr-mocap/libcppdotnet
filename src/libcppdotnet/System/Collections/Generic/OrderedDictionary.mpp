@@ -1,16 +1,22 @@
-#include "System/Collections/Generic/List.hpp"
-#include "System/Collections/Generic/KeyValuePair.hpp"
-#include "System/Collections/Generic/KeyNotFoundException.hpp"
-#include "System/Private/private.hpp"
-#include <map>
-#include <format>
-#include <ranges>
-#include <compare>
-#include <algorithm>
+export module System:OrderedDictionary;
+
+export import <map>;
+import <format>;
+import <ranges>;
+import <compare>;
+import <algorithm>;
+
+export import :List;
+export import :KeyValuePair;
+export import :KeyNotFoundException;
+export import :IListInterface;
+
+#include <libcppdotnet/System/Private/private.hpp>
 
 namespace System::Collections::Generic
 {
 
+export
 template <class TKey,
           class TValue,
           class Compare   = std::less<TKey>,
@@ -565,6 +571,7 @@ OrderedDictionary(std::map<TKey, TValue> &&) -> OrderedDictionary<TKey, TValue>;
 namespace System::Collections::Generic::Private
 {
 
+export
 template <typename ...Args>
 struct IListIndexer<Generic::OrderedDictionary<Args...>>
 {

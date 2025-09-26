@@ -1,11 +1,15 @@
-#include <memory>
-#include <iterator>
+export module System:LegacyRandomAccessIterator;
+
+import <memory>;
+export import <iterator>;
+export import <compare>;
 
 namespace System::Collections::Generic::Private
 {
 
+export
 template <class T>
-struct LegacyBidirectionalIteratorBase
+struct LegacyRandomAccessIteratorBase
 {
     using difference_type   = std::ptrdiff_t;
     using size_type         = std::size_t;
@@ -30,16 +34,13 @@ struct LegacyBidirectionalIteratorBase
     struct ConstIterator;
     struct ConstReverseIterator;
 
-    struct Iterator : std::bidirectional_iterator_tag
+    struct Iterator : std::random_access_iterator_tag
     {
-        using difference_type   = LegacyBidirectionalIteratorBase::difference_type;
-        using value_type        = LegacyBidirectionalIteratorBase::value_type;
-        using pointer           = LegacyBidirectionalIteratorBase::pointer;
-        using reference         = LegacyBidirectionalIteratorBase::reference;
-        using iterator_category = std::bidirectional_iterator_tag;
-
-        Iterator() = default;
-       ~Iterator() = default;
+        using difference_type   = LegacyRandomAccessIteratorBase::difference_type;
+        using value_type        = LegacyRandomAccessIteratorBase::value_type;
+        using pointer           = LegacyRandomAccessIteratorBase::pointer;
+        using reference         = LegacyRandomAccessIteratorBase::reference;
+        using iterator_category = std::random_access_iterator_tag;
 
         Iterator(std::unique_ptr<IteratorInterface> &&position)
             :
@@ -48,22 +49,18 @@ struct LegacyBidirectionalIteratorBase
         }
 
         Iterator(const Iterator &other)
-            :
-            m_pimpl( other.m_pimpl->Clone() )
+          :
+          m_pimpl( other.m_pimpl->Clone() )
         {
         }
 
         Iterator(Iterator &other)
-            :
-            m_pimpl( other.m_pimpl->Clone() )
+          :
+          m_pimpl( other.m_pimpl->Clone() )
         {
         }
 
-        Iterator(Iterator &&other)
-            :
-            m_pimpl( std::move(other.m_pimpl) )
-        {
-        }
+        Iterator(Iterator &&other) = delete;
 
         Iterator &operator =(const Iterator &other)
         {
@@ -71,15 +68,11 @@ struct LegacyBidirectionalIteratorBase
             return *this;
         }
 
-        Iterator &operator =(Iterator &&other)
-        {
-            m_pimpl = std::move(other.m_pimpl);
-            return *this;
-        }
+        Iterator &operator =(Iterator &&other) = delete;
 
         T &operator *()  { return *(*m_pimpl); }
 
-        T *operator ->() { return m_pimpl->operator ->(); }
+        T  operator ->() { return m_pimpl->operator ->(); }
 
         Iterator &operator ++()
         {
@@ -109,34 +102,56 @@ struct LegacyBidirectionalIteratorBase
             return old;
         }
 
-        bool operator ==(const Iterator &other)
+        Iterator operator +(difference_type n) const
         {
-            return *m_pimpl == *other.m_pimpl;
+            return Iterator( m_pimpl->create_positive_offset(n) );
         }
 
-        bool operator !=(const Iterator &other)
+        Iterator operator -(difference_type n) const
         {
-            return *m_pimpl != *other.m_pimpl;
+            return Iterator( m_pimpl->create_negative_offset(n) );
+        }
+
+        Iterator &operator +=(difference_type n)
+        {
+            *m_pimpl += n;
+            return *this;
+        }
+
+        Iterator &operator -=(difference_type n)
+        {
+            *m_pimpl -= n;
+            return *this;
+        }
+
+        difference_type operator -(const Iterator &other) const
+        {
+            return *m_pimpl - *other.m_pimpl;
+        }
+
+        std::strong_ordering operator <=>(const Iterator &other)
+        {
+            return *m_pimpl <=> *other.m_pimpl;
         }
 
         ConstIterator AsConst() const
         {
             return ConstIterator( m_pimpl->CloneAsConst() );
         }
+
     protected:
         std::unique_ptr<IteratorInterface> m_pimpl;
+
+        Iterator() = default;
     };
 
-    struct ConstIterator : std::bidirectional_iterator_tag
+    struct ConstIterator : std::random_access_iterator_tag
     {
-        using difference_type   = LegacyBidirectionalIteratorBase::difference_type;
-        using value_type        = LegacyBidirectionalIteratorBase::value_type;
-        using pointer           = const LegacyBidirectionalIteratorBase::pointer;
-        using reference         = const LegacyBidirectionalIteratorBase::reference;
-        using iterator_category = std::bidirectional_iterator_tag;
-
-        ConstIterator() = default;
-       ~ConstIterator() = default;
+        using difference_type   = LegacyRandomAccessIteratorBase::difference_type;
+        using value_type        = LegacyRandomAccessIteratorBase::value_type;
+        using pointer           = const LegacyRandomAccessIteratorBase::pointer;
+        using reference         = const LegacyRandomAccessIteratorBase::reference;
+        using iterator_category = std::random_access_iterator_tag;
 
         ConstIterator(std::unique_ptr<ConstIteratorInterface> &&position)
             :
@@ -162,11 +177,7 @@ struct LegacyBidirectionalIteratorBase
         {
         }
             
-        ConstIterator(ConstIterator &&other)
-            :
-            m_pimpl( std::move(other.m_pimpl) )
-        {
-        }
+        ConstIterator(ConstIterator &&other) = delete;
 
         ConstIterator &operator =(const ConstIterator &other)
         {
@@ -174,11 +185,7 @@ struct LegacyBidirectionalIteratorBase
             return *this;
         }
 
-        ConstIterator &operator =(ConstIterator &&other)
-        {
-            m_pimpl = std::move(other.m_pimpl);
-            return *this;
-        }
+        ConstIterator &operator =(ConstIterator &&other) = delete;
 
         const T &operator*() { return *(*m_pimpl); }
 
@@ -212,26 +219,51 @@ struct LegacyBidirectionalIteratorBase
             return old;
         }
 
-        bool operator ==(const ConstIterator &other)
+        ConstIterator operator +(difference_type n) const
         {
-            return *m_pimpl == *other.m_pimpl;
+            return ConstIterator( m_pimpl->create_positive_offset(n) );
         }
 
-        bool operator !=(const ConstIterator &other)
+        ConstIterator operator -(difference_type n) const
         {
-            return *m_pimpl != *other.m_pimpl;
+            return ConstIterator( m_pimpl->create_negative_offset(n) );
         }
+
+        ConstIterator &operator +=(difference_type n)
+        {
+            *m_pimpl += n;
+            return *this;
+        }
+
+        ConstIterator &operator -=(difference_type n)
+        {
+            *m_pimpl -= n;
+            return *this;
+        }
+
+        difference_type operator -(const ConstIterator &other) const
+        {
+            return *m_pimpl - *other.m_pimpl;
+        }
+
+        std::strong_ordering operator <=>(const ConstIterator &other)
+        {
+            return *m_pimpl <=> *other.m_pimpl;
+        }
+
         protected:
             std::unique_ptr<ConstIteratorInterface> m_pimpl;
+
+            ConstIterator() = default;
     };
 
-    struct ReverseIterator : std::bidirectional_iterator_tag
+    struct ReverseIterator : std::random_access_iterator_tag
     {
-        using difference_type   = LegacyBidirectionalIteratorBase::difference_type;
-        using value_type        = LegacyBidirectionalIteratorBase::value_type;
-        using pointer           = LegacyBidirectionalIteratorBase::pointer;
-        using reference         = LegacyBidirectionalIteratorBase::reference;
-        using iterator_category = std::bidirectional_iterator_tag;
+        using difference_type   = LegacyRandomAccessIteratorBase::difference_type;
+        using value_type        = LegacyRandomAccessIteratorBase::value_type;
+        using pointer           = LegacyRandomAccessIteratorBase::pointer;
+        using reference         = LegacyRandomAccessIteratorBase::reference;
+        using iterator_category = std::random_access_iterator_tag;
 
         ReverseIterator() = default;
        ~ReverseIterator() = default;
@@ -274,7 +306,7 @@ struct LegacyBidirectionalIteratorBase
 
         T &operator *()  { return *(*m_pimpl); }
 
-        T *operator ->() { return m_pimpl->operator ->(); }
+        T  operator ->() { return m_pimpl->operator ->(); }
 
         ReverseIterator &operator ++()
         {
@@ -304,14 +336,36 @@ struct LegacyBidirectionalIteratorBase
             return old;
         }
 
-        bool operator ==(const ReverseIterator &other)
+        ReverseIterator operator +(difference_type n) const
         {
-            return *m_pimpl == *other.m_pimpl;
+            return Iterator( m_pimpl->create_positive_offset(n) );
         }
 
-        bool operator !=(const ReverseIterator &other)
+        ReverseIterator operator -(difference_type n) const
         {
-            return *m_pimpl != *other.m_pimpl;
+            return Iterator( m_pimpl->create_negative_offset(n) );
+        }
+
+        ReverseIterator &operator +=(difference_type n)
+        {
+            *m_pimpl += n;
+            return *this;
+        }
+
+        ReverseIterator &operator -=(difference_type n)
+        {
+            *m_pimpl -= n;
+            return *this;
+        }
+
+        difference_type operator -(const ReverseIterator &other) const
+        {
+            return *m_pimpl - *other.m_pimpl;
+        }
+
+        std::strong_ordering operator <=>(const ReverseIterator &other)
+        {
+            return *m_pimpl <=> *other.m_pimpl;
         }
 
         ConstReverseIterator AsConst() const
@@ -322,13 +376,13 @@ struct LegacyBidirectionalIteratorBase
         std::unique_ptr<ReverseIteratorInterface> m_pimpl;
     };
 
-    struct ConstReverseIterator : std::bidirectional_iterator_tag
+    struct ConstReverseIterator : std::random_access_iterator_tag
     {
-        using difference_type   = LegacyBidirectionalIteratorBase::difference_type;
-        using value_type        = LegacyBidirectionalIteratorBase::value_type;
-        using pointer           = const LegacyBidirectionalIteratorBase::pointer;
-        using reference         = const LegacyBidirectionalIteratorBase::reference;
-        using iterator_category = std::bidirectional_iterator_tag;
+        using difference_type   = LegacyRandomAccessIteratorBase::difference_type;
+        using value_type        = LegacyRandomAccessIteratorBase::value_type;
+        using pointer           = const LegacyRandomAccessIteratorBase::pointer;
+        using reference         = const LegacyRandomAccessIteratorBase::reference;
+        using iterator_category = std::random_access_iterator_tag;
 
         ConstReverseIterator() = default;
        ~ConstReverseIterator() = default;
@@ -407,14 +461,36 @@ struct LegacyBidirectionalIteratorBase
             return old;
         }
 
-        bool operator ==(const ConstReverseIterator &other)
+        ConstReverseIterator operator +(difference_type n) const
         {
-            return *m_pimpl == *other.m_pimpl;
+            return Iterator( m_pimpl->create_positive_offset(n) );
         }
 
-        bool operator !=(const ConstReverseIterator &other)
+        ConstReverseIterator operator -(difference_type n) const
         {
-            return *m_pimpl != *other.m_pimpl;
+            return Iterator( m_pimpl->create_negative_offset(n) );
+        }
+
+        ConstReverseIterator &operator +=(difference_type n)
+        {
+            *m_pimpl += n;
+            return *this;
+        }
+
+        ConstReverseIterator &operator -=(difference_type n)
+        {
+            *m_pimpl -= n;
+            return *this;
+        }
+
+        difference_type operator -(const ConstReverseIterator &other) const
+        {
+            return *m_pimpl - *other.m_pimpl;
+        }
+
+        std::strong_ordering operator <=>(const ConstReverseIterator &other)
+        {
+            return *m_pimpl <=> *other.m_pimpl;
         }
         protected:
             std::unique_ptr<ConstReverseIteratorInterface> m_pimpl;
@@ -431,11 +507,17 @@ struct LegacyBidirectionalIteratorBase
 
         virtual std::unique_ptr<ConstIteratorInterface> post_increment() = 0;
         virtual std::unique_ptr<ConstIteratorInterface> post_decrement() = 0;
+        virtual std::unique_ptr<ConstIteratorInterface> create_positive_offset(difference_type n) = 0;
+        virtual std::unique_ptr<ConstIteratorInterface> create_negative_offset(difference_type n) = 0;
+        virtual ConstIteratorInterface &operator +=(difference_type n) = 0;
+        virtual ConstIteratorInterface &operator -=(difference_type n) = 0;
+        virtual difference_type operator -(const ConstIteratorInterface &other) const = 0;
+
+        virtual const_reference operator[](difference_type n) const = 0;
+
+        virtual std::strong_ordering operator <=>(const ConstIteratorInterface &other) const = 0;
 
         virtual std::unique_ptr<ConstIteratorInterface> Clone() const = 0;
-
-        virtual bool operator ==(const ConstIteratorInterface &other) const = 0;
-        virtual bool operator !=(const ConstIteratorInterface &other) const = 0;
     };
 
     template <class ListType>
@@ -453,22 +535,7 @@ struct LegacyBidirectionalIteratorBase
         {
         }
 
-        ConstIteratorModel(const ConstIteratorModel<ListType> &other)
-            :
-            m_iterator( other.m_iterator )
-        {
-        }
-
-        ConstIteratorModel(ConstIteratorModel<ListType> &&other)
-            :
-            m_iterator( std::move(other.m_iterator) )
-        {
-        }
-
        ~ConstIteratorModel() override { }
-
-        ConstIteratorModel &operator =(const ConstIteratorModel  &other) = default;
-        ConstIteratorModel &operator =(      ConstIteratorModel &&other) = default;
 
         const T &operator*() override
         {
@@ -497,7 +564,7 @@ struct LegacyBidirectionalIteratorBase
             typename ListType::const_iterator old = m_iterator;
 
             m_iterator++;
-            return std::make_unique<ConstIteratorModel>(old);
+            return std::make_unique<ConstIteratorModel<ListType>>(old);
         }
 
         std::unique_ptr<ConstIteratorInterface> post_decrement() override
@@ -505,32 +572,54 @@ struct LegacyBidirectionalIteratorBase
             typename ListType::const_iterator old = m_iterator;
 
             m_iterator--;
-            return std::make_unique<ConstIteratorModel>(old);
+            return std::make_unique<ConstIteratorModel<ListType>>(old);
+        }
+
+        std::unique_ptr<ConstIteratorInterface> create_positive_offset(difference_type n) override
+        {
+            return std::make_unique<ConstIteratorModel<ListType>>( m_iterator + n );
+        }
+
+        std::unique_ptr<ConstIteratorInterface> create_negative_offset(difference_type n) override
+        {
+            return std::make_unique<ConstIteratorModel<ListType>>( m_iterator - n );
+        }
+
+        ConstIteratorInterface &operator +=(difference_type n) override
+        {
+            m_iterator += n;
+            return *this;
+        }
+
+        ConstIteratorInterface &operator -=(difference_type n) override
+        {
+            m_iterator -= n;
+            return *this;
+        }
+
+        difference_type operator -(const ConstIteratorInterface &other) const override
+        {
+            return m_iterator - dynamic_cast<const ConstIteratorModel<ListType> &>(other).m_iterator; 
+        }
+
+        const_reference operator[](difference_type n) const override
+        {
+            return m_iterator[n];
         }
 
         std::unique_ptr<ConstIteratorInterface> Clone() const override
         {
-            return std::make_unique<ConstIteratorModel>(m_iterator);
+            return std::make_unique<ConstIteratorModel<ListType>>(m_iterator);
         }
 
-        bool operator ==(const ConstIteratorInterface &other) const override
+        std::strong_ordering operator <=>(const ConstIteratorInterface &other) const override
         {
             const ConstIteratorModel<ListType> *p = dynamic_cast<const ConstIteratorModel<ListType> *>(&other);
 
             if ( !p )
-                return false;
+                return std::strong_ordering::less;
 
-            return m_iterator == p->m_iterator;
-        }
-
-        bool operator !=(const ConstIteratorInterface &other) const override
-        {
-            const ConstIteratorModel<ListType> *p = dynamic_cast<const ConstIteratorModel<ListType> *>(&other);
-
-            if ( !p )
-                return false;
-
-            return m_iterator != p->m_iterator;
+            return m_iterator <=> p->m_iterator;
         }
     protected:
         ListType::const_iterator m_iterator;
@@ -547,12 +636,18 @@ struct LegacyBidirectionalIteratorBase
 
         virtual std::unique_ptr<IteratorInterface> post_increment() = 0;
         virtual std::unique_ptr<IteratorInterface> post_decrement() = 0;
+        virtual std::unique_ptr<IteratorInterface> create_positive_offset(difference_type n) = 0;
+        virtual std::unique_ptr<IteratorInterface> create_negative_offset(difference_type n) = 0;
+        virtual IteratorInterface &operator +=(difference_type n) = 0;
+        virtual IteratorInterface &operator -=(difference_type n) = 0;
+        virtual difference_type operator -(const IteratorInterface &other) const = 0;
 
-        virtual std::unique_ptr<IteratorInterface> Clone() = 0;
+        virtual reference operator[](difference_type n) const = 0;
+
+        virtual std::strong_ordering operator <=>(const IteratorInterface &other) const = 0;
+
+        virtual std::unique_ptr<IteratorInterface> Clone() const = 0;
         virtual std::unique_ptr<ConstIteratorInterface> CloneAsConst() const = 0;
-
-        virtual bool operator ==(const IteratorInterface &other) const = 0;
-        virtual bool operator !=(const IteratorInterface &other) const = 0;
     };
 
     template <class ListType>
@@ -565,9 +660,6 @@ struct LegacyBidirectionalIteratorBase
         }
 
        ~IteratorModel() override { }
-
-        IteratorModel &operator =(const IteratorModel &other) = default;
-        IteratorModel &operator =(IteratorModel &&other) = default;
 
         T &operator*() override
         {
@@ -582,12 +674,6 @@ struct LegacyBidirectionalIteratorBase
         IteratorInterface &operator++() override
         {
             ++m_iterator;
-            return *this;
-        }
-
-        IteratorInterface &operator--() override
-        {
-            --m_iterator;
             return *this;
         }
 
@@ -607,6 +693,38 @@ struct LegacyBidirectionalIteratorBase
             return std::make_unique<IteratorModel<ListType>>(old);
         }
 
+        std::unique_ptr<IteratorInterface> create_positive_offset(difference_type n) override
+        {
+            return std::make_unique<IteratorModel<ListType>>( m_iterator + n );
+        }
+
+        std::unique_ptr<IteratorInterface> create_negative_offset(difference_type n) override
+        {
+            return std::make_unique<IteratorModel<ListType>>( m_iterator - n );
+        }
+
+        IteratorInterface &operator +=(difference_type n) override
+        {
+            m_iterator += n;
+            return *this;
+        }
+
+        IteratorInterface &operator -=(difference_type n) override
+        {
+            m_iterator -= n;
+            return *this;
+        }
+
+        difference_type operator -(const IteratorInterface &other) const override
+        {
+            return m_iterator - dynamic_cast<const IteratorModel<ListType> &>(other).m_iterator; 
+        }
+
+        reference operator[](difference_type n) const override
+        {
+            return m_iterator[n];
+        }
+
         std::unique_ptr<IteratorInterface> Clone() override
         {
             return std::make_unique<IteratorModel<ListType>>(m_iterator);
@@ -617,24 +735,14 @@ struct LegacyBidirectionalIteratorBase
             return std::make_unique<ConstIteratorModel<ListType>>(m_iterator);
         }
 
-        bool operator ==(const IteratorInterface &other) const override
+        std::strong_ordering operator <=>(const IteratorInterface &other) const override
         {
             const IteratorModel<ListType> *p = dynamic_cast<const IteratorModel<ListType> *>(&other);
 
             if ( !p )
-                return false;
+                return std::strong_ordering::less;
 
-            return m_iterator == p->m_iterator;
-        }
-
-        bool operator !=(const IteratorInterface &other) const override
-        {
-            const IteratorModel<ListType> *p = dynamic_cast<const IteratorModel<ListType> *>(&other);
-
-            if ( !p )
-                return true;
-
-            return m_iterator != p->m_iterator;
+            return m_iterator <=> p->m_iterator;
         }
     protected:
         ListType::iterator m_iterator;
@@ -651,6 +759,15 @@ struct LegacyBidirectionalIteratorBase
 
         virtual std::unique_ptr<ConstReverseIteratorInterface> post_increment() = 0;
         virtual std::unique_ptr<ConstReverseIteratorInterface> post_decrement() = 0;
+        virtual std::unique_ptr<ConstReverseIteratorInterface> create_positive_offset(difference_type n) = 0;
+        virtual std::unique_ptr<ConstReverseIteratorInterface> create_negative_offset(difference_type n) = 0;
+        virtual ConstReverseIteratorInterface &operator +=(difference_type n) = 0;
+        virtual ConstReverseIteratorInterface &operator -=(difference_type n) = 0;
+        virtual difference_type operator -(const ConstReverseIteratorInterface &other) const = 0;
+
+        virtual const_reference operator[](difference_type n) const = 0;
+
+        virtual std::strong_ordering operator <=>(const ConstReverseIteratorInterface &other) const = 0;
 
         virtual std::unique_ptr<ConstReverseIteratorInterface> Clone() const = 0;
 
@@ -722,29 +839,51 @@ struct LegacyBidirectionalIteratorBase
             return std::make_unique<ConstReverseIteratorModel>(old);
         }
 
+        std::unique_ptr<ConstReverseIteratorInterface> create_positive_offset(difference_type n) override
+        {
+            return std::make_unique<ConstReverseIteratorModel<ListType>>( m_iterator + n );
+        }
+
+        std::unique_ptr<ConstReverseIteratorInterface> create_negative_offset(difference_type n) override
+        {
+            return std::make_unique<ConstReverseIteratorModel<ListType>>( m_iterator - n );
+        }
+
+        ConstReverseIteratorInterface &operator +=(difference_type n) override
+        {
+            m_iterator += n;
+            return *this;
+        }
+
+        ConstReverseIteratorInterface &operator -=(difference_type n) override
+        {
+            m_iterator -= n;
+            return *this;
+        }
+
+        difference_type operator -(const ConstReverseIteratorInterface &other) const override
+        {
+            return m_iterator - dynamic_cast<const ConstReverseIteratorModel<ListType> &>(other).m_iterator; 
+        }
+
+        const_reference operator[](difference_type n) const override
+        {
+            return m_iterator[n];
+        }
+
         std::unique_ptr<ConstReverseIteratorInterface> Clone() const override
         {
             return std::make_unique<ConstReverseIteratorModel>(m_iterator);
         }
 
-        bool operator ==(const ConstReverseIteratorInterface &other) const override
+        std::strong_ordering operator <=>(const ConstReverseIteratorInterface &other) const override
         {
             const ConstReverseIteratorModel<ListType> *p = dynamic_cast<const ConstReverseIteratorModel<ListType> *>(&other);
 
             if ( !p )
-                return false;
+                return std::strong_ordering::less;
 
-            return m_iterator == p->m_iterator;
-        }
-
-        bool operator !=(const ConstReverseIteratorInterface &other) const override
-        {
-            const ConstReverseIteratorModel<ListType> *p = dynamic_cast<const ConstReverseIteratorModel<ListType> *>(&other);
-
-            if ( !p )
-                return false;
-
-            return m_iterator != p->m_iterator;
+            return m_iterator <=> p->m_iterator;
         }
     protected:
         ListType::const_reverse_iterator m_iterator;
@@ -761,12 +900,18 @@ struct LegacyBidirectionalIteratorBase
 
         virtual std::unique_ptr<ReverseIteratorInterface> post_increment() = 0;
         virtual std::unique_ptr<ReverseIteratorInterface> post_decrement() = 0;
+        virtual std::unique_ptr<ReverseIteratorInterface> create_positive_offset(difference_type n) = 0;
+        virtual std::unique_ptr<ReverseIteratorInterface> create_negative_offset(difference_type n) = 0;
+        virtual ReverseIteratorInterface &operator +=(difference_type n) = 0;
+        virtual ReverseIteratorInterface &operator -=(difference_type n) = 0;
+        virtual difference_type operator -(const ReverseIteratorInterface &other) const = 0;
 
-        virtual std::unique_ptr<ReverseIteratorInterface> Clone() = 0;
+        virtual reference operator[](difference_type n) const = 0;
+
+        virtual std::strong_ordering operator <=>(const ReverseIteratorInterface &other) const = 0;
+
+        virtual std::unique_ptr<ReverseIteratorInterface> Clone() const = 0;
         virtual std::unique_ptr<ConstReverseIteratorInterface> CloneAsConst() const = 0;
-
-        virtual bool operator ==(const ReverseIteratorInterface &other) const = 0;
-        virtual bool operator !=(const ReverseIteratorInterface &other) const = 0;
     };
 
     template <class ListType>
@@ -780,9 +925,6 @@ struct LegacyBidirectionalIteratorBase
 
        ~ReverseIteratorModel() override { }
 
-        ReverseIteratorModel &operator =(const ReverseIteratorModel &other) = default;
-        ReverseIteratorModel &operator =(ReverseIteratorModel &&other) = default;
-
         T &operator*() override
         {
             return *m_iterator;
@@ -793,19 +935,13 @@ struct LegacyBidirectionalIteratorBase
             return m_iterator.operator ->();
         }
 
-        ReverseIteratorInterface &operator++() override
+        ReverseIteratorModel &operator++() override
         {
             ++m_iterator;
             return *this;
         }
 
-        ReverseIteratorInterface &operator--() override
-        {
-            --m_iterator;
-            return *this;
-        }
-
-        std::unique_ptr<ReverseIteratorInterface> post_increment() override
+        std::unique_ptr<ReverseIteratorModel> post_increment() override
         {
             typename ListType::reverse_iterator old = m_iterator;
 
@@ -813,7 +949,7 @@ struct LegacyBidirectionalIteratorBase
             return std::make_unique<ReverseIteratorModel<ListType>>(old);
         }
 
-        std::unique_ptr<ReverseIteratorInterface> post_decrement() override
+        std::unique_ptr<ReverseIteratorModel> post_decrement() override
         {
             typename ListType::reverse_iterator old = m_iterator;
 
@@ -821,37 +957,59 @@ struct LegacyBidirectionalIteratorBase
             return std::make_unique<ReverseIteratorModel<ListType>>(old);
         }
 
-        std::unique_ptr<ReverseIteratorInterface> Clone() override
+        std::unique_ptr<ReverseIteratorModel> create_positive_offset(difference_type n) override
+        {
+            return std::make_unique<ReverseIteratorModel<ListType>>( m_iterator + n );
+        }
+
+        std::unique_ptr<ReverseIteratorModel> create_negative_offset(difference_type n) override
+        {
+            return std::make_unique<ReverseIteratorModel<ListType>>( m_iterator - n );
+        }
+
+        ReverseIteratorModel &operator +=(difference_type n) override
+        {
+            m_iterator += n;
+            return *this;
+        }
+
+        ReverseIteratorModel &operator -=(difference_type n) override
+        {
+            m_iterator -= n;
+            return *this;
+        }
+
+        difference_type operator -(const ReverseIteratorInterface &other) const override
+        {
+            return m_iterator - dynamic_cast<const ReverseIteratorModel<ListType> &>(other).m_iterator; 
+        }
+
+        reference operator[](difference_type n) const override
+        {
+            return m_iterator[n];
+        }
+
+        std::unique_ptr<ReverseIteratorModel> Clone() override
         {
             return std::make_unique<ReverseIteratorModel<ListType>>(m_iterator);
         }
 
-        std::unique_ptr<ConstReverseIteratorInterface> CloneAsConst() const override
+        std::unique_ptr<ConstReverseIteratorModel<ListType>> CloneAsConst() const override
         {
-            return std::make_unique<ConstReverseIteratorModel<ListType>>( typename ListType::const_reverse_iterator(m_iterator) );
+            return std::make_unique<ConstReverseIteratorModel<ListType>>(m_iterator);
         }
 
-        bool operator ==(const ReverseIteratorInterface &other) const override
+        std::strong_ordering operator <=>(const ReverseIteratorModel &other) const override
         {
             const ReverseIteratorModel<ListType> *p = dynamic_cast<const ReverseIteratorModel<ListType> *>(&other);
 
             if ( !p )
-                return false;
+                return std::strong_ordering::less;
 
-            return m_iterator == p->m_iterator;
-        }
-
-        bool operator !=(const ReverseIteratorInterface &other) const override
-        {
-            const ReverseIteratorModel<ListType> *p = dynamic_cast<const ReverseIteratorModel<ListType> *>(&other);
-
-            if ( !p )
-                return true;
-
-            return m_iterator != p->m_iterator;
+            return m_iterator <=> p->m_iterator;
         }
     protected:
-        typename ListType::reverse_iterator m_iterator;
+        ListType::reverse_iterator m_iterator;
     };
 
     using iterator       = Iterator;

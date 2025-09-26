@@ -14,3 +14,5 @@ set rtp+=.vim
 
 set makeprg=b
 set number
+
+autocmd BufRead,BufNewFile *.mpp set filetype=cpp

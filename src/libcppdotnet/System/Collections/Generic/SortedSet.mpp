@@ -1,10 +1,14 @@
-#include "System/Private/private.hpp"
-#include <set>
-#include <functional>
+export module System:SortedSet;
+
+export import <set>;
+import <functional>;
+
+#include <libcppdotnet/System/Private/private.hpp>
 
 namespace System::Collections::Generic
 {
 
+export
 template <class Key,
           class Compare   = std::less<Key>,
           class Allocator = std::allocator<Key> >

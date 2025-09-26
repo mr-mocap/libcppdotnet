@@ -1,12 +1,16 @@
-#include "System/Private/private.hpp"
-#include "System/Exception.hpp"
-#include <stack>
-#include <algorithm>
+export module System:Stack;
 
+import <stack>;
+import <algorithm>;
+
+export import :Exception;
+
+#include <libcppdotnet/System/Private/private.hpp>
 
 namespace System::Collections::Generic
 {
 
+export
 template <class ElementType, class Container = std::deque<ElementType>>
 class Stack
 {
@@ -39,10 +43,10 @@ public:
     }
 
     // For now, do nothing  (Don't know how to implement this)
-    Stack(int initial_capacity) { assert(false); }
+    Stack(int initial_capacity) { ASSERT(false); }
 
     // For now, do nothing  (Don't know how to implement this)
-    size_type Capacity() const { assert(false); return 0; }
+    size_type Capacity() const { ASSERT(false); return 0; }
 
     size_type Count() const { return _stack.size(); }
 

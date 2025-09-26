@@ -65,6 +65,17 @@ export import :KeyValuePair;
 export import :List;
 export import :KeyNotFoundException;
 export import :Dictionary;
+export import :LinkedList;
+export import :HashSet;
+export import :SortedDictionary;
+export import :OrderedDictionary;
+export import :SortedSet;
+export import :Stack;
+export import :ICollection;
+export import :IList;
+export import :IDictionary;
+
+export import :StringDictionary;
 
 // Not Included Yet!
 //export import "Boolean.hpp";

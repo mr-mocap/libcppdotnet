@@ -1,8 +1,11 @@
-#include <memory>
+export module System:ICollectionInterface;
+
+import <memory>;
 
 namespace System::Collections::Generic::Private
 {
 
+export
 template <class Policy>
 struct ICollectionInterface : Policy
 {

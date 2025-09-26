@@ -1,13 +1,16 @@
-#include "System/Private/private.hpp"
-#include "System/Predicate.hpp"
-#include "System/Exception.hpp"
-#include <unordered_set>
-#include <algorithm>
+export module System:HashSet;
 
+export import <unordered_set>;
+import <algorithm>;
+export import :Predicate;
+export import :Exception;
+
+#include <libcppdotnet/System/Private/private.hpp>
 
 namespace System::Collections::Generic
 {
 
+export
 template <class Key,
           class Hash = std::hash<Key>,
           class KeyEqual  = std::equal_to<Key>,

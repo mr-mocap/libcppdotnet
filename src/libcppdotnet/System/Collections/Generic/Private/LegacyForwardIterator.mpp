@@ -1,9 +1,12 @@
-#include <memory>
-#include <iterator>
+export module System:LegacyForwardIterator;
+
+import <memory>;
+import <iterator>;
 
 namespace System::Collections::Generic::Private
 {
 
+export
 template <class T>
 struct LegacyForwardIteratorBase
 {

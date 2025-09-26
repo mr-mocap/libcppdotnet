@@ -1,10 +1,15 @@
-#include "System/Collections/Generic/Private/LegacyForwardIterator.hpp"
-#include "System/Collections/Generic/Private/ICollectionInterface.hpp"
+export module System:ICollection;
+
+import <memory>;
+
+export import :LegacyForwardIterator;
+export import :ICollectionInterface;
 
 
 namespace System::Collections::Generic
 {
 
+export
 template <typename T>
 class ICollection : public Private::LegacyForwardIteratorBase<T>
 {

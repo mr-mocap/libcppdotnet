@@ -1,9 +1,12 @@
-#include "System/Collections/Generic/Private/LegacyForwardIterator.hpp"
-#include "System/Collections/Generic/Private/IDictionaryInterface.hpp"
+export module System:IDictionary;
+
+export import :LegacyForwardIterator;
+export import :IDictionaryInterface;
 
 namespace System::Collections::Generic
 {
 
+export
 template <typename KeyT, typename ValueT>
 class IDictionary : public Private::LegacyForwardIteratorBase<KeyValuePair<KeyT, ValueT>>
 {

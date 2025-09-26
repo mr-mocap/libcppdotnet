@@ -1,11 +1,15 @@
-#include "System/Concepts.hpp"
-#include "System/Collections/Generic/KeyValuePair.hpp"
-#include <concepts>
+export module System:CollectionsGenericConcepts;
+
+export import <concepts>;
+
+export import :Concepts;
+export import :KeyValuePair;
 
 
 namespace System::Collections::Generic::Concepts
 {
 
+export
 template <typename ContainerT, typename ValueT>
 concept Collection = requires(ContainerT Object, ValueT Item) {
     typename ContainerT::value_type;
@@ -20,6 +24,7 @@ concept Collection = requires(ContainerT Object, ValueT Item) {
     { Object.Remove(Item) } -> std::same_as<bool>;
 };
 
+export
 template <typename T>
 concept Comparer = requires(T Object, T OtherObject) {
     { Object.Compare(Object, OtherObject) } -> std::same_as<int>;
@@ -52,21 +57,24 @@ concept Dictionary = DictionaryOnly<T, KeyT, ValueT> &&
                      Collection<T, Generic::KeyValuePair<KeyT, ValueT>>;
     // NOTE: Also implements ICollection<KeyValuePair<KeyT, ValueT>>
 #else
+
+export
 template <typename T, typename KeyT, typename ValueT>
 concept Dictionary = Collection<T, Generic::KeyValuePair<KeyT, ValueT>> &&
                      requires (T Object, const KeyT &key) {
                          typename T::KeyCollection;
                          typename T::ValueCollection;
 
-                         { T::KeyCollection } -> std::same_as< Collection<T::KeyCollection, KeyT> >;
-                         { T::ValueCollection } -> std::same_as< Collection<T::ValueCollection, ValueT> >;
+                         { T::KeyCollection } -> std::same_as< Collection<typename T::KeyCollection, KeyT> >;
+                         { T::ValueCollection } -> std::same_as< Collection<typename T::ValueCollection, ValueT> >;
 
                          { Object[key] } -> std::same_as<ValueT &>;
                          { Object.Keys() } -> std::same_as<typename T::KeyCollection>;
                          { Object.Values() } -> std::same_as<typename T::ValueCollection>;
-                     }
+                     };
 #endif
 
+export
 template <typename T>
 concept EqualityComparer = requires(T Object, T OtherObject) {
     { Object.Equals(Object, OtherObject) } -> std::same_as<int>;

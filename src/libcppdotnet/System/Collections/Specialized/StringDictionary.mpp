@@ -1,4 +1,6 @@
-#include "System/Collections/Generic/Dictionary.hpp"
+export module System:StringDictionary;
+
+export import :Dictionary;
 
 
 namespace System::Collections::Specialized
@@ -7,6 +9,7 @@ namespace System::Collections::Specialized
 // NOTE: How can I generalize this to be templated like Dictionary
 //       but make it all default template parameters AND not be
 //       syntactically unwieldy?
+export
 class StringDictionary : public Generic::Dictionary<std::string, std::string>
 {
 public:

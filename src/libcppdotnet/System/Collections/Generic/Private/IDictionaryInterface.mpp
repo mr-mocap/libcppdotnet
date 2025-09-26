@@ -1,10 +1,12 @@
-#include "System/Collections/Generic/KeyValuePair.hpp"
-#include "System/Collections/Generic/ICollection.hpp"
+export module System:IDictionaryInterface;
 
+export import :KeyValuePair;
+export import :ICollection;
 
 namespace System::Collections::Generic::Private
 {
 
+export
 template <class Policy>
 struct IDictionaryInterface : Policy
 {

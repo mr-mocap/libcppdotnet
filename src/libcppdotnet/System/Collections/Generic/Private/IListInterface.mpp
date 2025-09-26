@@ -1,9 +1,12 @@
-#include <memory>
-#include <iterator>
+export module System:IListInterface;
+
+import <memory>;
+export import <iterator>;
 
 namespace System::Collections::Generic::Private
 {
 
+export
 template <class Policy>
 struct IListInterface : Policy
 {
@@ -52,6 +55,7 @@ struct IListInterface : Policy
     virtual typename Policy::ConstReverseIteratorType crend() const = 0;
 };
 
+export
 template <class ListType>
 struct IListIndexer
 {

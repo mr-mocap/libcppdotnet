@@ -1,9 +1,12 @@
-#include "System/Collections/Generic/Private/LegacyBidirectionalIterator.hpp"
-#include "System/Collections/Generic/Private/IListInterface.hpp"
+export module System:IList;
+
+export import :LegacyBidirectionalIterator;
+export import :IListInterface;
 
 namespace System::Collections::Generic
 {
 
+export
 template <class T>
 class IList : public Private::LegacyBidirectionalIteratorBase<T>
 {
