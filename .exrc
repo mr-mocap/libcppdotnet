@@ -5,8 +5,8 @@
 " NOTE: We don't need to use setlocal here since this
 "       is supposed to be 'global'.
 set path=.,,include,include/**,src,src/**
-set path+=tests
-set path+=build
+set path+=tests/**
+set path+=build/**
 
 " Add a local .vim directory for adding project-level filetype
 " behavior.
