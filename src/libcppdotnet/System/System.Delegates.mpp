@@ -1,0 +1,154 @@
+export module System.Delegates;
+
+export import <cstddef>;
+export import <functional>;
+export import <concepts>;
+
+
+export namespace System
+{
+
+template <typename RetType, typename ...ArgTypes>
+class Delegate
+{
+public:
+    Delegate() noexcept = default;
+    Delegate(std::nullptr_t value) noexcept
+        :
+        _callable( value )
+    {
+    }
+
+    Delegate(std::function<RetType (ArgTypes ...)> fn)
+        :
+        _callable( fn )
+    {
+    }
+
+    Delegate(const Delegate &other)
+        :
+        _callable( other._callable )
+    {
+    }
+
+    Delegate(Delegate &&other) noexcept
+        :
+        _callable( std::move(other._callable) )
+    {
+    }
+
+    Delegate &operator =(const std::function<RetType (ArgTypes ...)> &fn)
+    {
+        _callable = fn;
+        return *this;
+    }
+
+    Delegate &operator =(std::function<RetType (ArgTypes ...)> &&other)
+    {
+        _callable = std::move(other);
+        return *this;
+    }
+
+    bool HasSingleTarget() const { return true; }
+
+    RetType operator()(ArgTypes ...args) const
+    {
+        return _callable(args...);
+    }
+
+    operator bool() const { return (bool)_callable; }
+protected:
+    std::function<RetType (ArgTypes ...args)> _callable;
+};
+
+
+template <typename RetType, typename ...ArgTypes>
+class MulticastDelegate
+{
+public:
+
+    bool HasSingleTarget() const { return false; }
+
+    // RetType operator()(typename ArgTypes ...args) const
+    // {
+    //     return _callable(args...);
+    // }
+protected:
+};
+
+}
+
+export namespace System
+{
+
+/** Encapsulates a method that returns no value
+ *   
+ *   @tparam ArgTypes A variable-length list of the arguments for this type of @c Action
+ */
+template <typename ...ArgTypes>
+struct Action : Delegate<void, ArgTypes...>
+{
+    using Delegate<void, ArgTypes...>::Delegate;
+};
+
+// Deduction guides
+Action(std::function<void ()> ) -> Action<>; ///@< Default to function that neither takes nor returns a value
+
+/** Encapsulates a method that compares objects of the same type
+ *   
+ *  @tparam An object type
+ * 
+ *  @note This uses the three-way return value scheme 
+ */
+template <typename T>
+struct Comparison : Delegate<int, T, T>
+{
+    using Delegate<int, T, T>::Delegate;
+};
+
+// Deduction guides
+template <class T>
+Comparison(std::function<int (T &, T &)> ) -> Comparison<T>;
+
+template <typename TInput, typename TOutput>
+struct Converter : public Delegate<TInput, TOutput>
+{
+    using Delegate<TInput, TOutput>::Delegate;
+    using Delegate<TInput, TOutput>::operator =;
+};
+
+/** Encapsulates a method that returns any type of value and takes any type or amount of parameters
+ *   
+ *   @tparam RetType  The return type of this @c Func
+ *   @tparam ArgTypes A variable-length list of the arguments for this type of @c Func
+ */
+template <typename RetType, typename ...ArgTypes>
+    requires ( !std::same_as<RetType, void> )
+struct Func : Delegate<RetType, ArgTypes...>
+{
+    using Delegate<RetType, ArgTypes...>::Delegate;
+};
+
+template <typename T>
+    requires ( !std::same_as<T, void> )
+struct Predicate : Delegate<bool, T>
+{
+    using Delegate<bool, T>::Delegate;
+};
+
+struct EventArgs
+{
+    EventArgs() = default;
+
+    static constexpr EventArgs Empty() { return { }; }
+};
+
+template <class TEventArgs = EventArgs>
+    requires std::derived_from<TEventArgs, EventArgs>
+struct EventHandler : public Delegate<void, TEventArgs &>
+{
+    using Delegate<void, TEventArgs &>::Delegate;
+    using Delegate<void, TEventArgs &>::operator =;
+};
+
+}

@@ -4,6 +4,7 @@
 
 cxx.std = c++20
 cxx.features.modules = true
+cxx.features.symexport = true
 
 using cxx
 

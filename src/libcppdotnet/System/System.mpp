@@ -3,27 +3,41 @@ export module System;
 // Module Preamble: Imports
 
 // Import Header Units...
-//
+//export import <array>;
+export import <compare>;
+export import <concepts>;
+export import <cstddef>;
+//export import <cstdint>;
+export import <exception>;
+export import <format>;
+export import <functional>;
+//export import <initializer_list>;
+//export import <iterator>;
+export import <memory>;
+export import <optional>;
+export import <ranges>;
+export import <source_location>;
+export import <span>;
+export import <string>;
+export import <string_view>;
+export import <tuple>;
+export import <type_traits>;
+//export import <unordered_map>;
+export import <utility>;
+//export import <vector>;
+
 // NOTE: These are ORDERED
 
+export import System.Exception;
+export import System.Delegates;
+
 // Things that depend on NOTHING...
-export import :EventArgs;
 export import :IComparable;
 
 // Things that only depend on system-headers...
 export import :IDisposable;
-export import :Exception;
-export import :Delegate;
 export import :Private_enum;
 export import :ValueTuple;
-
-// Depends on System/Private/Delegate.hpp...
-export import :Action;
-export import :Comparison;
-export import :Converter;
-export import :Func;
-export import :Predicate;
-export import :EventHandler;
 
 // Depends on System/Private/enum.hpp...
 export import :Base;
@@ -37,6 +51,7 @@ export import :EnvironmentVariableTarget;
 export import :PlatformID;
 export import :TypeCode;
 
+#if 0
 // Depends on other System Partitions...
 export import :Enum;
 export import :BitConverter;
@@ -60,7 +75,8 @@ export import :IObservable;
 
 // Depends on Other System/. files...
 // export import :Guid;
-
+#endif
+#if 0
 export import :KeyValuePair;
 export import :List;
 export import :KeyNotFoundException;
@@ -76,6 +92,16 @@ export import :IList;
 export import :IDictionary;
 
 export import :StringDictionary;
+
+export import :IListInterface;
+export import :IDictionaryInterface;
+export import :ICollectionInterface;
+export import :LegacyForwardIterator;
+export import :LegacyBidirectionalIterator;
+export import :LegacyRandomAccessIterator;
+#endif
+
+//export import System.Collections;
 
 // Not Included Yet!
 //export import "Boolean.hpp";

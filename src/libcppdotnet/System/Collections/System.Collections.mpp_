@@ -1,0 +1,29 @@
+export module System.Collections;
+
+export import <iterator>;
+export import <memory>;
+export import <unordered_map>;
+export import <utility>;
+
+export import :KeyValuePair;
+export import :List;
+export import :KeyNotFoundException;
+export import :Dictionary;
+export import :LinkedList;
+export import :HashSet;
+export import :SortedDictionary;
+export import :OrderedDictionary;
+export import :SortedSet;
+export import :Stack;
+export import :ICollection;
+export import :IList;
+export import :IDictionary;
+
+export import :StringDictionary;
+
+export import :IListInterface;
+export import :IDictionaryInterface;
+export import :ICollectionInterface;
+export import :LegacyForwardIterator;
+export import :LegacyBidirectionalIterator;
+export import :LegacyRandomAccessIterator;
