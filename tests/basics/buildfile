@@ -1,3 +1,4 @@
-import libs = libcppdotnet%lib{cppdotnet}
+import libs = libcppdotnet%liba{cppdotnet}
 
-exe{driver}: {hxx ixx txx cxx}{**} $libs testscript{**}
+# exe{driver}: {hxx ixx txx cxx}{**} $libs testscript{**}
+exe{TestException}: {hxx ixx txx cxx}{**} $libs testscript{**}
