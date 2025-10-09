@@ -58,7 +58,3 @@ mxx{*}:
   install         = include/libcppdotnet/
   install.subdirs = true
 }
-
-# mxx{System}: cxx.module_name = System
-# mxx{System.Exception}: cxx.module_name = System.Exception
-# mxx{System.Delegates}: cxx.module_name = System.Delegates
