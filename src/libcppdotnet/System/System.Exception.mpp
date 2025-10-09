@@ -12,6 +12,21 @@ export import <string_view>;
 export namespace System
 {
 
+class Exception;
+
+struct ExceptionDeleter
+{
+    constexpr ExceptionDeleter() noexcept = default;
+
+    void operator()(std::exception *ptr) const
+    {
+        ptr->~exception(); // Destroy the object
+        ::delete(ptr); // Free the memory
+    }
+};
+
+using unique_exception_ptr = std::unique_ptr<Exception, ExceptionDeleter>;
+
 /** The base exception class in .NET
  *
  *  @note You shouldn't use this OR SystemException.  Use one of the classes
@@ -34,11 +49,33 @@ public:
      *
      *  @{
      */
-    Exception(Exception &&other);
-    Exception &operator =(Exception &&other);
+    Exception(Exception &&other) noexcept
+        :
+        std::exception{ std::move(other) },
+        _message{ std::move(other._message) },
+        _targetSite{ std::move(other._targetSite) },
+        _innerException{ std::move(other._innerException) }
+    {
+    }
+    Exception &operator =(Exception &&other) noexcept
+    {
+        if ( this != &other )
+        {
+            std::exception::operator =( std::move(other) );
+            _message = std::move(other._message);
+            _targetSite  = std::move(other._targetSite);
+            _innerException.reset();
+            _innerException.swap(other._innerException);
+        }
+        return *this;
+    }
     /// @}
 
-    Exception(std::string_view message);
+    Exception(std::string_view message)
+        :
+        _message{ message }
+    {
+    }
 
     /** 
      *
@@ -56,17 +93,16 @@ public:
     Exception(std::string_view message, ExceptionType &&inner_exception)
         :
         _message{ message },
-        _innerException{ std::make_unique<ExceptionType>( std::move(inner_exception) ) }
+        _innerException{ unique_exception_ptr( new ExceptionType( std::move(inner_exception) ), ExceptionDeleter() ) }
     {
     }
     /// @}
 
-    virtual ~Exception();
+    virtual ~Exception() noexcept = default;
 
     std::string_view Message() const;
 
     std::string_view TargetSite() const;
-          void       TargetSite(const char *object_name);
           void       TargetSite(std::string_view object_name);
 
     const Exception *InnerException() const { return _innerException.get(); }
@@ -78,13 +114,13 @@ public:
 
     bool operator ==(const Exception &other) const;
 
-    //const char *what() const override { return _message.c_str(); }
+    const char *what() const noexcept override { return _message.c_str(); }
 
     virtual std::string_view ClassName() const;
 protected:
     std::string _message;
     std::string _targetSite;
-    std::unique_ptr<Exception> _innerException;
+    unique_exception_ptr _innerException;
 };
 
 class SystemException : public Exception
@@ -93,7 +129,7 @@ public:
     using Exception::Exception;
 
     SystemException() = default;
-    virtual ~SystemException() { }
+   ~SystemException() noexcept = default;
 
     /** Remove the ability to copy objects of this class
      *
@@ -107,19 +143,9 @@ public:
      *
      *  @{
      */
-    SystemException(SystemException &&other) : Exception( std::move(other) ) { }
-    SystemException &operator =(SystemException &&other)
-    {
-        Exception::operator =( std::move(other) );
-        return *this;
-    }
+    SystemException(SystemException &&other) noexcept = default;
+    SystemException &operator =(SystemException &&other) noexcept = default;
     /// @}
-
-    SystemException(std::string_view message)
-        :
-        Exception( message )
-    {
-    }
 
     std::string_view ClassName() const override;
 };
@@ -130,7 +156,7 @@ public:
     using SystemException::SystemException;
 
     ArgumentException() = default;
-    virtual ~ArgumentException() { }
+   ~ArgumentException() noexcept = default;
 
     /** Remove the ability to copy objects of this class
      *
@@ -144,13 +170,13 @@ public:
      *
      *  @{
      */
-    ArgumentException(ArgumentException &&other)
+    ArgumentException(ArgumentException &&other) noexcept
         :
         SystemException( std::move(other) ),
         _paramName{ std::move(other._paramName) }
     {
     }
-    ArgumentException &operator =(ArgumentException &&other)
+    ArgumentException &operator =(ArgumentException &&other) noexcept
     {
         SystemException::operator =( std::move(other) );
         _paramName = std::move(other._paramName);
@@ -158,17 +184,18 @@ public:
     }
     /// @}
 
-    explicit ArgumentException(std::string_view message) : SystemException( message ) { }
-
-    explicit ArgumentException(std::string_view message, std::string_view param_name)
+    ArgumentException(std::string_view message, std::string_view param_name)
         :
         SystemException( message ),
         _paramName{ param_name }
     {
     }
-    explicit ArgumentException(std::string_view message,
-                               std::string_view param_name,
-                               Exception &&inner_exception)
+
+    template <class ExceptionType>
+        requires std::derived_from<ExceptionType, Exception>
+    ArgumentException(std::string_view message,
+                      std::string_view param_name,
+                      ExceptionType &&inner_exception)
         :
         SystemException( message, std::move(inner_exception) ),
         _paramName{ param_name }
@@ -188,7 +215,7 @@ public:
     using ArgumentException::ArgumentException;
 
     ArgumentNullException() = default;
-   ~ArgumentNullException() { }
+   ~ArgumentNullException() noexcept = default;
 
     /** Remove the ability to copy objects of this class
      *
@@ -202,8 +229,12 @@ public:
      *
      *  @{
      */
-    ArgumentNullException(ArgumentNullException &&other) : ArgumentException( std::move(other) ) { }
-    ArgumentNullException &operator =(ArgumentNullException &&other)
+    ArgumentNullException(ArgumentNullException &&other) noexcept
+        :
+        ArgumentException( std::move(other) )
+    {
+    }
+    ArgumentNullException &operator =(ArgumentNullException &&other) noexcept
     {
         ArgumentException::operator =( std::move(other) );
         return *this;
@@ -227,7 +258,7 @@ public:
     using ArgumentException::ArgumentException;
 
     ArgumentOutOfRangeException() = default;
-   ~ArgumentOutOfRangeException() { }
+   ~ArgumentOutOfRangeException() noexcept = default;
 
     /** Remove the ability to copy objects of this class
      *
@@ -241,8 +272,12 @@ public:
      *
      *  @{
      */
-    ArgumentOutOfRangeException(ArgumentOutOfRangeException &&other) : ArgumentException( std::move(other) ) { }
-    ArgumentOutOfRangeException &operator =(ArgumentOutOfRangeException &&other)
+    ArgumentOutOfRangeException(ArgumentOutOfRangeException &&other) noexcept
+        :
+        ArgumentException( std::move(other) )
+    {
+    }
+    ArgumentOutOfRangeException &operator =(ArgumentOutOfRangeException &&other) noexcept
     {
         ArgumentException::operator =( std::move(other) );
         return *this;
@@ -266,7 +301,7 @@ public:
     using SystemException::SystemException;
 
     NotSupportedException() = default;
-   ~NotSupportedException() { }
+   ~NotSupportedException() noexcept = default;
 
     /** Remove the ability to copy objects of this class
      *
@@ -280,8 +315,12 @@ public:
      *
      *  @{
      */
-    NotSupportedException(NotSupportedException &&other) : SystemException( std::move(other) ) { }
-    NotSupportedException &operator =(NotSupportedException &&other)
+    NotSupportedException(NotSupportedException &&other) noexcept
+        :
+        SystemException( std::move(other) )
+    {
+    }
+    NotSupportedException &operator =(NotSupportedException &&other) noexcept
     {
         SystemException::operator =( std::move(other) );
         return *this;
@@ -299,7 +338,7 @@ public:
     using SystemException::SystemException;
 
     InvalidOperationException() = default;
-    virtual ~InvalidOperationException() { }
+   ~InvalidOperationException() noexcept = default;
 
     /** Remove the ability to copy objects of this class
      *
@@ -313,15 +352,17 @@ public:
      *
      *  @{
      */
-    InvalidOperationException(InvalidOperationException &&other) : SystemException( std::move(other) ) { }
-    InvalidOperationException &operator =(InvalidOperationException &&other)
+    InvalidOperationException(InvalidOperationException &&other) noexcept
+        :
+        SystemException( std::move(other) )
+    {
+    }
+    InvalidOperationException &operator =(InvalidOperationException &&other) noexcept
     {
         SystemException::operator =( std::move(other) );
         return *this;
     }
     /// @}
-
-    InvalidOperationException(std::string_view message) : SystemException( message ) { }
 
     std::string_view ClassName() const override;
 };
@@ -332,7 +373,7 @@ public:
     using InvalidOperationException::InvalidOperationException;
 
     ObjectDisposedException() = default;
-   ~ObjectDisposedException() { }
+   ~ObjectDisposedException() noexcept = default;
     
     /** Remove the ability to copy objects of this class
      *
@@ -346,13 +387,13 @@ public:
      *
      *  @{
      */
-    ObjectDisposedException(ObjectDisposedException &&other)
+    ObjectDisposedException(ObjectDisposedException &&other) noexcept
         :
         InvalidOperationException( std::move(other) ),
         _objectName{ std::move(other._objectName) }
     {
     }
-    ObjectDisposedException &operator =(ObjectDisposedException &&other)
+    ObjectDisposedException &operator =(ObjectDisposedException &&other) noexcept
     {
         InvalidOperationException::operator =( std::move(other) );
         _objectName = std::move(other._objectName);
@@ -377,15 +418,7 @@ public:
     using SystemException::SystemException;
 
     FormatException() = default;
-   ~FormatException() { }
-
-    explicit FormatException(std::string_view message) : SystemException( message ) { }
-
-    explicit FormatException(std::string_view message, Exception &&inner_exception)
-        :
-        SystemException( message, std::move(inner_exception) )
-    {
-    }
+   ~FormatException() noexcept = default;
 
     /** Remove the ability to copy objects of this class
      *
@@ -399,8 +432,8 @@ public:
      *
      *  @{
      */
-    FormatException(FormatException &&other) = default;
-    FormatException &operator =(FormatException &&other) = default;
+    FormatException(FormatException &&other) noexcept = default;
+    FormatException &operator =(FormatException &&other) noexcept = default;
     /// @}
 
     std::string_view ClassName() const override;
@@ -412,15 +445,7 @@ public:
     using SystemException::SystemException;
 
     ArithmeticException() = default;
-   ~ArithmeticException() { }
-
-    explicit ArithmeticException(std::string_view message) : SystemException( message ) { }
-
-    explicit ArithmeticException(std::string_view message, Exception &&inner_exception)
-        :
-        SystemException( message, std::move(inner_exception) )
-    {
-    }
+   ~ArithmeticException() noexcept = default;
 
     /** Remove the ability to copy objects of this class
      *
@@ -434,8 +459,8 @@ public:
      *
      *  @{
      */
-    ArithmeticException(ArithmeticException &&other) = default;
-    ArithmeticException &operator =(ArithmeticException &&other) = default;
+    ArithmeticException(ArithmeticException &&other) noexcept = default;
+    ArithmeticException &operator =(ArithmeticException &&other) noexcept = default;
     /// @}
 
     std::string_view ClassName() const override;
@@ -447,15 +472,7 @@ public:
     using SystemException::SystemException;
 
     OverflowException() = default;
-   ~OverflowException() { }
-
-    explicit OverflowException(std::string_view message) : SystemException( message ) { }
-
-    explicit OverflowException(std::string_view message, Exception &&inner_exception)
-        :
-        SystemException( message, std::move(inner_exception) )
-    {
-    }
+   ~OverflowException() noexcept = default;
 
     /** Remove the ability to copy objects of this class
      *
@@ -469,8 +486,8 @@ public:
      *
      *  @{
      */
-    OverflowException(OverflowException &&other) = default;
-    OverflowException &operator =(OverflowException &&other) = default;
+    OverflowException(OverflowException &&other) noexcept = default;
+    OverflowException &operator =(OverflowException &&other) noexcept = default;
     /// @}
 
     std::string_view ClassName() const override;
@@ -495,39 +512,8 @@ template <class ExceptionType>
 
 }
 
-
 namespace System
 {
-
-Exception::Exception(Exception &&other)
-    :
-    _message{ std::move(other._message) },
-    _targetSite{ std::move(other._targetSite) },
-    _innerException{ std::move(other._innerException) }
-{
-}
-
-Exception::Exception(std::string_view message)
-    :
-    _message{ message }
-{
-}
-
-Exception::~Exception()
-{
-}
-
-Exception &Exception::operator =(Exception &&other)
-{
-    if ( this != &other )
-    {
-        _message = std::move(other._message);
-        _targetSite  = std::move(other._targetSite);
-        _innerException.reset();
-        _innerException.swap(other._innerException);
-    }
-    return *this;
-}
 
 const Exception &Exception::GetBaseException() const
 {
@@ -545,14 +531,6 @@ std::string_view Exception::Message() const
 std::string_view Exception::TargetSite() const
 {
     return _targetSite;
-}
-
-void Exception::TargetSite(const char *object_name)
-{
-    TargetSite( std::string_view{
-                              object_name,
-                              strlen(object_name)
-                                } );
 }
 
 void Exception::TargetSite(std::string_view object_name)
