@@ -1,9 +1,3 @@
 import lib = libcppdotnet%lib{cppdotnet}
 
-./: exe{driver}: cxx{driver} $lib
-
-#./: exe{TestException}
-
-#exe{TestException}: cxx{TestException} $libs
-
-#exe{TestException}: cxx.loptions += -static
+./: exe{TestException}: cxx{TestException} $lib

@@ -16,13 +16,9 @@ class Exception;
 
 struct ExceptionDeleter
 {
-    constexpr ExceptionDeleter() noexcept = default;
+    constexpr ExceptionDeleter() noexcept;
 
-    void operator()(std::exception *ptr) const
-    {
-        ptr->~exception(); // Destroy the object
-        ::delete(ptr); // Free the memory
-    }
+    void operator()(std::exception *ptr) const;
 };
 
 using unique_exception_ptr = std::unique_ptr<Exception, ExceptionDeleter>;
@@ -35,7 +31,7 @@ using unique_exception_ptr = std::unique_ptr<Exception, ExceptionDeleter>;
 class Exception : public std::exception
 {
 public:
-    Exception() = default;
+    Exception() noexcept;
 
     /** Remove the ability to copy objects of this class
      *
@@ -98,7 +94,7 @@ public:
     }
     /// @}
 
-    virtual ~Exception() noexcept = default;
+    virtual ~Exception() noexcept;
 
     std::string_view Message() const;
 
@@ -128,8 +124,8 @@ class SystemException : public Exception
 public:
     using Exception::Exception;
 
-    SystemException() = default;
-   ~SystemException() noexcept = default;
+    SystemException() noexcept;
+   ~SystemException() noexcept;
 
     /** Remove the ability to copy objects of this class
      *
@@ -155,8 +151,8 @@ class ArgumentException : public SystemException
 public:
     using SystemException::SystemException;
 
-    ArgumentException() = default;
-   ~ArgumentException() noexcept = default;
+    ArgumentException() noexcept;
+   ~ArgumentException() noexcept;
 
     /** Remove the ability to copy objects of this class
      *
@@ -214,8 +210,8 @@ class ArgumentNullException : public ArgumentException
 public:
     using ArgumentException::ArgumentException;
 
-    ArgumentNullException() = default;
-   ~ArgumentNullException() noexcept = default;
+    ArgumentNullException() noexcept;
+   ~ArgumentNullException() noexcept;
 
     /** Remove the ability to copy objects of this class
      *
@@ -257,7 +253,7 @@ class ArgumentOutOfRangeException : public ArgumentException
 public:
     using ArgumentException::ArgumentException;
 
-    ArgumentOutOfRangeException() = default;
+    ArgumentOutOfRangeException() noexcept = default;
    ~ArgumentOutOfRangeException() noexcept = default;
 
     /** Remove the ability to copy objects of this class
@@ -300,7 +296,7 @@ class NotSupportedException : public SystemException
 public:
     using SystemException::SystemException;
 
-    NotSupportedException() = default;
+    NotSupportedException() noexcept = default;
    ~NotSupportedException() noexcept = default;
 
     /** Remove the ability to copy objects of this class
@@ -337,7 +333,7 @@ class InvalidOperationException : public SystemException
 public:
     using SystemException::SystemException;
 
-    InvalidOperationException() = default;
+    InvalidOperationException() noexcept = default;
    ~InvalidOperationException() noexcept = default;
 
     /** Remove the ability to copy objects of this class
@@ -372,7 +368,7 @@ class ObjectDisposedException : public InvalidOperationException
 public:
     using InvalidOperationException::InvalidOperationException;
 
-    ObjectDisposedException() = default;
+    ObjectDisposedException() noexcept = default;
    ~ObjectDisposedException() noexcept = default;
     
     /** Remove the ability to copy objects of this class
@@ -417,7 +413,7 @@ class FormatException : public SystemException
 public:
     using SystemException::SystemException;
 
-    FormatException() = default;
+    FormatException() noexcept = default;
    ~FormatException() noexcept = default;
 
     /** Remove the ability to copy objects of this class
@@ -444,7 +440,7 @@ class ArithmeticException : public SystemException
 public:
     using SystemException::SystemException;
 
-    ArithmeticException() = default;
+    ArithmeticException() noexcept = default;
    ~ArithmeticException() noexcept = default;
 
     /** Remove the ability to copy objects of this class
@@ -471,7 +467,7 @@ class OverflowException : public SystemException
 public:
     using SystemException::SystemException;
 
-    OverflowException() = default;
+    OverflowException() noexcept = default;
    ~OverflowException() noexcept = default;
 
     /** Remove the ability to copy objects of this class
@@ -514,6 +510,27 @@ template <class ExceptionType>
 
 namespace System
 {
+
+constexpr ExceptionDeleter::ExceptionDeleter() noexcept
+{
+}
+
+void ExceptionDeleter::operator()(std::exception *ptr) const
+{
+    if ( ptr )
+    {
+        ptr->~exception(); // Destroy the object
+        ::delete(ptr);     // Free the memory
+    }
+}
+
+Exception::Exception() noexcept
+{
+}
+
+Exception::~Exception() noexcept
+{
+}
 
 const Exception &Exception::GetBaseException() const
 {
@@ -572,14 +589,38 @@ std::string_view Exception::ClassName() const
     return "Exception";
 }
 
+SystemException::SystemException() noexcept
+{
+}
+
+SystemException::~SystemException() noexcept
+{
+}
+
 std::string_view SystemException::ClassName() const
 {
     return "SytemException";
 }
 
+ArgumentException::ArgumentException() noexcept
+{
+}
+
+ArgumentException::~ArgumentException() noexcept
+{
+}
+
 std::string_view ArgumentException::ClassName() const
 {
     return "ArgumentException";
+}
+
+ArgumentNullException::ArgumentNullException() noexcept
+{
+}
+
+ArgumentNullException::~ArgumentNullException() noexcept
+{
 }
 
 ArgumentNullException::ArgumentNullException(std::string_view param_name)
