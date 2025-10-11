@@ -39,3 +39,11 @@ This package provides the following configuration variables:
 ```
 
 <DESCRIPTION-OF-CONFIG-VARIABLES>
+
+## NOTES
+
+Under the build2 system, this was created with:
+
+```
+bdep new -l c++ -t lib,split,unit-tests libcppdotnet
+```

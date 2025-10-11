@@ -1,4 +1,9 @@
-import libs = libcppdotnet%liba{cppdotnet}
+import lib = libcppdotnet%lib{cppdotnet}
 
-# exe{driver}: {hxx ixx txx cxx}{**} $libs testscript{**}
-exe{TestException}: {hxx ixx txx cxx}{**} $libs testscript{**}
+./: exe{driver}: cxx{driver} $lib
+
+#./: exe{TestException}
+
+#exe{TestException}: cxx{TestException} $libs
+
+#exe{TestException}: cxx.loptions += -static

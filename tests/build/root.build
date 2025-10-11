@@ -1,4 +1,4 @@
-cxx.std = c++20
+cxx.std = 20
 cxx.features.modules = true
 
 using cxx

@@ -1,6 +1,6 @@
 $out_root/
 {
-  include src/libcppdotnet/
+  include src/libcppdotnet/System/
 }
 
-export $out_root/src/libcppdotnet/$import.target
+export $out_root/src/libcppdotnet/System/$import.target

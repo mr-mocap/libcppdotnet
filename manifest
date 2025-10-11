@@ -10,4 +10,3 @@ email: 16119203+mr-mocap@users.noreply.github.com
 #build-error-email: 16119203+mr-mocap@users.noreply.github.com
 depends: * build2 >= 0.16.0
 depends: * bpkg >= 0.16.0
-#depends: libhello ^1.0.0

@@ -75,3 +75,9 @@ void Run()
 }
 
 }
+
+int main(void)
+{
+    TestException::Run();
+    return EXIT_SUCCESS;
+}
