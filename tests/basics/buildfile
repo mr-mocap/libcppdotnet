@@ -1,3 +1,4 @@
 import lib = libcppdotnet%lib{cppdotnet}
 
 ./: exe{TestException}: cxx{TestException} $lib
+./: exe{TestDelegates}: cxx{TestDelegates} $lib

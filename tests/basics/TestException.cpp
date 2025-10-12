@@ -1,3 +1,4 @@
+import <cstdlib>;
 import <iostream>;
 import <cassert>;
 
@@ -8,8 +9,6 @@ namespace TestException
 
 void DefaultConstruction()
 {
-    std::cout << __func__ << std::endl;
-
     System::ArgumentNullException e;
 
     assert( e.Message().empty() );
@@ -19,8 +18,6 @@ void DefaultConstruction()
 
 void WithMessage()
 {
-    std::cout << __func__ << std::endl;
-
     // Message Automatically filled in
     {
         System::ArgumentNullException ex{ "parameter" };
@@ -45,8 +42,6 @@ void WithMessage()
 
 void WithMessageAndInnerException()
 {
-    std::cout << __func__ << std::endl;
-
     auto msg = "Some Kind of Exception occurred";
     auto msg_outer = "This is the outer Exception";
     // Copy inner exception into outer
@@ -65,13 +60,9 @@ void WithMessageAndInnerException()
 
 void Run()
 {
-    std::cout << "Running Exception Tests..." << std::endl;
-
     DefaultConstruction();
     WithMessage();
     WithMessageAndInnerException();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
 }

@@ -12,17 +12,6 @@ export import <string_view>;
 export namespace System
 {
 
-class Exception;
-
-struct ExceptionDeleter
-{
-    constexpr ExceptionDeleter() noexcept;
-
-    void operator()(std::exception *ptr) const;
-};
-
-using unique_exception_ptr = std::unique_ptr<Exception, ExceptionDeleter>;
-
 /** The base exception class in .NET
  *
  *  @note You shouldn't use this OR SystemException.  Use one of the classes
@@ -89,12 +78,12 @@ public:
     Exception(std::string_view message, ExceptionType &&inner_exception)
         :
         _message{ message },
-        _innerException{ unique_exception_ptr( new ExceptionType( std::move(inner_exception) ), ExceptionDeleter() ) }
+        _innerException{ std::make_unique<ExceptionType>( std::move(inner_exception) ) }
     {
     }
     /// @}
 
-    virtual ~Exception() noexcept;
+    virtual ~Exception() noexcept override;
 
     std::string_view Message() const;
 
@@ -116,7 +105,7 @@ public:
 protected:
     std::string _message;
     std::string _targetSite;
-    unique_exception_ptr _innerException;
+    std::unique_ptr<Exception> _innerException;
 };
 
 class SystemException : public Exception
@@ -125,7 +114,7 @@ public:
     using Exception::Exception;
 
     SystemException() noexcept;
-   ~SystemException() noexcept;
+   ~SystemException() noexcept override;
 
     /** Remove the ability to copy objects of this class
      *
@@ -152,7 +141,7 @@ public:
     using SystemException::SystemException;
 
     ArgumentException() noexcept;
-   ~ArgumentException() noexcept;
+   ~ArgumentException() noexcept override;
 
     /** Remove the ability to copy objects of this class
      *
@@ -211,7 +200,7 @@ public:
     using ArgumentException::ArgumentException;
 
     ArgumentNullException() noexcept;
-   ~ArgumentNullException() noexcept;
+   ~ArgumentNullException() noexcept override;
 
     /** Remove the ability to copy objects of this class
      *
@@ -510,19 +499,6 @@ template <class ExceptionType>
 
 namespace System
 {
-
-constexpr ExceptionDeleter::ExceptionDeleter() noexcept
-{
-}
-
-void ExceptionDeleter::operator()(std::exception *ptr) const
-{
-    if ( ptr )
-    {
-        ptr->~exception(); // Destroy the object
-        ::delete(ptr);     // Free the memory
-    }
-}
 
 Exception::Exception() noexcept
 {
