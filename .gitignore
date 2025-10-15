@@ -4,6 +4,8 @@
 #
 .build2/local/
 
+.vscode/
+
 # Compiler/linker output.
 #
 *.d
@@ -29,3 +31,6 @@
 *.exe.dlls/
 *.exe.manifest
 *.pc
+
+# Generated Test Binaries
+tests/basics/Test*
