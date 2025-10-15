@@ -10,7 +10,7 @@ export namespace System
 class DateTimeOffset
 {
 public:
-    DateTimeOffset();
+    DateTimeOffset() = default;
     DateTimeOffset(const System::DateTime &dt);
     DateTimeOffset(const System::DateTime &dt, const TimeSpan &offset);
 
@@ -41,7 +41,7 @@ public:
     static DateTimeOffset Now();
     static DateTimeOffset UtcNow();
 protected:
-    DateTime _date_time;
+    System::DateTime _date_time;
     TimeSpan _offset_from_utc;
 };
 

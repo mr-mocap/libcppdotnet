@@ -7,17 +7,13 @@ import System.DayOfWeek;
 namespace System
 {
 
-DateTimeOffset::DateTimeOffset()
-{
-}
-
-DateTimeOffset::DateTimeOffset(const DateTime &dt)
+DateTimeOffset::DateTimeOffset(const System::DateTime &dt)
     :
     _date_time( dt )
 {
 }
 
-DateTimeOffset::DateTimeOffset(const DateTime &dt, const TimeSpan &offset)
+DateTimeOffset::DateTimeOffset(const System::DateTime &dt, const TimeSpan &offset)
     :
     _date_time( dt ),
     _offset_from_utc( offset )
