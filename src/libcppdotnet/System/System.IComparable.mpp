@@ -1,5 +1,4 @@
-export module System:IComparable;
-
+export module System.IComparable;
 
 export namespace System
 {

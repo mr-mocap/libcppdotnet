@@ -1,10 +1,17 @@
-module System:DateOnly;
+module System.DateOnly;
 
-import <chrono>;
-import <format>;
-import :Exception;
-import :DateTime;
-import :DayOfWeek;
+export import <chrono>;
+export import <compare>;
+export import <format>;
+export import <string>;
+
+import System.Exception;
+
+export import System.DayOfWeek;
+
+#if 0
+export import System.DateTime;
+#endif
 
 namespace System
 {
@@ -17,7 +24,7 @@ DateOnly::~DateOnly()
 {
 }
 
-DateOnly(int year, int month, int day)
+DateOnly::DateOnly(int year, int month, int day)
     :
     _year_month_day( std::chrono::year(year), std::chrono::month(month), std::chrono::day(day) )
 {
@@ -29,13 +36,13 @@ DateOnly(int year, int month, int day)
     // POSTCONDITION( day <= 31 );
 }
 
-DateOnly(const std::chrono::year_month_day &ymd)
+DateOnly::DateOnly(const std::chrono::year_month_day &ymd)
     :
     _year_month_day( ymd )
 {
 }
 
-DateOnly(const std::chrono::sys_days &d)
+DateOnly::DateOnly(const std::chrono::sys_days &d)
     :
     _year_month_day( std::chrono::year_month_day( d ) )
 {
@@ -63,6 +70,32 @@ DateOnly &DateOnly::operator =(DateOnly &&other)
 {
     _year_month_day = std::move(other._year_month_day);
     return *this;
+}
+
+int DateOnly::Day() const
+{
+    unsigned int temp{ _year_month_day.day() };
+
+    return static_cast<int>( temp );
+}
+
+int DateOnly::Month() const
+{
+    unsigned int temp{ _year_month_day.month() };
+
+    return static_cast<int>( temp );
+}
+
+int DateOnly::Year() const
+{
+    return static_cast<int>( _year_month_day.year() );
+}
+
+int DateOnly::DayNumber() const
+{
+    std::chrono::sys_days num_days{ _year_month_day };
+
+    return static_cast<int>( num_days.time_since_epoch().count() );
 }
 
 int DateOnly::DayOfYear() const
@@ -119,7 +152,7 @@ DateOnly DateOnly::AddYears(int num_years) const
 
 int DateOnly::CompareTo(const DateOnly &other) const
 {
-    auto result{ *this <=> other };
+    std::strong_ordering result{ *this <=> other };
 
     if ( result == std::strong_ordering::less )
         return -1;
@@ -140,38 +173,43 @@ void DateOnly::Deconstruct(int &year, int &month, int &day)
     month = Month();
     day = Day();
 }
-
+#if 0
 DateOnly DateOnly::FromDateTime(const DateTime &dt)
 {
     return DateOnly{ dt.Year(), dt.Month(), dt.Day() };
 }
-
+#endif
 std::string DateOnly::ToString() const
 {
     return std::format("{}", _year_month_day);
 }
 
-enum System::DayOfWeek DayOfWeek() const
+enum System::DayOfWeek DateOnly::DayOfWeek() const
 {
     std::chrono::weekday wd{ std::chrono::sys_days( _year_month_day ) };
 
     return static_cast<enum System::DayOfWeek>( wd.c_encoding() );
 }
 
+DateOnly DateOnly::MinValue()
+{
+    return DateOnly( 1, 1, 1 );
 }
 
-export
-template <>
-struct std::formatter<System::DateOnly>
+DateOnly DateOnly::MaxValue()
 {
-    constexpr auto parse(std::format_parse_context &ctx)
-    {
-        return ctx.begin();
-    }
+    return DateOnly( 9999, 12, 31 );
 
-    template <typename FormatContext>
-    auto format(const System::DateOnly &object, FormatContext &ctx) const
-    {
-        return std::format_to( ctx.out(), "{}", object.ToString() );
-    }
-};
+}
+
+DateOnly::operator std::chrono::sys_days() const
+{
+    return _year_month_day;
+}
+
+DateOnly::operator std::chrono::year_month_day() const
+{
+    return _year_month_day;
+}
+
+}

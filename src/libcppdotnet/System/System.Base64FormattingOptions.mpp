@@ -1,6 +1,6 @@
-export module System:Base64FormattingOptions;
+export module System.Base64FormattingOptions;
 
-export import :Private_enum;
+export import System.Private_enum;
 
 export namespace System
 {

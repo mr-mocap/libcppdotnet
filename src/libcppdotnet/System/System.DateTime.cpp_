@@ -1,34 +1,32 @@
-module System:DateTime;
+module System.DateTime;
 
 import <chrono>;
-import <string>;
+import <cmath>;
 import <compare>;
 import <format>;
-import <cmath>;
-import :Exception;
-import :DateOnly;
-import :TimeOnly;
-import :TimeSpan;
-import :DateTimeKind;
+import <string>;
+
+import System.Exception;
+import System.DayOfWeek;
+import System.DateTimeKind;
+import System.DateOnly;
+import System.TimeOnly;
+import System.TimeSpan;
 
 namespace System
 {
 
-DateTime::DateTime(int year, int month, int day, int hour = 0, int minute, int second, int milliseconds)
+DateTime::DateTime(int year, int month, int day, int hour, int minute, int second, int milliseconds)
     :
     _date_only( year, month, day ),
     _time_only( hour, minute, second, milliseconds )
 {
 }
 
-DateTime::DateTime(const System::DateOnly &date_only, const System::TimeOnly &time_only)
+DateTime::DateTime(const DateOnly &date_only, const TimeOnly &time_only)
     :
     _date_only( date_only ),
     _time_only( time_only)
-{
-}
-
-DateTime::~DateTime()
 {
 }
 
@@ -44,7 +42,7 @@ DateTime::DateTime(DateTime &&other)
     :
     _date_only( std::move(other._date_only) ),
     _time_only( std::move(other._time_only) ),
-    _kind( other._kind )
+    _kind( std::move(other._kind) )
 {
 }
 
@@ -60,21 +58,89 @@ DateTime &DateTime::operator =(DateTime &&other)
 {
     _date_only = std::move(other._date_only);
     _time_only = std::move(other._time_only);
-    _kind = other._kind;
+    _kind = std::move(other._kind);
     return *this;
+}
+
+DateTime DateTime::Date() const
+{
+    return DateTime( _date_only, System::TimeOnly() );
+}
+
+TimeSpan DateTime::TimeOfDay() const
+{
+    return _time_only.ToTimeSpan();
+}
+
+DateTimeKind DateTime::Kind() const
+{
+    return _kind;
+}
+
+int DateTime::Year() const
+{
+    return _date_only.Year();
+}
+
+int DateTime::Month() const
+{
+    return _date_only.Month();
+}
+
+int DateTime::Day() const
+{
+    return _date_only.Day();
+}
+
+int DateTime::Hour() const
+{
+    return _time_only.Hour();
+}
+
+int DateTime::Minute() const
+{
+    return _time_only.Minute();
+}
+
+int DateTime::Second() const
+{
+    return _time_only.Second();
+}
+
+int DateTime::Millisecond() const
+{
+    return _time_only.Millisecond();
+}
+
+int DateTime::Microsecond() const
+{
+    return _time_only.Microsecond();
+}
+
+int DateTime::Nanosecond() const
+{
+    return _time_only.Nanosecond();
 }
 
 long DateTime::Ticks() const
 {
-    using namespace std::chrono;
-
-    sys_days time_point_in_days( _date_only );
-    sys_days origin( DateOnly::MinValue() );
-    sys_days difference = time_point_in_days - origin.time_since_epoch();
+    std::chrono::sys_days time_point_in_days( _date_only );
+    std::chrono::sys_days origin( DateOnly::MinValue() );
+    std::chrono::sys_days difference = time_point_in_days - origin.time_since_epoch();
     long     calculated_ticks = difference.time_since_epoch().count() * TimeSpan::TicksPerDay();
 
     //return difference.time_since_epoch().count() / TimeSpan::NanosecondsPerTick();
     return calculated_ticks + _time_only.Ticks();
+}
+
+enum System::DayOfWeek DateTime::DayOfWeek() const
+{
+    return _date_only.DayOfWeek();
+}
+
+int DateTime::DayOfYear() const
+{
+    return _date_only.DayOfYear();
 }
 
 DateTime DateTime::Now()
@@ -84,10 +150,8 @@ DateTime DateTime::Now()
 
     return DateTime( sys_time( local_tp.time_since_epoch() ) );
 #else
-    using namespace std::chrono;
-
-    system_clock::time_point now = system_clock::now();
-    year_month_day ymd{ floor<days>(now) };
+    std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
+    std::chrono::year_month_day           ymd{ std::chrono::floor<std::chrono::days>(now) };
 
     return DateTime( DateOnly( ymd ), TimeOnly( now.time_since_epoch() ) );
 #endif
@@ -95,20 +159,16 @@ DateTime DateTime::Now()
 
 DateTime DateTime::UtcNow()
 {
-    using namespace std::chrono;
-
-    system_clock::time_point now = clock_cast<system_clock, utc_clock>( utc_clock::now() );
-    year_month_day ymd{ floor<days>(now) };
+    std::chrono::system_clock::time_point now = std::chrono::clock_cast<std::chrono::system_clock, std::chrono::utc_clock>( std::chrono::utc_clock::now() );
+    std::chrono::year_month_day           ymd{ std::chrono::floor<std::chrono::days>(now) };
 
     return DateTime( DateOnly( ymd ), TimeOnly( now.time_since_epoch() ) );
 }
 
 DateTime DateTime::Today()
 {
-    using namespace std::chrono;
-
-    year_month_day ymd{ floor<days>( system_clock::now() ) };
-    DateTime       td{ DateOnly( ymd ), TimeOnly() };
+    std::chrono::year_month_day ymd{ std::chrono::floor<std::chrono::days>( std::chrono::system_clock::now() ) };
+    DateTime                    td{ DateOnly( ymd ), TimeOnly() };
 
     // POSTCONDITION( td.Hour() == 0 );
     // POSTCONDITION( td.Minute() == 0 );
@@ -117,33 +177,61 @@ DateTime DateTime::Today()
     return td;
 }
 
+DateTime DateTime::MinValue()
+{
+    return DateTime( DateOnly::MinValue(), TimeOnly::MinValue() );
+}
+
+DateTime DateTime::MaxValue()
+{
+    return DateTime( DateOnly::MaxValue(), TimeOnly::MaxValue() );
+}
+
 std::string DateTime::ToString() const
 {
     return std::format("{} {}", _date_only.ToString(), _time_only.ToString() );
 }
 
+DateTime &DateTime::operator +=(const TimeSpan &time_span)
+{
+    return _accumulate( time_span );
+}
+
+DateTime &DateTime::operator -=(const TimeSpan &time_span)
+{
+    return _accumulate( -time_span );
+}
+
+DateTime &DateTime::operator +=(std::chrono::system_clock::duration time_duration)
+{
+    return _accumulate( time_duration );
+}
+
+DateTime &DateTime::operator -=(std::chrono::system_clock::duration time_duration)
+{
+    return _accumulate( -time_duration );
+}
+
 DateTime &DateTime::_accumulate(std::chrono::system_clock::duration time_duration)
 {
-    using namespace std::chrono;
-
     // First do the DateOnly part...
     {
         DateOnly result( _date_only );
 
         {
-            days d = floor<days>( time_duration );
+            std::chrono::days d = std::chrono::floor<std::chrono::days>( time_duration );
 
             result = result.AddDays( d.count() );
             time_duration -= d;
         }
         {
-            months m = floor<months>( time_duration );
+            std::chrono::months m = std::chrono::floor<std::chrono::months>( time_duration );
 
             result = result.AddMonths( m.count() );
             time_duration -= m;
         }
         {
-            years y = floor<years>( time_duration );
+            std::chrono::years y = std::chrono::floor<std::chrono::years>( time_duration );
 
             result = result.AddYears( y.count() );
             time_duration -= y;
@@ -181,7 +269,7 @@ DateTime DateTime::AddDays(double d) const
 {
     double ipart;
     double fraction = std::modf( d, &ipart );
-    TimeSpan ts_whole_days{ days{ static_cast<int>(ipart) } };
+    TimeSpan ts_whole_days{ std::chrono::days{ static_cast<int>(ipart) } };
     double   leftover_ticks = fraction * static_cast<double>(TimeSpan::TicksPerDay());
     long fractional_day_in_ticks = static_cast<long>(leftover_ticks);
 
@@ -192,7 +280,7 @@ DateTime DateTime::AddHours(double h) const
 {
     double ipart;
     double fraction = std::modf( h, &ipart );
-    TimeSpan ts_whole_hours{ hours{ static_cast<int>(ipart) } };
+    TimeSpan ts_whole_hours{ std::chrono::hours{ static_cast<int>(ipart) } };
     long fractional_hours_in_ticks = static_cast<long>(fraction * TimeSpan::TicksPerHour());
 
     return Add( ts_whole_hours ).Add( TimeSpan( fractional_hours_in_ticks ) );
@@ -202,7 +290,7 @@ DateTime DateTime::AddMinutes(double m) const
 {
     double ipart;
     double fraction = std::modf( m, &ipart );
-    TimeSpan ts_whole_minutes{ minutes{ static_cast<int>(ipart) } };
+    TimeSpan ts_whole_minutes{ std::chrono::minutes{ static_cast<int>(ipart) } };
     long fractional_minutes_in_ticks = static_cast<long>(fraction * TimeSpan::TicksPerMinute());
 
     return Add( ts_whole_minutes ).Add( TimeSpan( fractional_minutes_in_ticks ) );
@@ -212,7 +300,7 @@ DateTime DateTime::AddSeconds(double s) const
 {
     double ipart;
     double fraction = std::modf( s, &ipart );
-    TimeSpan ts_whole_seconds{ seconds{ static_cast<int>(ipart) } };
+    TimeSpan ts_whole_seconds{ std::chrono::seconds{ static_cast<int>(ipart) } };
     long fractional_seconds_in_ticks = static_cast<long>(fraction * TimeSpan::TicksPerSecond());
 
     return Add( ts_whole_seconds ).Add( TimeSpan( fractional_seconds_in_ticks ) );
@@ -222,7 +310,7 @@ DateTime DateTime::AddMilliseconds(double ms) const
 {
     double ipart;
     double fraction = std::modf( ms, &ipart );
-    TimeSpan ts_whole_milliseconds{ milliseconds{ static_cast<int>(ipart) } };
+    TimeSpan ts_whole_milliseconds{ std::chrono::milliseconds{ static_cast<int>(ipart) } };
     long fractional_milliseconds_in_ticks = static_cast<long>(fraction * TimeSpan::TicksPerMillisecond());
 
     return Add( ts_whole_milliseconds ).Add( TimeSpan( fractional_milliseconds_in_ticks ) );
@@ -232,7 +320,7 @@ DateTime DateTime::AddMicroseconds(double micro_seconds) const
 {
     double ipart;
     double fraction = std::modf( micro_seconds, &ipart );
-    TimeSpan ts_whole_microseconds{ microseconds{ static_cast<int>(ipart) } };
+    TimeSpan ts_whole_microseconds{ std::chrono::microseconds{ static_cast<int>(ipart) } };
     long fractional_microseconds_in_ticks = static_cast<long>(fraction * TimeSpan::TicksPerMicrosecond());
 
     return Add( ts_whole_microseconds ).Add( TimeSpan( fractional_microseconds_in_ticks ) );
@@ -292,7 +380,7 @@ DateTime DateTime::Subtract(const TimeSpan &other_time_span) const
 
 int DateTime::Compare(const DateTime &t1, const DateTime &t2)
 {
-    auto result{ t1 <=> t2 };
+    std::strong_ordering result{ t1 <=> t2 };
 
     if ( result == std::strong_ordering::less )
         return -1;
@@ -302,29 +390,16 @@ int DateTime::Compare(const DateTime &t1, const DateTime &t2)
         return 1;
 }
 
+int DateTime::CompareTo(const DateTime &other) const
+{
+    return DateTime::Compare( *this, other);
+}
+
 DateTime DateTime::UnixEpoch()
 {
-    using namespace std::chrono;
-
-    year_month_day ymd{ floor<days>( system_clock::time_point() ) };
+    std::chrono::year_month_day ymd{ std::chrono::floor<std::chrono::days>( std::chrono::system_clock::time_point() ) };
 
     return DateTime( DateOnly( ymd ), TimeOnly::MinValue() );
 }
 
 }
-
-export
-template <>
-struct std::formatter<System::DateTime>
-{
-    constexpr auto parse(std::format_parse_context &ctx)
-    {
-        return ctx.begin();
-    }
-
-    template <typename FormatContext>
-    auto format(const System::DateTime &object, FormatContext &ctx) const
-    {
-        return std::format_to( ctx.out(), "{}", object.ToString());
-    }
-};

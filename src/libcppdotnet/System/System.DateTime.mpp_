@@ -1,24 +1,34 @@
-export module System:DateTime;
+export module System.DateTime;
 
-export import :DayOfWeek;
-export import :DateTimeKind;
-export import :DateOnly;
-export import :TimeOnly;
-export import :TimeSpan;
+export import <chrono>;
+export import <compare>;
+export import <concepts>;
+export import <exception>;
+export import <format>;
+export import <memory>;
+export import <source_location>;
+export import <string>;
+export import <string_view>;
+export import <system_error>;
 
+export import System.Exception;
+export import System.DayOfWeek;
+export import System.DateTimeKind;
+export import System.DateOnly;
+export import System.TimeOnly;
+export import System.TimeSpan;
 
-namespace System
+export namespace System
 {
 
-export
 class DateTime
 {
 public:
-    DateTime() { }
+    DateTime() = default;
     DateTime(int year, int month, int day, int hour = 0, int minute = 0, int second = 0, int milliseconds = 0);
     DateTime(const System::DateOnly &date_only, const System::TimeOnly &time_only);
     //constexpr DateTime(std::chrono::system_clock::time_point tp) : _point_in_time( tp ) { }
-   ~DateTime();
+   ~DateTime() = default;
 
     DateTime(const DateTime &);
     DateTime(DateTime &&);
@@ -26,41 +36,41 @@ public:
     DateTime &operator =(const DateTime &);
     DateTime &operator =(DateTime &&);
 
-    DateTime Date() const { return DateTime( _date_only, System::TimeOnly() ); }
-    TimeSpan TimeOfDay() const { return _time_only.ToTimeSpan(); }
+    DateTime Date() const;
+    TimeSpan TimeOfDay() const;
 
-    DateTimeKind Kind() const { return _kind; }
+    DateTimeKind Kind() const;
 
-    int Year() const  { return _date_only.Year(); }
-    int Month() const { return _date_only.Month(); }
-    int Day() const   { return _date_only.Day(); }
+    int Year() const;
+    int Month() const;
+    int Day() const;
 
-    int Hour() const { return _time_only.Hour(); }
-    int Minute() const { return _time_only.Minute(); }
-    int Second() const { return _time_only.Second(); }
-    int Millisecond() const { return _time_only.Millisecond(); }
-    int Microsecond() const { return _time_only.Microsecond(); }
-    int Nanosecond() const { return _time_only.Nanosecond(); }
+    int Hour() const;
+    int Minute() const;
+    int Second() const;
+    int Millisecond() const;
+    int Microsecond() const;
+    int Nanosecond() const;
 
     long Ticks() const;
 
-    enum System::DayOfWeek DayOfWeek() const { return _date_only.DayOfWeek(); }
-                       int DayOfYear() const { return _date_only.DayOfYear(); }
+    enum System::DayOfWeek DayOfWeek() const;
+                       int DayOfYear() const;
 
     static DateTime Now();
     static DateTime UtcNow();
     static DateTime Today();
     static DateTime UnixEpoch();
 
-    static DateTime MinValue()  { return DateTime( DateOnly::MinValue(), TimeOnly::MinValue() ); }
-    static DateTime MaxValue()  { return DateTime( DateOnly::MaxValue(), TimeOnly::MaxValue() ); }
+    static DateTime MinValue();
+    static DateTime MaxValue();
 
     std::string ToString() const;
 
-    DateTime &operator +=(const TimeSpan &time_span) { return _accumulate( time_span ); }
-    DateTime &operator -=(const TimeSpan &time_span) { return _accumulate( -time_span ); }
-    DateTime &operator +=(std::chrono::system_clock::duration time_duration) { return _accumulate( time_duration ); }
-    DateTime &operator -=(std::chrono::system_clock::duration time_duration) { return _accumulate( -time_duration ); }
+    DateTime &operator +=(const TimeSpan &time_span);
+    DateTime &operator -=(const TimeSpan &time_span);
+    DateTime &operator +=(std::chrono::system_clock::duration time_duration);
+    DateTime &operator -=(std::chrono::system_clock::duration time_duration);
 
     DateTime Add(const TimeSpan &time_span) const;
     TimeSpan Subtract(const DateTime &other_date) const;
@@ -78,7 +88,8 @@ public:
 
     static int Compare(const DateTime &t1, const DateTime &t2);
 
-    int CompareTo(const DateTime &other) const { return Compare( *this, other); }
+    int CompareTo(const DateTime &other) const;
+    constexpr bool Equals(const DateTime &other) const { return *this == other; }
 protected:
     DateOnly     _date_only{ DateOnly::MinValue() };
     TimeOnly     _time_only{ TimeOnly::MinValue() };
@@ -93,7 +104,7 @@ protected:
 
     friend constexpr std::strong_ordering operator <=>(const DateTime &left, const DateTime &right)
     {
-        auto result = left._date_only <=> right._date_only;
+        std::strong_ordering result = left._date_only <=> right._date_only;
 
         if ( result != std::strong_ordering::equal )
             return result; // The date's aren't equal so just use that
@@ -128,3 +139,19 @@ protected:
 };
 
 }
+
+export
+template <>
+struct std::formatter<System::DateTime>
+{
+    constexpr auto parse(std::format_parse_context &ctx)
+    {
+        return ctx.begin();
+    }
+
+    template <typename FormatContext>
+    auto format(const System::DateTime &object, FormatContext &ctx) const
+    {
+        return std::format_to( ctx.out(), "{}", object.ToString());
+    }
+};

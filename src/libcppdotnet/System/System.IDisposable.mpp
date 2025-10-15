@@ -1,4 +1,4 @@
-export module System:IDisposable;
+export module System.IDisposable;
 
 export import <memory>;
 

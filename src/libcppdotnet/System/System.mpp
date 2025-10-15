@@ -4,6 +4,7 @@ export module System;
 
 // Import Header Units...
 //export import <array>;
+export import <chrono>;
 export import <compare>;
 export import <concepts>;
 export import <cstddef>;
@@ -32,28 +33,34 @@ export import System.Exception;
 export import System.Delegates;
 
 // Things that depend on NOTHING...
-export import :IComparable;
+export import System.IComparable;
 
 // Things that only depend on system-headers...
-export import :IDisposable;
-export import :Private_enum;
-export import :ValueTuple;
+export import System.IDisposable;
+export import System.Private_enum;
+export import System.ValueTuple;
 
 // Depends on System/Private/enum.hpp...
-export import :Base;
-export import :Base64FormattingOptions;
-export import :ConsoleColor;
-export import :ConsoleModifiers;
-export import :ConsoleKey;
-export import :DateTimeKind;
-export import :DayOfWeek;
-export import :EnvironmentVariableTarget;
-export import :PlatformID;
-export import :TypeCode;
+export import System.Base;
+export import System.Base64FormattingOptions;
+export import System.ConsoleColor;
+export import System.ConsoleModifiers;
+export import System.ConsoleKey;
+export import System.DateTimeKind;
+export import System.DayOfWeek;
+export import System.EnvironmentVariableTarget;
+export import System.PlatformID;
+export import System.TypeCode;
+
+//export import System.TimeSpan;
+//export import System.TimeOnly;
+//export import System.DateOnly;
+//export import System.DateTime;
+//export import System.DateTimeOffset;
+
+//export import System.Enum;
 
 #if 0
-// Depends on other System Partitions...
-export import :Enum;
 export import :BitConverter;
 export import :Convert;
 export import :IConvertible;
@@ -66,12 +73,8 @@ export import :OperatingSystem;
 export import :IObserver;
 export import :IObservable;
 //export import :Environment;
-
-// export import :TimeSpan;
-// export import :TimeOnly;
-// export import :DateOnly;
-// export import :DateTime;
-// export import :DateTimeOffset;
+#endif
+#if 0
 
 // Depends on Other System/. files...
 // export import :Guid;

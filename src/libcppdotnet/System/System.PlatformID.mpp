@@ -1,6 +1,6 @@
-export module System:PlatformID;
+export module System.PlatformID;
 
-export import :Private_enum;
+export import System.Private_enum;
 
 export namespace System
 {

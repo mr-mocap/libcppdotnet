@@ -1,4 +1,4 @@
-export module System:Enum;
+export module System.Enum;
 
 import <algorithm>;
 import <charconv>;
@@ -16,7 +16,7 @@ export import <ranges>;
 export import <string_view>;
 
 export import System.Exception;
-export import :TypeCode;
+export import System.TypeCode;
 
 export namespace System
 {

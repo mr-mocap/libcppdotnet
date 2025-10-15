@@ -1,4 +1,4 @@
-export module System:ValueTuple;
+export module System.ValueTuple;
 
 export import <cstddef>;
 export import <tuple>;

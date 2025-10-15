@@ -12,28 +12,11 @@ pub_hdrs = $($pub/ pub_hdrs)
 
 ./: lib{cppdotnet}
 
-lib{cppdotnet}: mxx{**} $impl_libs $intf_libs
+lib{cppdotnet}: {mxx}{**} {cxx}{**} $impl_libs $intf_libs
 
 # Private headers and sources as well as dependencies.
 #
 #./: lib{cppdotnet}: libul{cppdotnet}: {hxx ixx txx mxx}{** -**.test...} $impl_libs $intf_libs
-
-# Unit tests.
-#
-#exe{*.test}:
-#{
-#  test = true
-#  install = false
-#}
-#
-#for t: cxx{**.test...}
-#{
-#  d = $directory($t)
-#  n = $name($t)...
-#
-#  ./: $d/exe{$n}: $t $d/{cxx}{+$n} lib{cppdotnet} $d/testscript{+$n}
-#  $d/exe{$n}: lib{cppdotnet}: bin.whole = false
-#}
 
 # Build options.
 #
