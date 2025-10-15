@@ -4,7 +4,7 @@ import lib = libcppdotnet%lib{cppdotnet}
 ./: exe{TestDelegates}: cxx{TestDelegates} $lib
 ./: exe{TestTimeSpan}: cxx{TestTimeSpan} mxx{Utility} $lib
 ./: exe{TestTimeOnly}: cxx{TestTimeOnly} mxx{Utility} $lib
-#./: exe{TestDateOnly}: cxx{TestDateOnly} $lib
+./: exe{TestDateOnly}: cxx{TestDateOnly} mxx{Utility} $lib
 #./: exe{TestDateTime}: cxx{TestDateTime} $lib
 #./: exe{TestDateTimeOffset}: cxx{TestDateTimeOffset} $lib
 #./: exe{TestValueTuple}: cxx{TestValueTuple} $lib

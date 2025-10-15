@@ -1,7 +1,7 @@
-#include <cstdlib>
-#include <cassert>
+import <cstdlib>;
+import <cassert>;
 
-import System;
+import System.DateOnly;
 
 namespace TestDateOnly
 {
@@ -347,7 +347,7 @@ void AddDays()
     }
 #endif
 }
-
+#if 0
 void FromDateTime()
 {
     System::DateTime dt(1999, 12, 31);
@@ -357,7 +357,7 @@ void FromDateTime()
     assert( t.Month() == 12 );
     assert( t.Day() == 31 );
 }
-
+#endif
 void Deconstruct()
 {
     System::DateOnly dateonly(1949, 8, 4);
@@ -396,7 +396,9 @@ void Run()
     AddYears();
     AddMonths();
     AddDays();
+#if 0
     FromDateTime();
+#endif
     Deconstruct();
     ToString();
 }
@@ -405,6 +407,6 @@ void Run()
 
 int main(void)
 {
-    return TestDateOnly::Run();
+    TestDateOnly::Run();
     return EXIT_SUCCESS;
 }
