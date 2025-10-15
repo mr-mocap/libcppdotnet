@@ -1,7 +1,7 @@
-#include <cstdlib>
-#include <cassert>
+import <cstdlib>;
+import <cassert>;
 
-import System;
+import System.TimeOnly;
 
 namespace TestTimeOnly
 {
