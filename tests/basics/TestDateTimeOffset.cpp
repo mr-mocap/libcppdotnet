@@ -1,9 +1,7 @@
 import <cstdlib>;
 import <cassert>;
 
-import System.DateTime;
 import System.DateTimeOffset;
-import System.TimeSpan;
 
 namespace TestDateTimeOffset
 {

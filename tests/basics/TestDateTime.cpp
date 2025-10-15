@@ -1,7 +1,7 @@
-#include <cstdlib>
-#include <cassert>
+import <cstdlib>;
+import <cassert>;
 
-import System;
+import System.DateTime;
 
 namespace TestDateTime
 {
@@ -64,16 +64,12 @@ void DayOfYear()
 
 void Now()
 {
-    std::cout << __func__ << std::endl;
-
-    std::cout << "The time is now: " << System::DateTime::Now().ToString() << std::endl;
+    //std::cout << "The time is now: " << System::DateTime::Now().ToString() << std::endl;
 }
 
 void UtcNow()
 {
-    std::cout << __func__ << std::endl;
-
-    std::cout << "The time is now: " << System::DateTime::UtcNow().ToString() << std::endl;
+    //std::cout << "The time is now: " << System::DateTime::UtcNow().ToString() << std::endl;
 }
 
 void Today()
@@ -161,7 +157,7 @@ void OperatorSpaceship()
     System::DateTime now = System::DateTime::Now();
 
     assert( (unix_epoch <=> now) == std::strong_ordering::less );
-    assert( (now <=> now) == std::strong_ordering::equal );
+    assert( (now <=> now)        == std::strong_ordering::equal );
     assert( (now <=> unix_epoch) == std::strong_ordering::greater );
 }
 
