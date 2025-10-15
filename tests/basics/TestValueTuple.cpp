@@ -1,18 +1,15 @@
-#include "TestValueTuple.hpp"
-#include "System/Console.hpp"
-#include "System/ValueTuple.hpp"
-#include "System/Private/private.hpp"
-#include "System/IO/TextWriter.hpp"
-#include <cassert>
+#include <libcppdotnet/System/PreProcessor/Contracts.hpp>
 
+import <cstdlib>;
+import <cassert>;
+
+import System.ValueTuple;
 
 namespace TestValueTuple
 {
 
 void DefaultConstructed()
 {
-    System::Console::Out().WriteLine(__func__);
-
     {
         System::ValueTuple<> t;
 
@@ -33,11 +30,13 @@ void DefaultConstructed()
 
 void Run()
 {
-    System::Console::Out().WriteLine("Running ValueTuple Tests...");
-
     DefaultConstructed();
-
-    System::Console::Out().WriteLine("PASSED!");
 }
 
+}
+
+int main(void)
+{
+    TestValueTuple::Run();
+    return EXIT_SUCCESS;
 }

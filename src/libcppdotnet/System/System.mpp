@@ -52,13 +52,13 @@ export import System.EnvironmentVariableTarget;
 export import System.PlatformID;
 export import System.TypeCode;
 
-//export import System.TimeSpan;
-//export import System.TimeOnly;
-//export import System.DateOnly;
-//export import System.DateTime;
-//export import System.DateTimeOffset;
+export import System.TimeSpan;
+export import System.TimeOnly;
+export import System.DateOnly;
+export import System.DateTime;
+export import System.DateTimeOffset;
 
-//export import System.Enum;
+export import System.Enum;
 
 #if 0
 export import :BitConverter;
