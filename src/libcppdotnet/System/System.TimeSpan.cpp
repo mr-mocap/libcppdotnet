@@ -1,6 +1,11 @@
+module;
+
+#include <libcppdotnet/System/PreProcessor/Contracts.hpp>
+
 module System.TimeSpan;
 
 import <chrono>;
+import <cstdlib>;
 import <format>;
 
 import System.Exception;
@@ -132,8 +137,8 @@ int TimeSpan::Hours() const
     long h = (negative) ? std::chrono::ceil<std::chrono::hours>( _time_span ).count() : std::chrono::floor<std::chrono::hours>( _time_span ).count();
     std::ldiv_t  d = std::div( h, static_cast<long>(HoursPerDay()) );
 
-    // POSTCONDITION( d.rem >= -23 );
-    // POSTCONDITION( d.rem <=  23 );
+    POSTCONDITION( d.rem >= -23 );
+    POSTCONDITION( d.rem <=  23 );
 
     return d.rem;
 }
@@ -144,8 +149,8 @@ int TimeSpan::Minutes() const
     long m = (negative) ? std::chrono::ceil<std::chrono::minutes>( _time_span ).count() : std::chrono::floor<std::chrono::minutes>( _time_span ).count();
     std::ldiv_t d = std::div( m, MinutesPerHour() );
 
-    // POSTCONDITION( d.rem >= -59 );
-    // POSTCONDITION( d.rem <=  59 );
+    POSTCONDITION( d.rem >= -59 );
+    POSTCONDITION( d.rem <=  59 );
 
     return d.rem;
 }
@@ -156,8 +161,8 @@ int TimeSpan::Seconds() const
     long s = (negative) ? std::chrono::ceil<std::chrono::seconds>( _time_span ).count() : std::chrono::floor<std::chrono::seconds>( _time_span ).count();
     std::ldiv_t d = std::div( s, SecondsPerMinute() );
 
-    // POSTCONDITION( d.rem >= -59 );
-    // POSTCONDITION( d.rem <=  59 );
+    POSTCONDITION( d.rem >= -59 );
+    POSTCONDITION( d.rem <=  59 );
 
     return d.rem;
 }
@@ -168,8 +173,8 @@ int TimeSpan::Milliseconds() const
     long ms = (negative) ? std::chrono::ceil<std::chrono::milliseconds>( _time_span ).count() : std::chrono::floor<std::chrono::milliseconds>( _time_span ).count();
     std::ldiv_t d = std::div( ms, MillisecondsPerSecond() );
 
-    // POSTCONDITION( d.rem >= -999 );
-    // POSTCONDITION( d.rem <=  999 );
+    POSTCONDITION( d.rem >= -999 );
+    POSTCONDITION( d.rem <=  999 );
 
     return d.rem;
 }
@@ -180,8 +185,8 @@ int TimeSpan::Microseconds() const
     long ms = (negative) ? std::chrono::ceil<std::chrono::microseconds>( _time_span ).count() : std::chrono::floor<std::chrono::microseconds>( _time_span ).count();
     std::ldiv_t d = std::div( ms, MicrosecondsPerSecond() );
 
-    // POSTCONDITION( d.rem >= -999'999 );
-    // POSTCONDITION( d.rem <=  999'999 );
+    POSTCONDITION( d.rem >= -999'999 );
+    POSTCONDITION( d.rem <=  999'999 );
 
     return d.rem;
 }
@@ -192,8 +197,8 @@ int TimeSpan::Nanoseconds() const
     long ns = _time_span.count();
     std::ldiv_t d = std::div( ns, NanosecondsPerSecond() );
 
-    // POSTCONDITION( d.rem >= -99'999'999 );
-    // POSTCONDITION( d.rem <=  99'999'999 );
+    POSTCONDITION( d.rem >= -99'999'999 );
+    POSTCONDITION( d.rem <=  99'999'999 );
 
     return d.rem;
 }

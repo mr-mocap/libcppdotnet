@@ -1,7 +1,8 @@
-#include <cstdlib>
-#include <cassert>
+import <cstdlib>;
+import <cassert>;
 
-import System;
+import Utility;
+import System.TimeSpan;
 
 namespace TestTimeSpan
 {

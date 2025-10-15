@@ -1,7 +1,5 @@
 export module System.TimeSpan;
 
-import <cstdlib>;
-
 export import <chrono>;
 export import <compare>;
 export import <format>;
