@@ -1,137 +1,18 @@
-export module System:Convert;
+module;
 
-//import <map>;
+#include <libcppdotnet/System/PreProcessor/Contracts.hpp>
+
+module System.Convert;
+
 import <charconv>;
-import <cassert>;
 import <cstring>;
 import <cctype>;
 import <algorithm>;
 import <ranges>;
-import <cstdint>;
+
 import <span>;
 import <string>;
 import <string_view>;
-import <vector>;
-import <array>;
-import <cstddef>;
-
-import :Base;
-
-//import System:Boolean;
-import :BitConverter;
-
-export import System.Exception;
-
-// #include "System/Diagnostics/SourceLevels.hpp"
-// #include "System/Diagnostics/TraceLevel.hpp"
-// #include "System/Diagnostics/TraceOptions.hpp"
-//import System:Private/private.hpp"
-
-export namespace System
-{
-
-class Convert
-{
-public:
-    static std::string_view ToString(bool value);
-    static std::string      ToString(char value);
-    static std::string      ToString(std::byte value);
-    static std::string      ToString(float  value);
-    static std::string      ToString(double value);
-
-    static std::string      ToString(int8_t  value, Base toBase = Base::Decimal);
-    static std::string      ToString(int16_t value, Base toBase = Base::Decimal);
-    static std::string      ToString(int32_t value, Base toBase = Base::Decimal);
-    static std::string      ToString(int64_t value, Base toBase = Base::Decimal);
-
-    static std::string      ToString(uint8_t  value, Base toBase = Base::Decimal);
-    static std::string      ToString(uint16_t value, Base toBase = Base::Decimal);
-    static std::string      ToString(uint32_t value, Base toBase = Base::Decimal);
-    static std::string      ToString(uint64_t value, Base toBase = Base::Decimal);
-
-    // static std::string_view ToString(Diagnostics::TraceOptions value);
-    // static std::string_view ToString(Diagnostics::SourceLevels value);
-
-    static std::vector<std::byte> FromHexString(std::string_view input_string); // Returns sequence as LITTLE-ENDIAN
-    static std::string            ToHexString(const std::vector<std::byte> &input_bytes, bool uppercase = true)
-    {
-        return ToHexString( std::span<const std::byte>{input_bytes}, uppercase );
-    }
-    static std::string            ToHexString(std::span<const std::byte> input_bytes, bool uppercase = true);
-
-    static std::string            ToBase64String(std::string_view input_ascii_string);
-    static std::string            ToBase64String(std::span<const std::byte> input_bytes);
-
-    static std::vector<std::byte> FromBase64String(const char *input_ascii_string)
-    {
-        return FromBase64String( std::string_view{input_ascii_string} );
-    }
-    static std::vector<std::byte> FromBase64String(std::span<const char> input_ascii_string);
-
-    static std::string            ToBase85String(std::span<const std::byte> input_bytes);
-
-    static std::vector<std::byte> FromBase85String(std::string_view input_string);
-    static std::vector<std::byte> FromBase85String(std::span<const char> input_string);
-
-    // From IConvertable  (move there)
-    // static Diagnostics::TraceLevel   ToType(std::string_view value, Diagnostics::TraceLevel   this_is_here_to_select_the_correct_function);
-    // static Diagnostics::TraceOptions ToType(std::string_view value, Diagnostics::TraceOptions this_is_here_to_select_the_correct_function);
-    // static Diagnostics::SourceLevels ToType(std::string_view value, Diagnostics::SourceLevels this_is_here_to_select_the_correct_function);
-
-    // C++ specific
-    static std::string ToChars(auto ...format_args)
-    {
-        using namespace std::literals;
-
-        std::array<char, 32> buffer;
-
-        std::to_chars_result result = std::to_chars(buffer.data(), buffer.data() + buffer.size(), format_args...);
-
-        if (result.ec == std::errc::value_too_large)
-            ThrowWithTarget( ArgumentOutOfRangeException( "format_args"sv ) );
-
-        assert( result.ec == std::errc() );
-
-        size_t length = result.ptr - buffer.data();
-
-        return { buffer.data(), length };
-    }
-
-    static std::byte           From2HexCharsToByte(std::string_view input_string);
-    static std::array<char, 2> FromByteTo2HexChars(std::byte input_byte, bool uppercase = true);
-
-    /** A structure for storing the digits of a number in a particular base
-     * 
-     *  @note 
-     */
-    struct BaseConversion32Bit_t
-    {
-        explicit constexpr BaseConversion32Bit_t(std::array<std::byte, 32> &a, unsigned int d, unsigned int b)
-            :
-            number_of_digits(d),
-            base(b)
-        {
-            // PRECONDITION( base >= 2 );
-            // PRECONDITION( base <= 256 );
-
-            for (unsigned int i = 0; i < a.size(); ++i)
-                output_digits[i] = a[i];
-        }
-
-        std::array<std::byte, 32> output_digits; // Base 2 has the most digits, so use that for a 32-bit number
-        unsigned int number_of_digits = 0;
-        unsigned int base             = 10;
-    };
-
-    /** Converts the input number to a sequence of digits in a particular base
-     * 
-     *  @param input_number The number to convert
-     *  @param base The base you want the output in (defaults to base 10)
-     */
-    static BaseConversion32Bit_t ToBase(std::uint32_t input_number, unsigned int base = 10);
-};
-
-}
 
 namespace System
 {
@@ -160,14 +41,14 @@ inline bool IsValidBase64(const char input)
 
 inline char EncodeBase64(const uint8_t input)
 {
-    // PRECONDITION( input < Base64Table.size() );
+    PRECONDITION( input < Base64Table.size() );
 
     return Base64Table[ input ];
 }
 
 inline std::byte DecodeBase64(char input)
 {
-    // PRECONDITION( IsValidBase64(input) );
+    PRECONDITION( IsValidBase64(input) );
 
     return static_cast<std::byte>(Base64Table.find( input ));
 }
@@ -179,24 +60,24 @@ inline bool IsValidBase85(const char input)
 
 inline char EncodeBase85(const uint8_t input)
 {
-    // PRECONDITION( input < Base85Table.size() );
+    PRECONDITION( input < Base85Table.size() );
 
     return Base85Table[ input ];
 }
 
 inline std::byte DecodeBase85(char input)
 {
-    // PRECONDITION( IsValidBase85(input) );
+    PRECONDITION( IsValidBase85(input) );
 
     return static_cast<std::byte>(Base85Table.find( input ));
 }
 
 static std::string From4Base64Chars(std::span<const char, 4> input)
 {
-    // PRECONDITION( IsValidBase64(input[0]) );
-    // PRECONDITION( IsValidBase64(input[1]) );
-    // PRECONDITION( IsValidBase64(input[2]) || (input[2] == Base64PadChar) );
-    // PRECONDITION( IsValidBase64(input[3]) || (input[3] == Base64PadChar) );
+    PRECONDITION( IsValidBase64(input[0]) );
+    PRECONDITION( IsValidBase64(input[1]) );
+    PRECONDITION( IsValidBase64(input[2]) || (input[2] == Base64PadChar) );
+    PRECONDITION( IsValidBase64(input[3]) || (input[3] == Base64PadChar) );
 
     char first  = std::bit_cast<char>( DecodeBase64( input[0] ) );
     char second = std::bit_cast<char>( DecodeBase64( input[1] ) );
@@ -225,16 +106,16 @@ static std::string From4Base64Chars(std::span<const char, 4> input)
 
 std::byte Convert::From2HexCharsToByte(std::string_view input_string)
 {
-    // PRECONDITION(input_string.size() == 2);
-    // PRECONDITION( std::isxdigit( input_string.front() ) );
-    // PRECONDITION( std::isxdigit( input_string.back() ) );
+    PRECONDITION(input_string.size() == 2);
+    PRECONDITION( std::isxdigit( input_string.front() ) );
+    PRECONDITION( std::isxdigit( input_string.back() ) );
 
     uint8_t result;
     auto [ptr, ec] = std::from_chars(input_string.data(), input_string.data() + input_string.size(), result, 16);
 
-    assert(ec != std::errc::invalid_argument);
-    assert(ec != std::errc::result_out_of_range);
-    assert(ec == std::errc()); // Good!
+    INVARIANT(ec != std::errc::invalid_argument);
+    INVARIANT(ec != std::errc::result_out_of_range);
+    INVARIANT(ec == std::errc()); // Good!
 
     return static_cast<std::byte>(result);
 }
@@ -247,7 +128,7 @@ std::array<char, 2> Convert::FromByteTo2HexChars(std::byte input_byte, bool uppe
 
     auto [ptr, ec] = std::to_chars(retval.begin(), retval.end(), input_as_uint, 16);
 
-    assert(ec == std::errc()); // Good!
+    INVARIANT(ec == std::errc()); // Good!
 
     if ( input_as_uint < 16 )
     {
@@ -577,7 +458,11 @@ std::vector<std::byte> Convert::FromHexString(std::string_view input_string)
     return result; // This is LITTLE-ENDIAN now!
 }
 
-//std::string Convert::ToHexString(const std::vector<std::byte> &input_bytes, bool uppercase)
+std::string Convert::ToHexString(const std::vector<std::byte> &input_bytes, bool uppercase)
+{
+    return ToHexString( std::span<const std::byte>{input_bytes}, uppercase );
+}
+
 std::string Convert::ToHexString(std::span<const std::byte> input_bytes, bool uppercase)
 {
     std::string hex_digits;
@@ -666,6 +551,11 @@ std::string Convert::ToBase64String(std::span<const std::byte> input_bytes)
     }
 
     return base64_string;
+}
+
+std::vector<std::byte> Convert::FromBase64String(const char *input_ascii_string)
+{
+    return FromBase64String( std::string_view{input_ascii_string} );
 }
 
 std::vector<std::byte> Convert::FromBase64String(std::span<const char> input_ascii_string)
@@ -757,22 +647,22 @@ std::string Convert::ToBase85String(std::span<const std::byte> input_bytes)
 
 std::vector<std::byte> Convert::FromBase85String(std::string_view input_ascii_string)
 {
-    // UNUSED(input_ascii_string);
+    UNUSED(input_ascii_string);
 
     return {};
 }
 
 std::vector<std::byte> Convert::FromBase85String(std::span<const char> input_ascii_string)
 {
-    // UNUSED(input_ascii_string);
+    UNUSED(input_ascii_string);
 
     return {};
 }
 
 Convert::BaseConversion32Bit_t Convert::ToBase(std::uint32_t input_number, unsigned int base)
 {
-    // PRECONDITION( base >= 2 );
-    // PRECONDITION( base <= 256 );
+    PRECONDITION( base >= 2 );
+    PRECONDITION( base <= 256 );
 
     std::array<std::byte, 32> output_array;
     unsigned int num_digits = 0;
@@ -786,6 +676,24 @@ Convert::BaseConversion32Bit_t Convert::ToBase(std::uint32_t input_number, unsig
     } while ( input_number );
     
     return BaseConversion32Bit_t( output_array, num_digits, base );
+}
+
+std::string Convert::ToChars(auto ...format_args)
+{
+    using namespace std::literals;
+
+    std::array<char, 32> buffer;
+
+    std::to_chars_result result = std::to_chars(buffer.data(), buffer.data() + buffer.size(), format_args...);
+
+    if (result.ec == std::errc::value_too_large)
+        ThrowWithTarget( ArgumentOutOfRangeException( "format_args"sv ) );
+
+    INVARIANT( result.ec == std::errc() );
+
+    size_t length = result.ptr - buffer.data();
+
+    return { buffer.data(), length };
 }
 
 }

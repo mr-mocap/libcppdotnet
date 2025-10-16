@@ -1,13 +1,14 @@
-export module System:BitConverter;
+export module System.BitConverter;
 
-import <type_traits>;
-import <cstdint>;
-import <cstddef>;
-import <vector>;
 import <array>;
-import <span>;
 import <cstring>;
 import <bit>;
+
+export import <cstddef>;
+export import <cstdint>;
+export import <span>;
+export import <type_traits>;
+export import <vector>;
 
 export import System.Exception;
 

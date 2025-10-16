@@ -1,17 +1,14 @@
-#include "TestConvert.hpp"
-#include "System/Convert.hpp"
-#include <iostream>
-#include <cassert>
-#include <algorithm>
-#include <limits>
+import <algorithm>;
+import <cassert>;
+import <limits>;
+
+import System.Convert;
 
 namespace TestConvert
 {
 
 void FromHexString()
 {
-    std::cout << __func__ << std::endl;
-
     // Single byte string
     {
         std::vector<std::byte> fromhex{ System::Convert::FromHexString("00") };
@@ -92,8 +89,6 @@ void FromHexString()
 
 void ToHexString()
 {
-    std::cout << __func__ << std::endl;
-
     // Single byte string ()
     {
         std::string tohex{ System::Convert::ToHexString( { std::byte{0} } ) };
@@ -316,8 +311,6 @@ void ToHexString()
 
 void ToBase64String()
 {
-    std::cout << __func__ << std::endl;
-
     {
         std::string tohex{ System::Convert::ToBase64String( "Man" ) };
 
@@ -350,8 +343,6 @@ void ToBase64String()
 
 void FromBase64String()
 {
-    std::cout << __func__ << std::endl;
-
     {
         std::vector<std::byte> original{ System::Convert::FromBase64String("TWFu") };
         std::string converted;
@@ -377,14 +368,10 @@ void FromBase64String()
 
 void FromBase64StringAndToBase64StringAreInverses()
 {
-    std::cout << __func__ << std::endl;
-
 }
 
 void ToBase85String()
 {
-    std::cout << __func__ << std::endl;
-
     // Various 4-byte sequences
     {
         std::string str{ "hewk" };
@@ -486,8 +473,6 @@ void ToBase85String()
 
 void ToBase()
 {
-    std::cout << __func__ << std::endl;
-
     {
         System::Convert::BaseConversion32Bit_t result  = System::Convert::ToBase(3, 2);
 
@@ -554,16 +539,18 @@ void ToBase()
 
 void Run()
 {
-    std::cout << "Running Convert Tests..." << std::endl;
-
     FromHexString();
     ToHexString();
     ToBase64String();
     FromBase64String();
     ToBase85String();
     ToBase();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestConvert::Run();
+    return EXIT_SUCCESS;
 }

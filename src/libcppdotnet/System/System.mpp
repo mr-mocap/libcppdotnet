@@ -8,7 +8,7 @@ export import <chrono>;
 export import <compare>;
 export import <concepts>;
 export import <cstddef>;
-//export import <cstdint>;
+export import <cstdint>;
 export import <exception>;
 export import <format>;
 export import <functional>;
@@ -25,7 +25,7 @@ export import <tuple>;
 export import <type_traits>;
 //export import <unordered_map>;
 export import <utility>;
-//export import <vector>;
+export import <vector>;
 
 // NOTE: These are ORDERED
 
@@ -60,9 +60,9 @@ export import System.DateTimeOffset;
 
 export import System.Enum;
 
+export import System.BitConverter;
+export import System.Convert;
 #if 0
-export import :BitConverter;
-export import :Convert;
 export import :IConvertible;
 export import :Version;
 export import :ConsoleKeyInfo;
