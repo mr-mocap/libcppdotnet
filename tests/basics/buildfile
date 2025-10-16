@@ -8,3 +8,4 @@ import lib = libcppdotnet%lib{cppdotnet}
 ./: exe{TestDateTime}: cxx{TestDateTime} mxx{Utility} $lib
 ./: exe{TestDateTimeOffset}: cxx{TestDateTimeOffset} mxx{Utility} $lib
 ./: exe{TestValueTuple}: cxx{TestValueTuple} mxx{Utility} $lib
+./: exe{TestEnum}: cxx{TestEnum} mxx{Utility} $lib

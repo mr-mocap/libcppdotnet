@@ -1,3 +1,7 @@
+module;
+
+#include <libcppdotnet/System/PreProcessor/Contracts.hpp>
+
 export module System.Enum;
 
 import <algorithm>;
@@ -28,12 +32,12 @@ public:
     Enum() = default;
     Enum(EnumPolicy::value_type v) : _currentValue{ v } { }
 
-    static const auto GetNames()
+    static const std::ranges::view auto GetNames()
     {
         return MakeNames();
     }
 
-    static const auto GetValues()
+    static const std::ranges::view auto GetValues()
     {
         return MakeValues();
     }
@@ -109,7 +113,7 @@ public:
         else if ( ec != std::errc() )
             ThrowWithTarget( System::ArgumentException{ "Argument does not contain Enumeration information", "value_string" } );
 
-        assert( ec == std::errc() );
+        INVARIANT( ec == std::errc() );
 
         typename EnumPolicy::value_type casted{ static_cast<typename EnumPolicy::value_type>(converted) };
 
@@ -140,7 +144,7 @@ public:
         else if ( ec != std::errc() )
             return {};
         
-        assert( ec == std::errc() );
+        INVARIANT( ec == std::errc() );
 
         typename EnumPolicy::value_type casted{ static_cast<typename EnumPolicy::value_type>(converted) };
 
@@ -223,12 +227,12 @@ public:
 protected:
     EnumPolicy::value_type  _currentValue{};
 
-    static const auto MakeNames()
+    static const std::ranges::view auto MakeNames()
     {
         return std::views::keys( EnumPolicy::NameValueArray() );
     }
 
-    static const auto MakeValues()
+    static const std::ranges::view auto MakeValues()
     {
         return std::views::values( EnumPolicy::NameValueArray() );
     }
@@ -259,7 +263,7 @@ protected:
         else if ( ec != std::errc() )
             ThrowWithTarget( System::ArgumentException{ "Argument does not contain Enumeration information", "value_string" } );
 
-        assert( ec == std::errc() );
+        INVARIANT( ec == std::errc() );
 
         typename EnumPolicy::value_type casted{ static_cast<typename EnumPolicy::value_type>(converted) };
 

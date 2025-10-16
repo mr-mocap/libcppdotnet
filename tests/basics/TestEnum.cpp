@@ -1,15 +1,13 @@
-#include "TestEnum.hpp"
-#include "System/Enum.hpp"
-#include <iostream>
-#include <array>
-#include <map>
-#include <iterator>
-#include <cassert>
-#include <limits>
-#include <string>
-#include <type_traits>
+import <iostream>;
+import <array>;
+import <cassert>;
+import <limits>;
+import <ranges>;
+import <span>;
+import <string>;
+import <string_view>;
 
-using namespace std::literals;
+import System.Enum;
 
 namespace TestEnum
 {
@@ -102,30 +100,32 @@ using MyTraceLevel = System::Enum<MyTraceLevelPolicy>;
 
 void CheckGetNames()
 {
-    std::cout << __func__ << std::endl;
-
     MyTraceLevel t;
+    const auto names = t.GetNames();
 
-    std::cout << "GetNames() =\t";
-    std::ranges::copy( t.GetNames(), std::ostream_iterator<std::string_view>(std::cout, "\t") );
-    std::cout << std::endl;
+    assert( names.size() == 5 );
+    assert( names[0] == "Off" );
+    assert( names[1] == "Error" );
+    assert( names[2] == "Warning" );
+    assert( names[3] == "Info" );
+    assert( names[4] == "Verbose" );
 }
 
 void CheckGetValues()
 {
-    std::cout << __func__ << std::endl;
-
     MyTraceLevel t;
+    const auto values = t.GetValues();
 
-    std::cout << "GetValues() =\t";
-    std::ranges::copy( t.GetValues(), std::ostream_iterator<MyTraceLevel::value_type>(std::cout, "\t") );
-    std::cout << std::endl;
+    assert( values.size() == 5 );
+    assert( values[0] == 0 );
+    assert( values[1] == 1 );
+    assert( values[2] == 2 );
+    assert( values[3] == 3 );
+    assert( values[4] == 4 );
 }
 
 void IsDefined()
 {
-    std::cout << __func__ << std::endl;
-
     MyTraceLevel t;
 
     assert( t.IsDefined( MyTraceLevel::Off ) );
@@ -145,8 +145,6 @@ void IsDefined()
 
 void GetName()
 {
-    std::cout << __func__ << std::endl;
-
     assert( MyTraceLevel::GetName( MyTraceLevel::Off ) == "Off" );
     assert( MyTraceLevel::GetName( MyTraceLevel::Error ) == "Error" );
     assert( MyTraceLevel::GetName( MyTraceLevel::Warning ) == "Warning" );
@@ -164,8 +162,6 @@ void GetName()
 
 void Parse()
 {
-    std::cout << __func__ << std::endl;
-
     try
     {
         assert( MyTraceLevel::Parse("Off") == MyTraceLevel::Off );
@@ -195,8 +191,6 @@ void Parse()
 
 void TryParse()
 {
-    std::cout << __func__ << std::endl;
-
     // Success... using names
     assert( MyTraceLevel::TryParse("Off") && (MyTraceLevel::TryParse("Off").value() == MyTraceLevel::Off) );
     assert( MyTraceLevel::TryParse("Error") && (MyTraceLevel::TryParse("Error").value() == MyTraceLevel::Error) );
@@ -221,8 +215,6 @@ void TryParse()
 
 void Construct()
 {
-    std::cout << __func__ << std::endl;
-
     {
         MyTraceLevel t;
 
@@ -262,8 +254,6 @@ void Construct()
 
 void Assignment()
 {
-    std::cout << __func__ << std::endl;
-
     MyTraceLevel t;
 
     assert( t == 0 );
@@ -275,8 +265,6 @@ void Assignment()
 
 void GetValuesAsUnderlyingType()
 {
-    std::cout << __func__ << std::endl;
-
     auto array{ MyTraceLevel::GetValuesAsUnderlyingType() };
 
     assert( array[0] == 0 );
@@ -288,14 +276,11 @@ void GetValuesAsUnderlyingType()
 
 void GetTypeCode()
 {
-    std::cout << __func__ << std::endl;
-
     assert( MyTraceLevel{}.GetTypeCode() == System::TypeCode::UInt32 );
 }
 
 void GenericEnum()
 {
-    std::cout << __func__ << std::endl;
 #if 0
     System::Enum t;
 
@@ -307,8 +292,6 @@ void GenericEnum()
 
 void Run()
 {
-    std::cout << "Running Enum Tests..." << std::endl;
-
     CheckGetNames();
     CheckGetValues();
     IsDefined();
@@ -319,8 +302,12 @@ void Run()
     Assignment();
     GetValuesAsUnderlyingType();
     GetTypeCode();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestEnum::Run();
+    return EXIT_SUCCESS;
 }
