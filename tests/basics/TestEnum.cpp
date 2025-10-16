@@ -101,7 +101,7 @@ using MyTraceLevel = System::Enum<MyTraceLevelPolicy>;
 void CheckGetNames()
 {
     MyTraceLevel t;
-    const auto names = t.GetNames();
+    const std::ranges::view auto names = t.GetNames();
 
     assert( names.size() == 5 );
     assert( names[0] == "Off" );
@@ -114,7 +114,7 @@ void CheckGetNames()
 void CheckGetValues()
 {
     MyTraceLevel t;
-    const auto values = t.GetValues();
+    const std::ranges::view auto values = t.GetValues();
 
     assert( values.size() == 5 );
     assert( values[0] == 0 );
