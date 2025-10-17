@@ -63,11 +63,13 @@ export import System.Enum;
 //export import System.BitConverter;
 //export import System.Convert;
 
+//export import System.Version;
+
+export import System.Span;
+
 #if 0
 export import :IConvertible;
-export import :Version;
 export import :ConsoleKeyInfo;
-export import :Span;
 //export import :ReadOnlySpan;
 export import :Nullable;
 export import :OperatingSystem;

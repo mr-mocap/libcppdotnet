@@ -1,30 +1,24 @@
-#include "System/Span.hpp"
-#include <iostream>
-#include <cassert>
+import <cassert>;
+import <cstdlib>;
 
+import System.Span;
 
 namespace TestSpan
 {
 
 void Empty()
 {
-    std::cout << __func__ << std::endl;
-
     assert( System::Span<int>::Empty().IsEmpty() );
     assert( System::Span<int>::Empty().Length() == 0 );
 }
 
 void DefaultConstructedSpanIsEmpty()
 {
-    std::cout << __func__ << std::endl;
-
     assert( System::Span<short>().IsEmpty() );
 }
 
 void SingleObject()
 {
-    std::cout << __func__ << std::endl;
-
     float var = 3.3;
     System::Span<float> one_item{ var };
 
@@ -35,8 +29,6 @@ void SingleObject()
 
 void MultipleObjectsFromBuiltInArray()
 {
-    std::cout << __func__ << std::endl;
-
     int builtin_array[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
     System::Span<int> span_of_items( builtin_array );
 
@@ -59,8 +51,6 @@ void MultipleObjectsFromBuiltInArray()
 
 void MultipleObjectsFromStdArray()
 {
-    std::cout << __func__ << std::endl;
-
     // Non-const
     {
         std::array<int, 6> a{ 1, 2, 3, 4, 5, 6 };
@@ -147,8 +137,6 @@ void MultipleObjectsFromStdArray()
 
 void Assignment()
 {
-    std::cout << __func__ << std::endl;
-
     float var = 6.6f;
     System::Span<float> one_item{ var };
     System::Span<float> new_item;
@@ -171,8 +159,6 @@ void Assignment()
 
 void Clear()
 {
-    std::cout << __func__ << std::endl;
-
     int a[] = { 1, 2, 3 };
     System::Span<int> span_a( a );
 
@@ -189,8 +175,6 @@ void Clear()
 
 void Fill()
 {
-    std::cout << __func__ << std::endl;
-
     int a[] = { 1, 2, 3 };
     System::Span<int> span_a( a );
 
@@ -207,8 +191,6 @@ void Fill()
 
 void Slice()
 {
-    std::cout << __func__ << std::endl;
-
     int a[] = { 1, 2, 3 };
     System::Span<int> span_a( a );
 
@@ -239,7 +221,7 @@ void Slice()
     }
     catch (const System::ArgumentOutOfRangeException &e)
     {
-        std::cout << std::string(e.Message()).append(" at ").append(e.TargetSite()) << std::endl;
+        assert( true );
     }
     catch (...)
     {
@@ -253,7 +235,7 @@ void Slice()
     }
     catch (const System::ArgumentOutOfRangeException &e)
     {
-        std::cout << std::string(e.Message()).append(" at ").append(e.TargetSite()) << std::endl;
+        assert( true );
     }
     catch (...)
     {
@@ -263,8 +245,6 @@ void Slice()
 
 void CopyTo()
 {
-    std::cout << __func__ << std::endl;
-
     int a[] = { 1, 2, 3 };
     int b[] = { 5, 5, 5, 5, 5 };
     System::Span<int> span_a( a );
@@ -298,15 +278,13 @@ void CopyTo()
     }
     catch(const System::ArgumentException &e)
     {
-        std::cout << std::string(e.Message()).append(" at ").append(e.TargetSite()) << std::endl;
+        assert( true );
     }
     
 }
 
 void TryCopyTo()
 {
-    std::cout << __func__ << std::endl;
-
     int a[] = { 1, 2, 3 };
     int b[] = { 5, 5, 5, 5, 5 };
     System::Span<int> span_a( a );
@@ -339,8 +317,6 @@ void TryCopyTo()
 
 void Run()
 {
-    std::cout << "Running Span Tests..." << std::endl;
-
     Empty();
     DefaultConstructedSpanIsEmpty();
     SingleObject();
@@ -352,8 +328,12 @@ void Run()
     Slice();
     CopyTo();
     TryCopyTo();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestSpan::Run();
+    return EXIT_SUCCESS;
 }

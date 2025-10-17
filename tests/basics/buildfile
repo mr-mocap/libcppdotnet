@@ -11,3 +11,4 @@ import lib = libcppdotnet%lib{cppdotnet}
 ./: exe{TestEnum}: cxx{TestEnum} mxx{Utility} $lib
 #./: exe{TestBitConverter}: cxx{TestBitConverter} mxx{Utility} $lib
 #./: exe{TestConvert}: cxx{TestConvert} mxx{Utility} $lib
+./: exe{TestSpan}: cxx{TestSpan} mxx{Utility} $lib

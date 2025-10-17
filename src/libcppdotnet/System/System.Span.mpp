@@ -1,9 +1,11 @@
-export module System:Span;
+export module System.Span;
 
-import <type_traits>;
 import <algorithm>;
-import <span>;
-import <array>;
+
+export import <array>;
+export import <cstddef>;
+export import <span>;
+export import <type_traits>;
 
 export import System.Exception;
 
@@ -122,12 +124,12 @@ public:
         return true;
     }
 
-    constexpr const_reference operator [](size_t index) const
+    constexpr const_reference operator [](std::size_t index) const
     {
         return _data[index];
     }
 
-    constexpr reference operator [](size_t index)
+    constexpr reference operator [](std::size_t index)
     {
         return _data[index];
     }
@@ -168,13 +170,13 @@ protected:
 template <typename Type>
 Span(Type &) -> Span<Type, 1>;
 
-template <typename Type, size_t Extent>
+template <typename Type, std::size_t Extent>
 Span(Type (&)[Extent]) -> Span<Type, Extent>;
 
-template <typename Type, size_t ArrayExtent>
+template <typename Type, std::size_t ArrayExtent>
 Span(std::array<Type, ArrayExtent> &) -> Span<Type, ArrayExtent>;
 
-template <typename Type, size_t ArrayExtent>
+template <typename Type, std::size_t ArrayExtent>
 Span(const std::array<Type, ArrayExtent> &) -> Span<const Type, ArrayExtent>;
 
 }
