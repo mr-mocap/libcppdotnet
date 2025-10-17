@@ -15,7 +15,6 @@ export import <vector>;
 export import System.Base;
 
 //import System:Boolean;
-import System.BitConverter;
 
 export import System.Exception;
 
@@ -35,15 +34,15 @@ public:
     static std::string      ToString(float  value);
     static std::string      ToString(double value);
 
-    static std::string      ToString(int8_t  value, Base toBase = Base::Decimal);
-    static std::string      ToString(int16_t value, Base toBase = Base::Decimal);
-    static std::string      ToString(int32_t value, Base toBase = Base::Decimal);
-    static std::string      ToString(int64_t value, Base toBase = Base::Decimal);
+    static std::string      ToString(std::int8_t  value, Base toBase = Base::Decimal);
+    static std::string      ToString(std::int16_t value, Base toBase = Base::Decimal);
+    static std::string      ToString(std::int32_t value, Base toBase = Base::Decimal);
+    static std::string      ToString(std::int64_t value, Base toBase = Base::Decimal);
 
-    static std::string      ToString(uint8_t  value, Base toBase = Base::Decimal);
-    static std::string      ToString(uint16_t value, Base toBase = Base::Decimal);
-    static std::string      ToString(uint32_t value, Base toBase = Base::Decimal);
-    static std::string      ToString(uint64_t value, Base toBase = Base::Decimal);
+    static std::string      ToString(std::uint8_t  value, Base toBase = Base::Decimal);
+    static std::string      ToString(std::uint16_t value, Base toBase = Base::Decimal);
+    static std::string      ToString(std::uint32_t value, Base toBase = Base::Decimal);
+    static std::string      ToString(std::uint64_t value, Base toBase = Base::Decimal);
 
     // static std::string_view ToString(Diagnostics::TraceOptions value);
     // static std::string_view ToString(Diagnostics::SourceLevels value);

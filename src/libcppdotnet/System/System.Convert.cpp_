@@ -4,75 +4,84 @@ module;
 
 module System.Convert;
 
+import <algorithm>;
 import <charconv>;
 import <cstring>;
 import <cctype>;
-import <algorithm>;
 import <ranges>;
-
 import <span>;
 import <string>;
 import <string_view>;
+import <vector>;
 
-namespace System
-{
+import System.Base;
+import System.BitConverter;
+import System.Exception;
 
-inline std::string Convert::ToBase64String(std::string_view input_ascii_string)
+using std::uint8_t;
+using std::uint16_t;
+using std::uint32_t;
+using std::uint64_t;
+using std::int8_t;
+using std::int16_t;
+using std::int32_t;
+using std::int64_t;
+using std::size_t;
+
+namespace
 {
-    return ToBase64String( std::as_bytes( std::span<const char>(input_ascii_string) ) );
-}
 
 // From RFC 4648
 std::string_view Base64Table = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-const char             Base64PadChar = '=';
+const char       Base64PadChar = '=';
 
 std::string_view Base85Table = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstu";
-const char             Base85SpecialCase1 = 'z';
-const char             Base85SpecialCase2 = 'y';
-const std::uint32_t    Base85SpecialCaseValue1 = 0u;
-const std::uint32_t    Base85SpecialCaseValue2 = 0x20202020u; // All spaces
+const char       Base85SpecialCase1 = 'z';
+const char       Base85SpecialCase2 = 'y';
+const uint32_t   Base85SpecialCaseValue1 = 0u;
+const uint32_t   Base85SpecialCaseValue2 = 0x20202020u; // All spaces
 
 std::string_view Ascii85_RFC_1924 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$%&()*+-;<=>?@^_`{|}~";
 
-inline bool IsValidBase64(const char input)
+bool IsValidBase64(const char input)
 {
     return Base64Table.find( input ) != std::string_view::npos;
 }
 
-inline char EncodeBase64(const uint8_t input)
+char EncodeBase64(const uint8_t input)
 {
     PRECONDITION( input < Base64Table.size() );
 
     return Base64Table[ input ];
 }
 
-inline std::byte DecodeBase64(char input)
+std::byte DecodeBase64(char input)
 {
     PRECONDITION( IsValidBase64(input) );
 
     return static_cast<std::byte>(Base64Table.find( input ));
 }
 
-inline bool IsValidBase85(const char input)
+bool IsValidBase85(const char input)
 {
     return Base85Table.find( input ) != std::string_view::npos;
 }
 
-inline char EncodeBase85(const uint8_t input)
+char EncodeBase85(const uint8_t input)
 {
     PRECONDITION( input < Base85Table.size() );
 
     return Base85Table[ input ];
 }
 
-inline std::byte DecodeBase85(char input)
+std::byte DecodeBase85(char input)
 {
     PRECONDITION( IsValidBase85(input) );
 
     return static_cast<std::byte>(Base85Table.find( input ));
 }
 
-static std::string From4Base64Chars(std::span<const char, 4> input)
+std::string From4Base64Chars(std::span<const char, 4> input)
 {
     PRECONDITION( IsValidBase64(input[0]) );
     PRECONDITION( IsValidBase64(input[1]) );
@@ -102,6 +111,16 @@ static std::string From4Base64Chars(std::span<const char, 4> input)
     char three = ((third & 0b00000011) << 6) | fourth;
 
     return std::string().append(1, one).append(1, two).append(1, three); // The full three bytes
+}
+
+}
+
+namespace System
+{
+
+std::string Convert::ToBase64String(std::string_view input_ascii_string)
+{
+    return ToBase64String( std::as_bytes( std::span<const char>(input_ascii_string) ) );
 }
 
 std::byte Convert::From2HexCharsToByte(std::string_view input_string)
@@ -314,6 +333,7 @@ std::string Convert::ToString(uint64_t value, Base toBase)
     }
     return {};
 }
+
 #if 0
 std::string_view Convert::ToString(Diagnostics::SourceLevels sourcelevels_value)
 try
@@ -440,6 +460,7 @@ catch(const std::exception& e)
     return {};
 }
 #endif
+
 std::vector<std::byte> Convert::FromHexString(std::string_view input_string)
 {
     std::vector<std::byte> result;

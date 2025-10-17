@@ -601,9 +601,8 @@ ArgumentNullException::~ArgumentNullException() noexcept
 
 ArgumentNullException::ArgumentNullException(std::string_view param_name)
     :
-    ArgumentException( std::string("Argument '").append(param_name).append("' is null") )
+    ArgumentException( std::string("Argument '").append(param_name).append("' is null"), param_name )
 {
-    _paramName = param_name;
 }
 
 std::string_view ArgumentNullException::ClassName() const
@@ -613,9 +612,8 @@ std::string_view ArgumentNullException::ClassName() const
 
 ArgumentOutOfRangeException::ArgumentOutOfRangeException(std::string_view param_name)
     :
-    ArgumentException( std::string("Argument '").append(param_name).append("' is out-of-range") )
+    ArgumentException( std::string("Argument '").append(param_name).append("' is out-of-range"), param_name )
 {
-    _paramName = param_name;
 }
 
 std::string_view ArgumentOutOfRangeException::ClassName() const
