@@ -1,5 +1,7 @@
 export module System.Private_enum;
 
+import <variant>;
+
 export import <algorithm>;
 export import <format>;
 export import <ranges>;
@@ -8,7 +10,6 @@ export import <string_view>;
 export import <span>;
 export import <type_traits>;
 export import <utility>;
-export import <variant>;
 
 export namespace System
 {

@@ -3,7 +3,8 @@ export module System;
 // Module Preamble: Imports
 
 // Import Header Units...
-//export import <array>;
+export import <algorithm>;
+export import <array>;
 export import <chrono>;
 export import <compare>;
 export import <concepts>;
@@ -25,6 +26,7 @@ export import <tuple>;
 export import <type_traits>;
 //export import <unordered_map>;
 export import <utility>;
+//export import <variant>;
 export import <vector>;
 
 // NOTE: These are ORDERED
