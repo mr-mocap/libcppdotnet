@@ -62,7 +62,7 @@ export import System.DateTimeOffset;
 export import System.Enum;
 
 export import System.BitConverter;
-//export import System.Convert;
+export import System.Convert;
 
 //export import System.Version;
 

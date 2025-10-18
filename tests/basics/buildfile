@@ -10,7 +10,7 @@ import lib = libcppdotnet%lib{cppdotnet}
 ./: exe{TestValueTuple}: cxx{TestValueTuple} $lib
 ./: exe{TestEnum}: cxx{TestEnum} $lib
 ./: exe{TestBitConverter}: cxx{TestBitConverter} $lib
-#./: exe{TestConvert}: cxx{TestConvert} $lib
+./: exe{TestConvert}: cxx{TestConvert} $lib
 ./: exe{TestSpan}: cxx{TestSpan} $lib
 #./: exe{TestReadOnlySpan}: cxx{TestReadOnlySpan} $lib
 ./: exe{TestNullable}: cxx{TestNullable} $lib

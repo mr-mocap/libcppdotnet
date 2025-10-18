@@ -2,31 +2,110 @@ module;
 
 #include <libcppdotnet/System/PreProcessor/Contracts.hpp>
 
-module System.Convert;
+export module System.Convert;
 
-import <algorithm>;
-import <charconv>;
-import <cstring>;
-import <cctype>;
-import <ranges>;
-import <span>;
-import <string>;
-import <string_view>;
-import <vector>;
-
-import System.Base;
 import System.BitConverter;
-import System.Exception;
 
-using std::uint8_t;
-using std::uint16_t;
-using std::uint32_t;
-using std::uint64_t;
-using std::int8_t;
-using std::int16_t;
-using std::int32_t;
-using std::int64_t;
-using std::size_t;
+export import <array>;
+export import <cstddef>;
+export import <cstdint>;
+export import <span>;
+export import <string>;
+export import <string_view>;
+export import <vector>;
+
+export import System.Base;
+export import System.Exception;
+
+//import System:Boolean;
+
+// #include "System/Diagnostics/SourceLevels.hpp"
+// #include "System/Diagnostics/TraceLevel.hpp"
+// #include "System/Diagnostics/TraceOptions.hpp"
+
+export namespace System
+{
+
+class Convert
+{
+public:
+    static std::string_view ToString(bool value);
+    static std::string      ToString(char value);
+    static std::string      ToString(std::byte value);
+    static std::string      ToString(float  value);
+    static std::string      ToString(double value);
+
+    static std::string      ToString(std::int8_t  value, Base toBase = Base::Decimal);
+    static std::string      ToString(std::int16_t value, Base toBase = Base::Decimal);
+    static std::string      ToString(std::int32_t value, Base toBase = Base::Decimal);
+    static std::string      ToString(std::int64_t value, Base toBase = Base::Decimal);
+
+    static std::string      ToString(std::uint8_t  value, Base toBase = Base::Decimal);
+    static std::string      ToString(std::uint16_t value, Base toBase = Base::Decimal);
+    static std::string      ToString(std::uint32_t value, Base toBase = Base::Decimal);
+    static std::string      ToString(std::uint64_t value, Base toBase = Base::Decimal);
+
+    // static std::string_view ToString(Diagnostics::TraceOptions value);
+    // static std::string_view ToString(Diagnostics::SourceLevels value);
+
+    static std::vector<std::byte> FromHexString(std::string_view input_string); // Returns sequence as LITTLE-ENDIAN
+    static std::string            ToHexString(const std::vector<std::byte> &input_bytes, bool uppercase = true);
+    static std::string            ToHexString(std::span<const std::byte> input_bytes, bool uppercase = true);
+
+    static std::string            ToBase64String(std::string_view input_ascii_string);
+    static std::string            ToBase64String(std::span<const std::byte> input_bytes);
+
+    static std::vector<std::byte> FromBase64String(const char *input_ascii_string);
+    static std::vector<std::byte> FromBase64String(std::span<const char> input_ascii_string);
+
+    static std::string            ToBase85String(std::span<const std::byte> input_bytes);
+
+    static std::vector<std::byte> FromBase85String(std::string_view input_string);
+    static std::vector<std::byte> FromBase85String(std::span<const char> input_string);
+
+    // From IConvertable  (move there)
+    // static Diagnostics::TraceLevel   ToType(std::string_view value, Diagnostics::TraceLevel   this_is_here_to_select_the_correct_function);
+    // static Diagnostics::TraceOptions ToType(std::string_view value, Diagnostics::TraceOptions this_is_here_to_select_the_correct_function);
+    // static Diagnostics::SourceLevels ToType(std::string_view value, Diagnostics::SourceLevels this_is_here_to_select_the_correct_function);
+
+    // C++ specific
+    static std::string ToChars(auto ...format_args);
+
+    static std::byte           From2HexCharsToByte(std::string_view input_string);
+    static std::array<char, 2> FromByteTo2HexChars(std::byte input_byte, bool uppercase = true);
+
+    /** A structure for storing the digits of a number in a particular base
+     * 
+     *  @note 
+     */
+    struct BaseConversion32Bit_t
+    {
+        explicit constexpr BaseConversion32Bit_t(std::array<std::byte, 32> &a, unsigned int d, unsigned int b)
+            :
+            number_of_digits(d),
+            base(b)
+        {
+            PRECONDITION( base >= 2 );
+            PRECONDITION( base <= 256 );
+
+            for (unsigned int i = 0; i < a.size(); ++i)
+                output_digits[i] = a[i];
+        }
+
+        std::array<std::byte, 32> output_digits; // Base 2 has the most digits, so use that for a 32-bit number
+        unsigned int number_of_digits = 0;
+        unsigned int base             = 10;
+    };
+
+    /** Converts the input number to a sequence of digits in a particular base
+     * 
+     *  @param input_number The number to convert
+     *  @param base The base you want the output in (defaults to base 10)
+     */
+    static BaseConversion32Bit_t ToBase(std::uint32_t input_number, unsigned int base = 10);
+};
+
+}
 
 namespace
 {
