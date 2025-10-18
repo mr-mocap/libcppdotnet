@@ -1,4 +1,4 @@
-export module System:Concepts;
+export module System.Concepts;
 
 import <string>;
 import <concepts>;

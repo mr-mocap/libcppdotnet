@@ -1,9 +1,10 @@
-export module System:IConvertible;
+export module System.IConvertible;
 
 export import <cstddef>;
 export import <cstdint>;
 export import <string>;
-export import :TypeCode;
+
+export import System.TypeCode;
 
 export namespace System
 {

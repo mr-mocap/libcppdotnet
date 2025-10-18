@@ -26,7 +26,6 @@ export import <tuple>;
 export import <type_traits>;
 //export import <unordered_map>;
 export import <utility>;
-//export import <variant>;
 export import <vector>;
 
 // NOTE: These are ORDERED
@@ -72,10 +71,10 @@ export import System.Span;
 export import System.Nullable;
 export import System.IObserver;
 export import System.IObservable;
+export import System.IConvertible;
+export import System.ConsoleKeyInfo;
 
 #if 0
-export import :IConvertible;
-export import :ConsoleKeyInfo;
 export import :OperatingSystem;
 //export import :Environment;
 #endif

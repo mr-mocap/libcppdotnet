@@ -1,7 +1,7 @@
-export module System:ConsoleKeyInfo;
+export module System.ConsoleKeyInfo;
 
-import :ConsoleKey;
-import :ConsoleModifiers;
+export import System.ConsoleKey;
+export import System.ConsoleModifiers;
 
 
 export namespace System
