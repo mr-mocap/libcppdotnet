@@ -161,9 +161,6 @@ public:
     constexpr const_iterator crend() const noexcept { return _data.crend();  }
 protected:
     std::span<Type, Extent> _data;
-
-    template <class Tp, std::size_t N>
-    friend class ReadOnlySpan;
 };
 
 // Deduction guides

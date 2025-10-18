@@ -1,14 +1,16 @@
 import lib = libcppdotnet%lib{cppdotnet}
 
-./: exe{TestException}: cxx{TestException} mxx{Utility} $lib
-./: exe{TestDelegates}: cxx{TestDelegates} mxx{Utility} $lib
+./: exe{TestException}: cxx{TestException} $lib
+./: exe{TestDelegates}: cxx{TestDelegates} $lib
 ./: exe{TestTimeSpan}: cxx{TestTimeSpan} mxx{Utility} $lib
 ./: exe{TestTimeOnly}: cxx{TestTimeOnly} mxx{Utility} $lib
 ./: exe{TestDateOnly}: cxx{TestDateOnly} mxx{Utility} $lib
 ./: exe{TestDateTime}: cxx{TestDateTime} mxx{Utility} $lib
 ./: exe{TestDateTimeOffset}: cxx{TestDateTimeOffset} mxx{Utility} $lib
-./: exe{TestValueTuple}: cxx{TestValueTuple} mxx{Utility} $lib
-./: exe{TestEnum}: cxx{TestEnum} mxx{Utility} $lib
-#./: exe{TestBitConverter}: cxx{TestBitConverter} mxx{Utility} $lib
-#./: exe{TestConvert}: cxx{TestConvert} mxx{Utility} $lib
-./: exe{TestSpan}: cxx{TestSpan} mxx{Utility} $lib
+./: exe{TestValueTuple}: cxx{TestValueTuple} $lib
+./: exe{TestEnum}: cxx{TestEnum} $lib
+#./: exe{TestBitConverter}: cxx{TestBitConverter} $lib
+#./: exe{TestConvert}: cxx{TestConvert} $lib
+./: exe{TestSpan}: cxx{TestSpan} $lib
+#./: exe{TestReadOnlySpan}: cxx{TestReadOnlySpan} $lib
+./: exe{TestNullable}: cxx{TestNullable} $lib

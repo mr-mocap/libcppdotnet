@@ -1,7 +1,9 @@
-export module System:Nullable;
+export module System.Nullable;
 
-import <optional>;
 import <utility>;
+
+export import <optional>; // Exporting so we can use std::nullopt externally
+export import <type_traits>;
 
 export import System.Exception;
 
@@ -30,19 +32,15 @@ public:
 
     constexpr const T &Value() const &
     {
-        using namespace std::literals;
-
         if ( !HasValue() )
-            ThrowWithTarget( InvalidOperationException{ "HasValue property is false"sv } );
+            ThrowWithTarget( InvalidOperationException( "HasValue property is false" ) );
         return _data.value();
     }
 
     constexpr T &Value() &
     {
-        using namespace std::literals;
-
         if ( !HasValue() )
-            ThrowWithTarget( InvalidOperationException{ "HasValue property is false"sv } );
+            ThrowWithTarget( InvalidOperationException( "HasValue property is false" ) );
         return _data.value();
     }
 

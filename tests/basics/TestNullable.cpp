@@ -1,16 +1,13 @@
-#include "TestNullable.hpp"
-#include "System/Nullable.hpp"
-#include <iostream>
-#include <cassert>
+import <cstdlib>;
+import <cassert>;
 
+import System.Nullable;
 
 namespace TestNullable
 {
 
 void DefaultConstructsToNull()
 {
-    std::cout << __func__ << std::endl;
-
     System::Nullable<int> variable;
 
     assert( !variable.HasValue() );
@@ -18,8 +15,6 @@ void DefaultConstructsToNull()
 
 void ConstructWithValueSetValueAndHasValueToTrue()
 {
-    std::cout << __func__ << std::endl;
-
     {
         System::Nullable<int> variable{ 6 };
 
@@ -37,8 +32,6 @@ void ConstructWithValueSetValueAndHasValueToTrue()
 
 void AccessingValueWhenHasValueIsFalseThrowsException()
 {
-    std::cout << __func__ << std::endl;
-
     System::Nullable<int> variable;
 
     assert( !variable.HasValue() );
@@ -50,15 +43,12 @@ void AccessingValueWhenHasValueIsFalseThrowsException()
     }
     catch(const System::InvalidOperationException &e)
     {
-        std::cout << "Exception Caught: " << e.Message() << std::endl;
         assert( true );
     }
 }
 
 void AccessingValueWhenHasValueIsTrueDoesNotThrowException()
 {
-    std::cout << __func__ << std::endl;
-
     System::Nullable<int> variable{ 2 };
 
     assert( variable.HasValue() );
@@ -67,8 +57,6 @@ void AccessingValueWhenHasValueIsTrueDoesNotThrowException()
 
 void GetValueOrDefaultReturnsDefaultWhenHasValueIsFalse()
 {
-    std::cout << __func__ << std::endl;
-
     System::Nullable<int> variable;
 
     assert( !variable.HasValue() );
@@ -77,8 +65,6 @@ void GetValueOrDefaultReturnsDefaultWhenHasValueIsFalse()
 
 void GetValueOrDefaultReturnsValueWhenHasValueIsTrue()
 {
-    std::cout << __func__ << std::endl;
-
     System::Nullable<int> variable{ 32768 };
 
     assert( variable.HasValue() );
@@ -87,8 +73,6 @@ void GetValueOrDefaultReturnsValueWhenHasValueIsTrue()
 
 void GetValueOrDefaultWithNoParameters()
 {
-    std::cout << __func__ << std::endl;
-
     // Returns Default Value when !HasValue()
     {
         System::Nullable<int> variable;
@@ -108,8 +92,6 @@ void GetValueOrDefaultWithNoParameters()
 
 void ConversionOperator()
 {
-    std::cout << __func__ << std::endl;
-
     // Returns Default Value when !HasValue()
     {
         System::Nullable<int> variable;
@@ -138,8 +120,6 @@ void ConversionOperator()
 
 void OperatorEquals()
 {
-    std::cout << __func__ << std::endl;
-
     System::Nullable<int> variable;
 
     // Assigning a value to an empty Nullable
@@ -210,8 +190,6 @@ void OperatorEquals()
 
 void OperatorEqualsEquals()
 {
-    std::cout << __func__ << std::endl;
-
     // Both Null
     {
         System::Nullable<int> variable;
@@ -251,8 +229,6 @@ void OperatorEqualsEquals()
 
 void Run()
 {
-    std::cout << "Running Nullable Tests..." << std::endl;
-
     DefaultConstructsToNull();
     ConstructWithValueSetValueAndHasValueToTrue();
     AccessingValueWhenHasValueIsFalseThrowsException();
@@ -263,8 +239,12 @@ void Run()
     ConversionOperator();
     OperatorEquals();
     OperatorEqualsEquals();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestNullable::Run();
+    return EXIT_SUCCESS;
 }

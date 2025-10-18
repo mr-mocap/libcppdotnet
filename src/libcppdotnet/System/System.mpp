@@ -13,7 +13,7 @@ export import <exception>;
 export import <format>;
 export import <functional>;
 //export import <initializer_list>;
-//export import <iterator>;
+export import <iterator>;
 export import <memory>;
 export import <optional>;
 export import <ranges>;
@@ -66,12 +66,12 @@ export import System.Enum;
 //export import System.Version;
 
 export import System.Span;
+//export import System.ReadOnlySpan;
+export import System.Nullable;
 
 #if 0
 export import :IConvertible;
 export import :ConsoleKeyInfo;
-//export import :ReadOnlySpan;
-export import :Nullable;
 export import :OperatingSystem;
 export import :IObserver;
 export import :IObservable;

@@ -1,15 +1,18 @@
-export module System:ReadOnlySpan;
+export module System.ReadOnlySpan;
 
-export import <span>;
-export import <array>;
-import <type_traits>;
 import <algorithm>;
-import :Span;
 
-namespace System
+export import <array>;
+export import <cstddef>;
+export import <span>;
+export import <type_traits>;
+
+export import System.Span;
+export import System.Exception;
+
+export namespace System
 {
 
-export
 template <typename Type, std::size_t Extent = std::dynamic_extent>
 class ReadOnlySpan
 {
@@ -20,14 +23,19 @@ class ReadOnlySpan
         requires (Extent == std::dynamic_extent || ArrayExtent == Extent)
 	using is_compatible_array = is_array_convertible<const Type, Tp>;
 public:
-      using element_type           = const Type;
-      using value_type             = std::remove_cv_t<Type>;
-      using size_type              = std::size_t;
-      using difference_type        = std::ptrdiff_t;
-      using const_pointer          = const Type *;
-      using const_reference        = const element_type &;
-      using const_iterator         = std::span<Type, Extent>::const_iterator;
-      using const_reverse_iterator = std::span<Type, Extent>::const_reverse_iterator;
+    using element_type           = const Type;
+    using value_type             = std::remove_cv_t<Type>;
+    using size_type              = std::size_t;
+    using difference_type        = std::ptrdiff_t;
+    using const_pointer          = const Type *;
+    using const_reference        = const element_type &;
+#if __cplusplus > 202002L
+    using const_iterator         = std::span<Type, Extent>::const_iterator;
+    using const_reverse_iterator = std::span<Type, Extent>::const_reverse_iterator;
+#else
+    using const_iterator         = std::span<const Type, Extent>::iterator;
+    using const_reverse_iterator = std::span<const Type, Extent>::reverse_iterator;
+#endif
 
     constexpr ReadOnlySpan() noexcept
         requires(Extent == std::dynamic_extent  ||  Extent == 0) = default;
@@ -91,9 +99,9 @@ public:
     ReadOnlySpan Slice(std::size_t start, std::size_t length = std::dynamic_extent)
     {
         if ( start >= Length() )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"start"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("start") );
         if ( (length != std::dynamic_extent) && ((start + length) >= Length()) )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{"length"} );
+            ThrowWithTarget( System::ArgumentOutOfRangeException("length") );
 
         return ReadOnlySpan( _data.subspan( start, length ) );
     }
@@ -101,9 +109,9 @@ public:
     void CopyTo(Span<Type> destination) const
     {
         if ( destination.Length() < Length() )
-            ThrowWithTarget( System::ArgumentException{"Destination Span is shorter than the source ReadOnlySpan", "destination"} );
+            ThrowWithTarget( System::ArgumentException("Destination Span is shorter than the source ReadOnlySpan", "destination") );
         
-        std::ranges::copy( _data, destination._data.begin() );
+        std::ranges::copy( _data, destination.begin() );
     }
 
     bool TryCopyTo(Span<Type> destination)
@@ -111,20 +119,20 @@ public:
         if ( destination.Length() < Length() )
             return false;
         
-        std::ranges::copy( _data, destination._data.begin() );
+        std::ranges::copy( _data, destination.begin() );
         return true;
     }
 
-    constexpr const_reference operator [](size_t index) const
+    constexpr const_reference operator [](std::size_t index) const
     {
         return _data[index];
     }
 
     // C++ specific pleasantries
-    constexpr const_pointer data() const { return _data.data(); }
-    constexpr size_type size_bytes() const { return _data.size_bytes(); }
+    constexpr const_pointer data()       const { return _data.data(); }
+    constexpr size_type     size_bytes() const { return _data.size_bytes(); }
 
-    ReadOnlySpan<std::byte> as_bytes() const { return ReadOnlySpan<std::byte>{ std::as_bytes( _data ) }; }
+    ReadOnlySpan<std::byte> as_bytes() const { return std::as_bytes( _data ); }
 
     // Make work with foreach
     constexpr const_iterator begin()  const noexcept { return _data.begin(); }
@@ -142,7 +150,6 @@ protected:
     std::span<const Type, Extent> _data;
 };
 
-export
 template <typename SpecializedType, std::size_t Extent>
 class ReadOnlySpan<const SpecializedType, Extent> : public ReadOnlySpan<SpecializedType, Extent>
 {
@@ -155,13 +162,13 @@ public:
 template <typename Type>
 ReadOnlySpan(Type &) -> ReadOnlySpan<Type, 1>;
 
-template <typename Type, size_t Extent>
+template <typename Type, std::size_t Extent>
 ReadOnlySpan(Type (&)[Extent]) -> ReadOnlySpan<Type, Extent>;
 
-template <typename Type, size_t ArrayExtent>
+template <typename Type, std::size_t ArrayExtent>
 ReadOnlySpan(std::array<Type, ArrayExtent> &) -> ReadOnlySpan<Type, ArrayExtent>;
 
-template <typename Type, size_t ArrayExtent>
+template <typename Type, std::size_t ArrayExtent>
 ReadOnlySpan(const std::array<Type, ArrayExtent> &) -> ReadOnlySpan<Type, ArrayExtent>;
 
 }
