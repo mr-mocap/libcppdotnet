@@ -76,6 +76,8 @@ export import System.OperatingSystem;
 
 export import System.Guid;
 
+export import System.Byte;
+
 #if 0
 //export import :Environment;
 #endif

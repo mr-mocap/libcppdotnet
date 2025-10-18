@@ -1,13 +1,16 @@
-#include "System/TypeCode.hpp"
-#include <cstddef>
-#include <cstdint>
-#include <limits>
-#include <algorithm>
-#include <compare>
-#include <bit>
-#include <format>
+export module System.Byte;
 
-namespace System
+export import <algorithm>;
+export import <bit>;
+export import <compare>;
+export import <cstddef>;
+export import <cstdint>;
+export import <format>;
+export import <limits>;
+
+export import System.TypeCode;
+
+export namespace System
 {
 
 class Byte
