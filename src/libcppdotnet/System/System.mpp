@@ -68,13 +68,13 @@ export import System.Enum;
 export import System.Span;
 //export import System.ReadOnlySpan;
 export import System.Nullable;
+export import System.IObserver;
+export import System.IObservable;
 
 #if 0
 export import :IConvertible;
 export import :ConsoleKeyInfo;
 export import :OperatingSystem;
-export import :IObserver;
-export import :IObservable;
 //export import :Environment;
 #endif
 #if 0

@@ -1,6 +1,6 @@
-export module System:IObservable;
+export module System.IObservable;
 
-import :IObserver;
+export import System.IObserver;
 
 export namespace System
 {
@@ -9,6 +9,8 @@ template <class T>
 class IObservable
 {
 public:
+    virtual ~IObservable() = default;
+
     virtual void Subscribe(IObserver<T> &observer) = 0;
 protected:
 };

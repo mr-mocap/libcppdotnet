@@ -1,4 +1,4 @@
-export module System:IObserver;
+export module System.IObserver;
 
 export import System.Exception;
 
@@ -9,6 +9,7 @@ template <class T>
 class IObserver
 {
 public:
+    virtual ~IObserver() = default;
 
     virtual void OnNext(const T &value) = 0;
     virtual void OnError(Exception &error) = 0;
