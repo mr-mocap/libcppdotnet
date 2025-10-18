@@ -1,7 +1,6 @@
 export module System.ReadOnlySpan;
 
-import <algorithm>;
-
+export import <algorithm>;
 export import <array>;
 export import <cstddef>;
 export import <span>;

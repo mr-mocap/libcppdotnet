@@ -67,7 +67,7 @@ export import System.Convert;
 //export import System.Version;
 
 export import System.Span;
-//export import System.ReadOnlySpan;
+export import System.ReadOnlySpan;
 export import System.Nullable;
 export import System.IObserver;
 export import System.IObservable;
