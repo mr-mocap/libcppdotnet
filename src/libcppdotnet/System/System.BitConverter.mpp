@@ -1,13 +1,81 @@
-module System.BitConverter;
+export module System.BitConverter;
 
-import <array>;
-import <bit>;
-import <cstddef>;
-import <cstdint>;
-import <cstring>;
-import <span>;
-import <type_traits>;
-import <vector>;
+
+export import <array>;
+export import <cstddef>;
+export import <cstdint>;
+export import <cstring>;
+export import <span>;
+export import <type_traits>;
+export import <vector>;
+
+export import System.Exception;
+
+export namespace System
+{
+
+struct BitConverter final
+{
+    template <class BasicType>
+        requires( std::is_arithmetic_v<BasicType> || std::is_enum_v<BasicType> )
+    static std::vector<std::byte> GetBytes(BasicType value);
+    
+    static bool ToBoolean(const std::vector<std::byte> &bytes, size_t index = 0);
+
+    static bool ToBoolean(std::span<const std::byte> bytes);
+
+    static char ToChar(const std::vector<std::byte> &bytes, size_t index = 0);
+
+    static char ToChar(std::span<const std::byte> bytes);
+
+    static std::int16_t ToInt16(const std::vector<std::byte> &bytes, size_t index = 0);
+
+    static std::int16_t ToInt16(std::span<const std::byte> bytes);
+
+    static std::int32_t ToInt32(const std::vector<std::byte> &bytes, size_t index = 0);
+    static std::int32_t ToInt32(std::span<const std::byte> bytes);
+
+    static std::int64_t ToInt64(const std::vector<std::byte> &bytes, size_t index = 0);
+    static std::int64_t ToInt64(std::span<const std::byte> bytes);
+
+    static std::uint16_t ToUInt16(const std::vector<std::byte> &bytes, size_t index = 0);
+    static std::uint16_t ToUInt16(std::span<const std::byte> bytes);
+
+    static std::uint32_t ToUInt32(const std::vector<std::byte> &bytes, size_t index = 0);
+    static std::uint32_t ToUInt32(std::span<const std::byte> bytes);
+
+    static std::uint64_t ToUInt64(const std::vector<std::byte> &bytes, size_t index = 0);
+    static std::uint64_t ToUInt64(std::span<const std::byte> bytes);
+
+    static float ToFloat(const std::vector<std::byte> &bytes, size_t index = 0);
+    static float ToFloat(std::span<const std::byte> bytes);
+
+    static double ToDouble(const std::vector<std::byte> &bytes, size_t index = 0);
+    static double ToDouble(std::span<const std::byte> bytes);
+
+    // Non-standard methods...
+    static std::uint16_t ByteSwap(std::uint16_t input) noexcept;
+
+    static std::int16_t  ByteSwap(std::int16_t input) noexcept;
+
+    static std::uint32_t ByteSwap(std::uint32_t input) noexcept;
+
+    static std::int32_t  ByteSwap(std::int32_t input) noexcept;
+
+    static std::uint64_t ByteSwap(std::uint64_t input) noexcept;
+
+    static std::int64_t  ByteSwap(std::int64_t input) noexcept;
+
+    static float         ByteSwap(float input);
+
+    static double        ByteSwap(double input);
+
+    template <class BasicType, std::endian Endian = std::endian::native>
+        requires( std::is_arithmetic_v<BasicType> || std::is_enum_v<BasicType> )
+    static BasicType To(std::span<const std::byte> bytes) noexcept;
+};
+
+}
 
 namespace System
 {
