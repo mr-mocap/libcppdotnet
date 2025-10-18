@@ -74,13 +74,14 @@ export import System.IConvertible;
 export import System.ConsoleKeyInfo;
 export import System.OperatingSystem;
 
+export import System.Guid;
+
 #if 0
 //export import :Environment;
 #endif
 #if 0
 
 // Depends on Other System/. files...
-// export import :Guid;
 #endif
 #if 0
 export import :KeyValuePair;

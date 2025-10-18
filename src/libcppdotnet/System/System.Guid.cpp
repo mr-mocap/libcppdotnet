@@ -1,83 +1,26 @@
-export module System.Guid;
+module;
+
+#include <uuid/uuid.h>
+
+module System.Guid;
 
 import <algorithm>;
-import <format>;
 import <cctype>;
-import <cstdint>;
-
-import System:BitConverter;
-
-export import System:Span;
-export import System:ReadOnlySpan;
-export import <cstddef>;
-export import <string>;
-export import <string_view>;
 import <compare>;
-export import <optional>;
-import <uuid/uuid.h>;
+import <cstddef>;
+import <cstdint>;
+import <format>;
+import <optional>;
+import <span>;
+import <string>;
+import <string_view>;
 
+import System.BitConverter;
+import System.ReadOnlySpan;
+import System.Exception;
 
-namespace System
+namespace
 {
-
-export
-class Guid
-{
-public:
-    constexpr Guid() = default;
-    Guid(std::int32_t a, std::int16_t b, std::int16_t c,
-         std::byte d, std::byte e, std::byte f, std::byte g, std::byte h, std::byte i, std::byte j, std::byte k);
-
-    Guid(std::uint32_t a, std::uint16_t b, std::uint16_t c,
-         std::byte d, std::byte e, std::byte f, std::byte g, std::byte h, std::byte i, std::byte j, std::byte k);
-
-    Guid(ReadOnlySpan<std::byte> bytes);
-
-    Guid(std::span<const std::byte> bytes)
-        :
-        // Delegating constructor...
-        Guid( ReadOnlySpan<std::byte>(bytes) )
-    {
-    }
-    Guid(std::string_view str_input);
-    
-    Guid(const Guid &other);
-
-    Guid &operator =(const Guid &);
-
-    static Guid Empty();
-
-    static Guid AllBitsSet();
-
-    int Variant() const { return 0; }
-    int Version() const { return 0; }
-
-    ReadOnlySpan<std::byte, 16> ToByteArray() const;
-
-    std::string ToString() const;
-    std::string ToString(std::string_view format) const;
-
-    static Guid NewGuid();
-
-    static Guid Parse(std::string_view input);
-    static Guid Parse(ReadOnlySpan<char> input);
-
-    static std::optional<Guid> TryParse(std::string_view input);
-    static std::optional<Guid> TryParse(ReadOnlySpan<char> input);
-
-    std::strong_ordering operator <=>(const Guid &other) const;
-
-protected:
-    uuid_t _data = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-
-    Guid(const uuid_t &external_value)
-    {
-        std::ranges::copy( std::span(external_value),
-                           std::ranges::begin(_data) );
-    }
-};
-
-}
 
 #if 0
 SPECIFIER | Format of return value
@@ -99,7 +42,7 @@ X           Four hexadecimal values enclosed in braces, where the fourth value i
             {0x00000000,0x0000,0x0000,{0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}}
 #endif
 
-static std::string NStringToDString(std::string_view input)
+std::string NStringToDString(std::string_view input)
 {
     return std::format("{}-{}-{}-{}-{}", input.substr(0, 8),
                                          input.substr(8, 4),
@@ -108,7 +51,7 @@ static std::string NStringToDString(std::string_view input)
                                          input.substr(20, 12));
 }
 
-static std::string XStringToDString(std::string_view input)
+std::string XStringToDString(std::string_view input)
 {
     return std::format("{}-{}-{}-{}{}-{}{}{}{}{}{}",
                        input.substr( 3, 8 ),
@@ -129,7 +72,7 @@ static std::string XStringToDString(std::string_view input)
                       );
 }
 
-static std::string AsDString(const uuid_t &input)
+std::string AsDString(const uuid_t &input)
 {
     // Two hex chars per byte, four hyphens and a '\0' terminator
     char buffer[ (16 * 2) + 4 + 1];
@@ -138,7 +81,7 @@ static std::string AsDString(const uuid_t &input)
     return std::string( buffer, sizeof(buffer) - 1 );
 }
 
-static std::string AsNString(const uuid_t &input)
+std::string AsNString(const uuid_t &input)
 {
     std::string d_str = AsDString( input );
 
@@ -146,21 +89,21 @@ static std::string AsNString(const uuid_t &input)
     return d_str.erase( 23, 1 ).erase( 18, 1 ).erase( 13, 1 ).erase( 8, 1 );
 }
 
-static std::string AsBString(const uuid_t &input)
+std::string AsBString(const uuid_t &input)
 {
     std::string d_str = AsDString( input );
 
     return d_str.insert( 0, 1, '{' ).append( 1, '}' );
 }
 
-static std::string AsPString(const uuid_t &input)
+std::string AsPString(const uuid_t &input)
 {
     std::string d_str = AsDString( input );
 
     return d_str.insert( 0, 1, '(' ).append( 1, ')' );
 }
 
-static std::string AsXString(const uuid_t &input)
+std::string AsXString(const uuid_t &input)
 {
     std::string d_str = AsDString( input );
     std::string_view view = d_str;
@@ -184,14 +127,14 @@ static std::string AsXString(const uuid_t &input)
                        '}');
 }
 
-static bool AllDigitsAreHex(std::string_view input)
+bool AllDigitsAreHex(std::string_view input)
 {
     if ( input.empty() )
         return false;
     return std::ranges::all_of( input, [](unsigned char i) { return std::isxdigit(i); } );
 }
 
-static bool IsNFormat(std::string_view input)
+bool IsNFormat(std::string_view input)
 {
     if ( input.size() != 32 )
         return false;
@@ -199,7 +142,7 @@ static bool IsNFormat(std::string_view input)
     return AllDigitsAreHex( input );
 }
 
-static bool IsDFormat(std::string_view input)
+bool IsDFormat(std::string_view input)
 {
     if ( input.size() != 36 )
         return false;
@@ -236,7 +179,7 @@ static bool IsDFormat(std::string_view input)
     return true;
 }
 
-static bool IsBFormat(std::string_view input)
+bool IsBFormat(std::string_view input)
 {
     if ( input.size() != 38 )
         return false;
@@ -276,7 +219,7 @@ static bool IsBFormat(std::string_view input)
     return true;
 }
 
-static bool IsPFormat(std::string_view input)
+bool IsPFormat(std::string_view input)
 {
     if ( input.size() != 38 )
         return false;
@@ -316,7 +259,7 @@ static bool IsPFormat(std::string_view input)
     return true;
 }
 
-static bool IsXFormat(std::string_view input)
+bool IsXFormat(std::string_view input)
 {
     if ( input.size() != 68 )
         return false;
@@ -406,6 +349,8 @@ static bool IsXFormat(std::string_view input)
     return true;
 }
 
+}
+
 namespace System
 {
 
@@ -468,11 +413,24 @@ Guid::Guid(const Guid &other)
     uuid_copy( _data, other._data );
 }
 
+Guid::Guid(std::span<const std::byte> bytes)
+    :
+    // Delegating constructor...
+    Guid( ReadOnlySpan<std::byte>(bytes) )
+{
+}
+
 Guid::Guid(std::string_view str_input)
 {
     Guid temp = Parse(str_input);
 
     std::ranges::copy( std::span(temp._data), std::ranges::begin(_data) );
+}
+
+Guid::Guid(const uuid_t &external_value)
+{
+    std::ranges::copy( std::span(external_value),
+                       std::ranges::begin(_data) );
 }
 
 ReadOnlySpan<std::byte, 16> Guid::ToByteArray() const
@@ -502,6 +460,16 @@ Guid Guid::AllBitsSet()
                                                                                 0xFF, 0xFF, 0xFF, 0xFF,
                                                                                 0xFF, 0xFF, 0xFF, 0xFF,
                                                                                 0xFF, 0xFF, 0xFF, 0xFF} ) ) );
+}
+
+int Guid::Variant() const
+{
+    return 0;
+}
+
+int Guid::Version() const
+{
+    return 0;
 }
 
 std::string Guid::ToString() const

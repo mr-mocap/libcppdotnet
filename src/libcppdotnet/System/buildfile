@@ -1,5 +1,5 @@
-intf_libs = # Interface dependencies.
-impl_libs = # Implementation dependencies.
+intf_libs = # Interface dependencies
+impl_libs = libuuid%lib{uuid} # Implementation dependencies.
 #import xxxx_libs += libhello%lib{hello}
 
 # Public headers.
@@ -30,6 +30,8 @@ cxx.poptions =+ "-I$out_pfx_src" "-I$src_pfx_src" \
 
 {bmia obja}{*}: cxx.poptions += -DLIBCPPDOTNET_STATIC_BUILD
 {bmis objs}{*}: cxx.poptions += -DLIBCPPDOTNET_SHARED_BUILD
+
+import libs += libuuid.a
 
 # Export options.
 #
