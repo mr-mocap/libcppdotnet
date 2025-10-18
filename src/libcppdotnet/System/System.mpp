@@ -72,9 +72,9 @@ export import System.IObserver;
 export import System.IObservable;
 export import System.IConvertible;
 export import System.ConsoleKeyInfo;
+export import System.OperatingSystem;
 
 #if 0
-export import :OperatingSystem;
 //export import :Environment;
 #endif
 #if 0
