@@ -13,5 +13,6 @@ import lib = libcppdotnet%lib{cppdotnet}
 ./: exe{TestConvert}: cxx{TestConvert} $lib
 ./: exe{TestSpan}: cxx{TestSpan} $lib
 ./: exe{TestReadOnlySpan}: cxx{TestReadOnlySpan} $lib
+./: exe{TestVersion}: cxx{TestVersion} $lib
 ./: exe{TestNullable}: cxx{TestNullable} $lib
 #./: exe{TestGuid}: cxx{TestGuid} $lib

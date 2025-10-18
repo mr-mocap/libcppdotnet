@@ -1,17 +1,13 @@
-#include "TestVersion.hpp"
-#include "System/Version.hpp"
-#include "System/Exception.hpp"
-#include <iostream>
-#include <cassert>
+import <cstdlib>;
+import <cassert>;
 
+import System.Version;
 
 namespace TestVersion
 {
 
 void DefaultConstructed()
 {
-    std::cout << __func__ << std::endl;
-
     System::Version default_constructed;
 
     assert( default_constructed.Major() == 0 );
@@ -22,8 +18,6 @@ void DefaultConstructed()
 
 void ConstructWithMajorAndMinor()
 {
-    std::cout << __func__ << std::endl;
-
     System::Version v{ 1, 3 };
 
     assert( v.Major() == 1 );
@@ -34,8 +28,6 @@ void ConstructWithMajorAndMinor()
 
 void ConstructWithMajorAndMinorAndBuild()
 {
-    std::cout << __func__ << std::endl;
-
     System::Version v{ 1, 3, 12 };
 
     assert( v.Major() == 1 );
@@ -46,8 +38,6 @@ void ConstructWithMajorAndMinorAndBuild()
 
 void ConstructWithMajorAndMinorAndBuildAndRevision()
 {
-    std::cout << __func__ << std::endl;
-
     System::Version v{ 1, 3, 12, 32 };
 
     assert( v.Major() == 1 );
@@ -58,10 +48,6 @@ void ConstructWithMajorAndMinorAndBuildAndRevision()
 
 void ConstructWithString()
 {
-    using namespace std::literals;
-
-    std::cout << __func__ << std::endl;
-
     {
         System::Version v{ System::Version::Parse("3") };
 
@@ -114,8 +100,6 @@ void ConstructWithString()
 
 void ToStringWithParameter()
 {
-    std::cout << __func__ << std::endl;
-
     {
         System::Version d;
 
@@ -143,25 +127,25 @@ void ToStringWithParameter()
         }
         catch (const System::ArgumentException &e)
         {
-            std::cout << e.ToString() << std::endl;
-            std::cout << e.TargetSite() << std::endl;
-            std::cout << std::endl;
+            assert( true );
         }
     }
 }
 
 void Run()
 {
-    std::cout << "Running Version Tests..." << std::endl;
-
     DefaultConstructed();
     ConstructWithMajorAndMinor();
     ConstructWithMajorAndMinorAndBuild();
     ConstructWithMajorAndMinorAndBuildAndRevision();
     ConstructWithString();
     ToStringWithParameter();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestVersion::Run();
+    return EXIT_SUCCESS;
 }
