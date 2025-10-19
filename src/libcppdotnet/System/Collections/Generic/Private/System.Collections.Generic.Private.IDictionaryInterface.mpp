@@ -1,9 +1,9 @@
-export module System.Collections:IDictionaryInterface;
+export module System.Collections.Generic.Private.IDictionaryInterface;
 
 export import <memory>;
 
-export import :KeyValuePair;
-export import :ICollection;
+export import System.Collections.Generic.KeyValuePair;
+export import System.Collections.Generic.ICollection;
 
 export namespace System::Collections::Generic::Private
 {

@@ -11,7 +11,7 @@ include $pub
 pub_hdrs = $($pub/ pub_hdrs)
 
 ./: lib{cppdotnet}
-./: dir{Numerics}
+./: {Numerics/} {Collections/}
 
 lib{cppdotnet}: {mxx}{**} {cxx}{**} $impl_libs $intf_libs
 

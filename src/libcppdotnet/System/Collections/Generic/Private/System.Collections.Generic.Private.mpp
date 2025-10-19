@@ -1,0 +1,8 @@
+export module System.Collections.Generic.Private;
+
+export import System.Collections.Generic.Private.ICollectionInterface;
+export import System.Collections.Generic.Private.IDictionaryInterface;
+export import System.Collections.Generic.Private.IListInterface;
+export import System.Collections.Generic.Private.LegacyBidirectionalIteratorBase;
+export import System.Collections.Generic.Private.LegacyForwardIteratorBase;
+export import System.Collections.Generic.Private.LegacyRandomAccessIteratorBase;

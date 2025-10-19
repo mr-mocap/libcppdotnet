@@ -1,21 +1,22 @@
 module;
 
-#include <libcppdotnet/System/Private/private.hpp>
+#include <libcppdotnet/System/PreProcessor/Contracts.hpp>
 
-export module System.Collections:Dictionary;
+export module System.Collections.Generic.Dictionary;
 
-import <unordered_map>;
-import <utility>;
-import <functional>;
-import <iterator>;
-import <format>;
-import <ranges>;
-import <compare>;
-import <algorithm>;
+export import <algorithm>;
+export import <format>;
+export import <functional>;
+export import <initializer_list>;
+export import <iterator>;
+export import <unordered_map>;
+export import <utility>;
+export import <vector>;
+export import <ranges>;
 
-import :KeyNotFoundException;
-import :List;
-import :KeyValuePair;
+export import System.Collections.Generic.KeyNotFoundException;
+export import System.Collections.Generic.List;
+export import System.Collections.Generic.KeyValuePair;
 
 export namespace System::Collections::Generic
 {

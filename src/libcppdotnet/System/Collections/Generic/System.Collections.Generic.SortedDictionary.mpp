@@ -1,18 +1,18 @@
 module;
 
-#include <libcppdotnet/System/Private/private.hpp>
+#include <libcppdotnet/System/PreProcessor/Contracts.hpp>
 
-export module System.Collections:SortedDictionary;
+export module System.Collections.Generic.SortedDictionary;
 
-import <map>;
-import <format>;
-import <ranges>;
-import <compare>;
-import <algorithm>;
+export import <algorithm>;
+export import <compare>;
+export import <format>;
+export import <map>;
+export import <ranges>;
 
-import :KeyValuePair;
-import :List;
-import :KeyNotFoundException;
+import System.Collections.Generic.KeyValuePair;
+import System.Collections.Generic.List;
+import System.Collections.Generic.KeyNotFoundException;
 
 export namespace System::Collections::Generic
 {

@@ -1,5 +1,6 @@
-export module System.Collections:ICollectionInterface;
+export module System.Collections.Generic.Private.ICollectionInterface;
 
+export import <cstddef>;
 export import <memory>;
 
 export namespace System::Collections::Generic::Private

@@ -1,19 +1,20 @@
 module;
 
-#include <libcppdotnet/System/Private/private.hpp>
+#include <libcppdotnet/System/PreProcessor/Contracts.hpp>
 
-export module System.Collections:OrderedDictionary;
+export module System.Collections.Generic.OrderedDictionary;
 
-import <format>;
-import <ranges>;
-import <compare>;
-import <algorithm>;
-import <map>;
 
-import :List;
-import :KeyValuePair;
-import :KeyNotFoundException;
-import :IListInterface;
+export import <algorithm>;
+export import <compare>;
+export import <format>;
+export import <map>;
+export import <ranges>;
+
+export import System.Collections.Generic.List;
+export import System.Collections.Generic.KeyValuePair;
+export import System.Collections.Generic.KeyNotFoundException;
+export import System.Collections.Generic.Private.IListInterface;
 
 export namespace System::Collections::Generic
 {

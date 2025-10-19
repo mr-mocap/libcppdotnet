@@ -1,7 +1,7 @@
-export module System.Collections:IDictionary;
+export module System.Collections.Generic.IDictionary;
 
-import :LegacyForwardIterator;
-import :IDictionaryInterface;
+export import System.Collections.Generic.Private.LegacyForwardIteratorBase;
+export import System.Collections.Generic.Private.IDictionaryInterface;
 
 export namespace System::Collections::Generic
 {

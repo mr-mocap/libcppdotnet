@@ -1,9 +1,11 @@
-export module System.Collections:ICollection;
+export module System.Collections.Generic.ICollection;
 
-import <memory>;
+export import <cstddef>;
+export import <iterator>;
+export import <memory>;
 
-import :LegacyForwardIterator;
-import :ICollectionInterface;
+export import System.Collections.Generic.Private.LegacyForwardIteratorBase;
+export import System.Collections.Generic.Private.ICollectionInterface;
 
 
 export namespace System::Collections::Generic

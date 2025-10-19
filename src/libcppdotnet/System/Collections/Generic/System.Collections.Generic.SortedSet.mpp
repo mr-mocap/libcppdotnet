@@ -1,11 +1,11 @@
 module;
 
-#include <libcppdotnet/System/Private/private.hpp>
+#include <libcppdotnet/System/PreProcessor/Contracts.hpp>
 
-export module System.Collections:SortedSet;
+export module System.Collections.Generic.SortedSet;
 
-import <set>;
-import <functional>;
+export import <set>;
+export import <functional>;
 
 export namespace System::Collections::Generic
 {

@@ -1,9 +1,8 @@
-#include "TestIDictionary.hpp"
-#include "System/Collections/Generic/IDictionary.hpp"
-#include "System/Collections/Generic/Dictionary.hpp"
-#include <iostream>
-#include <cassert>
+import <cstdlib>;
+import <cassert>;
 
+import System.Collections.Generic.Dictionary;
+import System.Collections.Generic.IDictionary;
 
 namespace TestIDictionary
 {
@@ -28,8 +27,6 @@ System::Collections::Generic::IDictionary<int,int> TestMoveFromDictionary()
 
 void MoveConstructedWithDataType()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::IDictionary<int, std::string> empty{ DictionaryType() };
 
     assert( empty.Count() == 0 );
@@ -37,8 +34,6 @@ void MoveConstructedWithDataType()
 
 void ConstructedWithObjectMakesANewCopy()
 {
-    std::cout << __func__ << std::endl;
-
     std::unique_ptr<DictionaryType> dictionary = std::make_unique<DictionaryType>();
 
     dictionary->Add(1, "one");
@@ -68,8 +63,6 @@ void ConstructedWithObjectMakesANewCopy()
 
 void CopyConstructorMakesANewObject()
 {
-    std::cout << __func__ << std::endl;
-
     std::unique_ptr<DictionaryType> dictionary = std::make_unique<DictionaryType>();
 
     dictionary->Add(1, "one");
@@ -116,8 +109,6 @@ void CopyConstructorMakesANewObject()
 
 void MoveConstructorLeavesOldObjectEmpty()
 {
-    std::cout << __func__ << std::endl;
-
     DictionaryType  dictionary;
 
     dictionary.Add(1, "one");
@@ -148,8 +139,6 @@ void MoveConstructorLeavesOldObjectEmpty()
 
 void MovedFromFunctionAsDictionary()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::IDictionary<int, int> data = TestMoveFromDictionary();
 
     assert( data.Count() == 4 );
@@ -161,8 +150,6 @@ void MovedFromFunctionAsDictionary()
 
 void IterateOverDictionary()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::Dictionary<int, std::string> dictionary( { {0, "zero"}, {1, "one"}, {2, "two"}, {3, "three"} });
 
     {
@@ -170,15 +157,13 @@ void IterateOverDictionary()
 
         for (const System::Collections::Generic::KeyValuePair<int, std::string> &i: idictionary)
         {
-            std::cout << "KeyValuePair<int, string> = " << i.Key() << ", " << i.Value() << std::endl;
+            //std::cout << "KeyValuePair<int, string> = " << i.Key() << ", " << i.Value() << std::endl;
         }
     }
 }
 
 void Run()
 {
-    std::cout << "Running IDictionary Tests..." << std::endl;
-
     MoveConstructedWithDataType();
     ConstructedWithObjectMakesANewCopy();
     CopyConstructorMakesANewObject();
@@ -193,8 +178,12 @@ void Run()
     IterateOverLinkedList();
 #endif
     IterateOverDictionary();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestIDictionary::Run();
+    return EXIT_SUCCESS;
 }

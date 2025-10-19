@@ -1,4 +1,4 @@
-export module System.Collections:IListInterface;
+export module System.Collections.Generic.Private.IListInterface;
 
 export import <memory>;
 export import <cstdint>;

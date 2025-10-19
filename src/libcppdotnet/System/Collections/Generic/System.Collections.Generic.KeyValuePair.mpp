@@ -1,8 +1,8 @@
-export module System.Collections:KeyValuePair;
+export module System.Collections.Generic.KeyValuePair;
 
-import <utility>;
-import <string>;
-import <format>;
+export import <format>;
+export import <utility>;
+export import <string>;
 
 
 export namespace System::Collections::Generic

@@ -1,4 +1,6 @@
-export module System.Collections:KeyNotFoundException;
+export module System.Collections.Generic.KeyNotFoundException;
+
+export import <string_view>;
 
 export import System.Exception;
 

@@ -1,11 +1,10 @@
-#include "TestICollection.hpp"
-#include "System/Collections/Generic/ICollection.hpp"
-#include "System/Collections/Generic/LinkedList.hpp"
-#include "System/Collections/Generic/List.hpp"
-#include "System/Collections/Generic/Dictionary.hpp"
-#include <iostream>
-#include <cassert>
+import <cstdlib>;
+import <cassert>;
 
+import System.Collections.Generic.ICollection;
+import System.Collections.Generic.List;
+import System.Collections.Generic.LinkedList;
+import System.Collections.Generic.Dictionary;
 
 namespace TestICollection
 {
@@ -40,8 +39,6 @@ System::Collections::Generic::ICollection<KVP<int,int>> TestMoveFromDictionary()
 
 void MoveConstructedWithDataType()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::ICollection<int> empty{ System::Collections::Generic::LinkedList<int>() };
 
     assert( empty.Count() == 0 );
@@ -49,8 +46,6 @@ void MoveConstructedWithDataType()
 
 void ConstructWithLinkedListObject()
 {
-    std::cout << __func__ << std::endl;
-
     int example_data[] = { 1, 2, 3 };
     System::Collections::Generic::LinkedList<int>  linked_list(example_data);
 
@@ -69,8 +64,6 @@ void ConstructWithLinkedListObject()
 
 void ConstructedWithObjectMakesANewCopy()
 {
-    std::cout << __func__ << std::endl;
-
     std::unique_ptr<System::Collections::Generic::LinkedList<int>> linked_list = std::make_unique<System::Collections::Generic::LinkedList<int>>();
 
     linked_list->Add(1);
@@ -100,8 +93,6 @@ void ConstructedWithObjectMakesANewCopy()
 
 void CopyConstructorMakesANewObject()
 {
-    std::cout << __func__ << std::endl;
-
     std::unique_ptr<System::Collections::Generic::LinkedList<int>> linked_list = std::make_unique<System::Collections::Generic::LinkedList<int>>();
 
     linked_list->Add(1);
@@ -148,8 +139,6 @@ void CopyConstructorMakesANewObject()
 
 void MoveConstructorLeavesOldObjectEmpty()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::LinkedList<int>  linked_list;
 
     linked_list.Add(1);
@@ -180,8 +169,6 @@ void MoveConstructorLeavesOldObjectEmpty()
 
 void MovedFromFunctionAsLinkedList()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::ICollection<int> data = TestMove<System::Collections::Generic::LinkedList<int>>();
 
     assert( data.Count() == 4 );
@@ -193,8 +180,6 @@ void MovedFromFunctionAsLinkedList()
 
 void MovedFromFunctionAsList()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::ICollection<int> data = TestMove<System::Collections::Generic::List<int>>();
 
     assert( data.Count() == 4 );
@@ -206,8 +191,6 @@ void MovedFromFunctionAsList()
 
 void MovedFromFunctionAsDictionary()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::ICollection<KVP<int, int>> data = TestMoveFromDictionary();
 
     assert( data.Count() == 4 );
@@ -219,8 +202,6 @@ void MovedFromFunctionAsDictionary()
 
 void ConstructWithLinkedListRef()
 {
-    std::cout << __func__ << std::endl;
-
     int example_data[] = { 1, 2, 3 };
     System::Collections::Generic::LinkedList<int>  linked_list(example_data);
 
@@ -239,8 +220,6 @@ void ConstructWithLinkedListRef()
 
 void ConstructWithListRef()
 {
-    std::cout << __func__ << std::endl;
-
     int example_data[] = { 1, 2, 3 };
     System::Collections::Generic::List<int>  list(example_data);
 
@@ -259,8 +238,6 @@ void ConstructWithListRef()
 
 void IterateOverList()
 {
-    std::cout << __func__ << std::endl;
-
     int example_data[] = { 0, 1, 2, 3 };
     System::Collections::Generic::List<int> list(example_data);
 
@@ -269,7 +246,7 @@ void IterateOverList()
 
         for (int i: icollection)
         {
-            std::cout << i << std::endl;
+            //std::cout << i << std::endl;
         }
     }
 
@@ -278,15 +255,13 @@ void IterateOverList()
 
         for (const int i: const_icollection)
         {
-            std::cout << i << std::endl;
+            //std::cout << i << std::endl;
         }
     }
 }
 
 void IterateOverLinkedList()
 {
-    std::cout << __func__ << std::endl;
-
     int example_data[] = { 0, 1, 2, 3 };
     System::Collections::Generic::LinkedList<int> linked_list(example_data);
 
@@ -295,15 +270,13 @@ void IterateOverLinkedList()
 
         for (int i: icollection)
         {
-            std::cout << i << std::endl;
+            //std::cout << i << std::endl;
         }
     }
 }
 
 void IterateOverDictionary()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::Dictionary<int, std::string> dictionary( { {0, "zero"}, {1, "one"}, {2, "two"}, {3, "three"} });
 
     {
@@ -311,15 +284,13 @@ void IterateOverDictionary()
 
         for (const System::Collections::Generic::KeyValuePair<int, std::string> &i: icollection)
         {
-            std::cout << "KeyValuePair<int, string> = " << i.Key() << ", " << i.Value() << std::endl;
+            //std::cout << "KeyValuePair<int, string> = " << i.Key() << ", " << i.Value() << std::endl;
         }
     }
 }
 
 void Run()
 {
-    std::cout << "Running ICollection Tests..." << std::endl;
-
     MoveConstructedWithDataType();
     ConstructWithLinkedListObject();
     ConstructedWithObjectMakesANewCopy();
@@ -335,8 +306,12 @@ void Run()
     IterateOverList();
     IterateOverLinkedList();
     IterateOverDictionary();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestICollection::Run();
+    return EXIT_SUCCESS;
 }

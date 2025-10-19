@@ -1,11 +1,11 @@
-export module System.Collections:List;
+export module System.Collections.Generic.List;
 
-import <vector>;
-import <initializer_list>;
-import <algorithm>;
+export import <algorithm>;
+export import <initializer_list>;
+export import <vector>;
 
-export import System.Exception;
 export import System.Delegates;
+export import System.Exception;
 
 export namespace System::Collections::Generic
 {

@@ -1,11 +1,11 @@
 module;
 
-#include <libcppdotnet/System/Private/private.hpp>
+#include <libcppdotnet/System/PreProcessor/Contracts.hpp>
 
-export module System.Collections:Stack;
+export module System.Collections.Generic.Stack;
 
-import <stack>;
-import <algorithm>;
+export import <algorithm>;
+export import <stack>;
 
 export import System.Exception;
 
@@ -80,10 +80,8 @@ public:
 
     ElementType Pop()
     {
-        using namespace std::literals;
-
         if ( _stack.empty() )
-          ThrowWithTarget( InvalidOperationException( "Stack is empty"sv ) );
+          ThrowWithTarget( InvalidOperationException( "Stack is empty" ) );
 
         ElementType r = _stack.top();
 
@@ -93,10 +91,8 @@ public:
 
     const ElementType &Peek() const
     {
-        using namespace std::literals;
-
         if ( _stack.empty() )
-          ThrowWithTarget( InvalidOperationException( "Stack is empty"sv ) );
+          ThrowWithTarget( InvalidOperationException( "Stack is empty" ) );
 
         return _stack.top();
     }

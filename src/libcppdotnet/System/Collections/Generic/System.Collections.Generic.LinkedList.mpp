@@ -1,8 +1,8 @@
-export module System.Collections:LinkedList;
+export module System.Collections.Generic.LinkedList;
 
-import <list>;
-import <algorithm>;
-import <type_traits>;
+export import <algorithm>;
+export import <list>;
+export import <type_traits>;
 
 export import System.Exception;
 
@@ -81,20 +81,16 @@ public:
 
     void RemoveFirst()
     {
-        using namespace std::literals;
-
         if ( _list.empty() )
-            ThrowWithTarget( System::InvalidOperationException{ "List is empty"sv } );
+            ThrowWithTarget( System::InvalidOperationException( "List is empty" ) );
 
         _list.pop_front();
     }
 
     void RemoveLast()
     {
-        using namespace std::literals;
-
         if ( _list.empty() )
-            ThrowWithTarget( System::InvalidOperationException{ "List is empty"sv } );
+            ThrowWithTarget( System::InvalidOperationException( "List is empty" ) );
 
         _list.pop_back();
     }

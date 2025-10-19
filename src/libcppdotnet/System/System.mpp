@@ -14,7 +14,7 @@ export import <cstdint>;
 export import <exception>;
 export import <format>;
 export import <functional>;
-//export import <initializer_list>;
+export import <initializer_list>;
 export import <iterator>;
 export import <limits>;
 export import <memory>;
@@ -27,7 +27,7 @@ export import <string_view>;
 export import <system_error>;
 export import <tuple>;
 export import <type_traits>;
-//export import <unordered_map>;
+export import <unordered_map>;
 export import <utility>;
 export import <vector>;
 
@@ -79,15 +79,19 @@ export import System.OperatingSystem;
 
 export import System.Guid;
 
+export import System.Concepts;
+
 export import System.IEquatable;
-export import System.Numerics.INumber;
-export import System.Numerics.INumberBase;
+
+export import System.Numerics;
 
 export import System.Byte;
 export import System.Boolean;
 export import System.Int16;
 export import System.Int32;
 export import System.Int64;
+
+export import System.Collections;
 
 #if 0
 //export import :Environment;
@@ -97,40 +101,11 @@ export import System.Int64;
 // Depends on Other System/. files...
 #endif
 #if 0
-export import :KeyValuePair;
-export import :List;
-export import :KeyNotFoundException;
-export import :Dictionary;
-export import :LinkedList;
-export import :HashSet;
-export import :SortedDictionary;
-export import :OrderedDictionary;
-export import :SortedSet;
-export import :Stack;
-export import :ICollection;
-export import :IList;
-export import :IDictionary;
-
 export import :StringDictionary;
-
-export import :IListInterface;
-export import :IDictionaryInterface;
-export import :ICollectionInterface;
-export import :LegacyForwardIterator;
-export import :LegacyBidirectionalIterator;
-export import :LegacyRandomAccessIterator;
 #endif
 
-//export import System.Collections;
-
 // Not Included Yet!
-//export import "Boolean.hpp";
-//export import :Concepts;
 //export import "Console.hpp";
-
-//export import "Int16.hpp";
-//export import "Int32.hpp";
-//export import "Int64.hpp";
 
 //export import "IO/BinaryWriter.hpp";
 //export import "IO/ConsoleStream.hpp";

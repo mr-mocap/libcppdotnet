@@ -1,7 +1,7 @@
-export module System.Collections:IList;
+export module System.Collections.Generic.IList;
 
-import :LegacyBidirectionalIterator;
-import :IListInterface;
+import System.Collections.Generic.Private.LegacyBidirectionalIteratorBase;
+import System.Collections.Generic.Private.IListInterface;
 
 export namespace System::Collections::Generic
 {

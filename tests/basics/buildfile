@@ -16,3 +16,9 @@ import lib = libcppdotnet%lib{cppdotnet}
 ./: exe{TestVersion}: cxx{TestVersion} $lib
 ./: exe{TestNullable}: cxx{TestNullable} $lib
 ./: exe{TestGuid}: cxx{TestGuid} $lib
+./: exe{TestList}: cxx{TestList} $lib
+./: exe{TestLinkedList}: cxx{TestLinkedList} $lib
+./: exe{TestIList}: cxx{TestIList} $lib
+./: exe{TestDictionary}: cxx{TestDictionary} $lib
+./: exe{TestIDictionary}: cxx{TestIDictionary} $lib
+./: exe{TestICollection}: cxx{TestICollection} $lib

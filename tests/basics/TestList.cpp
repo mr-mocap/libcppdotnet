@@ -1,21 +1,33 @@
-#include "TestList.hpp"
-#include "System/Collections/Generic/List.hpp"
-#include "System/Collections/Generic/LinkedList.hpp"
-#include "System/Collections/Generic/ICollection.hpp"
-#include <iostream>
-#include <cassert>
-#include <array>
+import <cstdlib>;
+import <cassert>;
+import <array>;
 
+import System.Collections.Generic;
 
 using namespace System;
+
+template <class T>
+bool AreEqual(const System::Collections::Generic::ICollection<T> &left, const System::Collections::Generic::ICollection<T> &right)
+{
+    if ( left.Count() != right.Count() )
+        return false;
+
+    auto left_iter = left.begin();
+    auto right_iter = right.begin();
+
+    for (; (left_iter != left.end()) && (right_iter != right.end()); ++left_iter, ++right_iter)
+    {
+        if ( *left_iter != *right_iter )
+            return false;
+    }
+    return true;
+}
 
 namespace TestList
 {
 
 void DefaultConstructsToEmpty()
 {
-    std::cout << __func__ << std::endl;
-
     Collections::Generic::List<int> empty_list;
 
     assert( empty_list.Count() == 0 );
@@ -23,8 +35,6 @@ void DefaultConstructsToEmpty()
 
 void ConstructWithExternalSequence()
 {
-    std::cout << __func__ << std::endl;
-
     // From built-in array
     {
         int a[] = { 1, 2, 3 };
@@ -68,8 +78,6 @@ void ConstructWithExternalSequence()
 
 void ClearEmptiesTheList()
 {
-    std::cout << __func__ << std::endl;
-
     Collections::Generic::List<int> list;
 
     list.Add( 2 );
@@ -85,8 +93,6 @@ void ClearEmptiesTheList()
 
 void Remove()
 {
-    std::cout << __func__ << std::endl;
-
     Collections::Generic::List<int> list;
 
     list.Add( 1 );
@@ -139,8 +145,6 @@ void Remove()
 
 void RemoveAt()
 {
-    std::cout << __func__ << std::endl;
-
     Collections::Generic::List<int> list;
 
     list.Add( 2 );
@@ -183,8 +187,6 @@ void RemoveAt()
 
 void Contains()
 {
-    std::cout << __func__ << std::endl;
-
     // It contains the data
     {
         Collections::Generic::List<int> list;
@@ -205,8 +207,6 @@ void Contains()
 
 void IsReadOnly()
 {
-    std::cout << __func__ << std::endl;
-
     {
         Collections::Generic::List<int> list;
 
@@ -221,8 +221,6 @@ void IsReadOnly()
 
 void Count()
 {
-    std::cout << __func__ << std::endl;
-
     {
         Collections::Generic::List<int> list;
 
@@ -247,8 +245,6 @@ void Count()
 
 void ElementAccess()
 {
-    std::cout << __func__ << std::endl;
-
     {
         Collections::Generic::List<int> list;
 
@@ -274,8 +270,6 @@ void ElementAccess()
 
 void Add()
 {
-    std::cout << __func__ << std::endl;
-
     Collections::Generic::List<int> list;
 
     assert( list.Count() == 0 );
@@ -298,8 +292,6 @@ void Add()
 
 void IndexOf()
 {
-    std::cout << __func__ << std::endl;
-
     std::array<int, 6> a{ 1, 2, 3, 4, 5, 6 };
     Collections::Generic::List<int> list( a.begin(), a.end() );
 
@@ -313,8 +305,6 @@ void IndexOf()
 
 void Insert()
 {
-    std::cout << __func__ << std::endl;
-
     // Insert into empty list
     {
         Collections::Generic::List<int> list;
@@ -366,7 +356,6 @@ System::Collections::Generic::ICollection<int> LifetimeTest()
     Collections::Generic::LinkedList<int> linked_list( array );
     System::Collections::Generic::ICollection<int> collection( linked_list );
 
-    std::cout << "Blah = " << collection.Count() << std::endl;
     return collection;
 }
 
@@ -379,16 +368,12 @@ void GenericTest()
     System::Collections::Generic::ICollection<int> collection2( linked_list );
     System::Collections::Generic::ICollection<int> collection3( LifetimeTest() );
 
-    std::cout << "Blah2 = " << collection3.Count() << std::endl;
-    std::cout << "collection.Count() = " << collection.Count() << std::endl;
-    std::cout << "collection2.Count() = " << collection2.Count() << std::endl;
-    std::cout << "collection3.Count() = " << collection3.Count() << std::endl;
+    assert( AreEqual( collection, collection2 ) );
+    assert( AreEqual( collection2, collection3 ) );
 }
 
 void TestIListInterface()
 {
-    std::cout << __func__ << std::endl;
-
     Count();
     IsReadOnly();
     ElementAccess();
@@ -401,13 +386,10 @@ void TestIListInterface()
     RemoveAt();
 
     GenericTest();
-    std::cout << "PASSED!" << std::endl;
 }
 
 void Find()
 {
-    std::cout << __func__ << std::endl;
-
     int a[] = { 1, 2, 3 };
     Collections::Generic::List<int> list( a );
     Predicate<int> is_equal_to_one{ [](int item) { return item == 1; } };
@@ -433,8 +415,6 @@ public:
 
 void FindLast()
 {
-    std::cout << __func__ << std::endl;
-
     // Empty list won't contain the data
     {
         Collections::Generic::List<int> list;
@@ -471,8 +451,6 @@ void FindLast()
 
 void FindAll()
 {
-    std::cout << __func__ << std::endl;
-
     int a[] = { 1, 2, 2, 3, 3, 3, 4, 4, 4, 4 };
     Collections::Generic::List<int> list( a );
 
@@ -484,8 +462,6 @@ void FindAll()
 
 void Run()
 {
-    std::cout << "Running List Tests..." << std::endl;
-
     DefaultConstructsToEmpty();
     ConstructWithExternalSequence();
     Find();
@@ -493,8 +469,12 @@ void Run()
     FindAll();
 
     TestIListInterface();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestList::Run();
+    return EXIT_SUCCESS;
 }

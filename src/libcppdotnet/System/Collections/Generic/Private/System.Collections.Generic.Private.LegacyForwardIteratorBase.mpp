@@ -1,5 +1,6 @@
-export module System.Collections:LegacyForwardIterator;
+export module System.Collections.Generic.Private.LegacyForwardIteratorBase;
 
+export import <cstddef>;
 export import <memory>;
 export import <iterator>;
 

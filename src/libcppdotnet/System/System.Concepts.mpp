@@ -1,7 +1,7 @@
 export module System.Concepts;
 
-import <string>;
-import <concepts>;
+export import <string>;
+export import <concepts>;
 
 export import System.Exception;
 

@@ -1,15 +1,14 @@
 module;
 
-#include <libcppdotnet/System/Private/private.hpp>
+#include <libcppdotnet/System/PreProcessor/Contracts.hpp>
 
-export module System.Collections:HashSet;
+export module System.Collections.Generic.HashSet;
 
-import <algorithm>;
+export import <algorithm>;
+export import <unordered_set>;
 
-import <unordered_set>;
-
-//import System:Predicate;
-import System.Exception;
+export import System.Delegates;
+export import System.Exception;
 
 export namespace System::Collections::Generic
 {
@@ -88,10 +87,10 @@ public:
     }
 
     template <class T>
-    size_type RemoveWhere(Predicate<T> &predicate)
+    size_type RemoveWhere(System::Predicate<T> &predicate)
     {
         if ( !predicate )
-            ThrowWithTarget( System::ArgumentNullException{"predicate", "Predicate is not set"} );
+            ThrowWithTarget( System::ArgumentNullException("predicate", "Predicate is not set") );
 
         return std::erase_if( m_data, predicate );
     }

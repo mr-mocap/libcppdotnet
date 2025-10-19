@@ -11,9 +11,9 @@ export import <string_view>;
 export import <system_error>;
 export import <type_traits>;
 
+export import System.IComparable;
 export import System.IEquatable;
 export import System.Exception;
-export import System.IComparable;
 
 export import System.Numerics.INumber;
 export import System.Numerics.INumberBase;
