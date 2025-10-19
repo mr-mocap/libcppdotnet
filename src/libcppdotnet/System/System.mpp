@@ -93,16 +93,7 @@ export import System.Int64;
 
 export import System.Collections;
 
-#if 0
-//export import :Environment;
-#endif
-#if 0
-
-// Depends on Other System/. files...
-#endif
-#if 0
-export import :StringDictionary;
-#endif
+export import System.Environment;
 
 // Not Included Yet!
 //export import "Console.hpp";

@@ -1,6 +1,9 @@
-export module System.Collections:StringDictionary;
+export module System.Collections.Specialized.StringDictionary;
 
-import :Dictionary;
+export import <string>;
+export import <string_view>;
+
+export import System.Collections.Generic.Dictionary;
 
 
 export namespace System::Collections::Specialized

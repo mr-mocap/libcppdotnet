@@ -1,22 +1,28 @@
-export module System:Environment;
+module;
 
-import <tuple>;
+#include <libcppdotnet/System/PreProcessor/Contracts.hpp>
+
+export module System.Environment;
+
 import <cstring>;
-import <stdlib.h>;
+import <map>;
+import <tuple>;
+import <unordered_map>;
 #if __cpp_lib_stacktrace > 202011L
 #include <stacktrace>
 #endif
 
-//#include "System/Collections/Specialized/StringDictionary.hpp"
+
+export import <cstdlib>;
 export import <string>;
 export import <string_view>;
-import <map>;
-export import :Exception;
 
-namespace System
+export import System.Exception;
+export import System.Collections.Specialized.StringDictionary;
+
+export namespace System
 {
 
-export
 class Environment final
 {
 public:
@@ -42,18 +48,14 @@ public:
 
 }
 
-namespace System
+namespace
 {
-
 // Enclosing Reference Marker(s), Variable Name
 using EnvironmentVariableReference = std::tuple<std::string_view, std::string_view>;
 
-export
-{
-
-static std::string_view ContainsSurroundingTokens(std::string_view input,
-                                                  std::string_view start_token,
-                                                  std::string_view end_token)
+std::string_view ContainsSurroundingTokens(std::string_view input,
+                                           std::string_view start_token,
+                                           std::string_view end_token)
 {
     std::string_view::size_type start_pos = input.find(start_token);
 
@@ -68,7 +70,7 @@ static std::string_view ContainsSurroundingTokens(std::string_view input,
     return input.substr( start_pos, end_pos );
 }
 
-static EnvironmentVariableReference ContainsEnvironmentVariableReference(std::string_view input)
+EnvironmentVariableReference ContainsEnvironmentVariableReference(std::string_view input)
 {
     if ( !input.empty() )
     {
@@ -101,6 +103,11 @@ static EnvironmentVariableReference ContainsEnvironmentVariableReference(std::st
     }
     return std::make_tuple( std::string_view{}, std::string_view{} );
 }
+
+}
+
+namespace System
+{
 
 std::string_view Environment::GetEnvironmentVariable(const char *var_name)
 {
@@ -206,8 +213,6 @@ std::string Environment::StackTrace()
 void Environment::Exit(int exit_code)
 {
     std::exit( exit_code );
-}
-
 }
 
 }
