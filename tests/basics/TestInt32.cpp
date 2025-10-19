@@ -1,10 +1,10 @@
-#include "TestInt32.hpp"
-#include "System/Int32.hpp"
-#include "System/Private/private.hpp"
-#include <iostream>
-#include <cassert>
-#include <format>
+#include <libcppdotnet/System/PreProcessor/Contracts.hpp>
 
+import <cstdlib>;
+import <cassert>;
+import <format>;
+
+import System.Int32;
 
 namespace TestInt32
 {
@@ -13,14 +13,11 @@ using namespace System;
 
 static std::int32_t FunctionTakingStdInt32(const std::int32_t converted)
 {
-    std::cout << __func__ << ": converted = " << converted << std::endl;
     return converted;
 }
 
 void DefaultConstructsToZero()
 {
-    std::cout << __func__ << std::endl;
-
     Int32 a;
 
     assert( a == 0 );
@@ -28,8 +25,6 @@ void DefaultConstructsToZero()
 
 void ConstructingFromAConstantInteger()
 {
-    std::cout << __func__ << std::endl;
-
     Int32 a(32);
     Int32 b{66};
 
@@ -39,8 +34,6 @@ void ConstructingFromAConstantInteger()
 
 void AutomaticConversionToStdInt32WhenCallingFunction()
 {
-    std::cout << __func__ << std::endl;
-
     Int32 a(17);
 
     assert( FunctionTakingStdInt32( a ) == 17 );
@@ -48,8 +41,6 @@ void AutomaticConversionToStdInt32WhenCallingFunction()
 
 void GetTypeCode()
 {
-    std::cout << __func__ << std::endl;
-
     Int32 a(17);
 
     assert( a.GetTypeCode() == TypeCode::Int32 );
@@ -57,8 +48,6 @@ void GetTypeCode()
 
 void ToBoolean()
 {
-    std::cout << __func__ << std::endl;
-
     {
         Int32 a(17);
 
@@ -73,22 +62,16 @@ void ToBoolean()
 
 void ToByte()
 {
-    std::cout << __func__ << std::endl;
-
     assert( Int32{64}.ToByte() == std::byte{64} );
 }
 
 void ToChar()
 {
-    std::cout << __func__ << std::endl;
-
     assert( Int32{22}.ToChar() == char{22} );
 }
 
 void ToInt16()
 {
-    std::cout << __func__ << std::endl;
-
     assert( Int32{22}.ToInt16() == std::int16_t{22} );
     assert( Int32{32767}.ToInt16() == std::int16_t{32767} ); // Highest Value
     assert( Int32{0}.ToInt16() == std::int16_t{0} );
@@ -98,8 +81,6 @@ void ToInt16()
 
 void ToInt32()
 {
-    std::cout << __func__ << std::endl;
-
     assert( Int32{22}.ToInt32() == std::int32_t{22} );
     assert( Int32{2147483647}.ToInt32() == std::int32_t{2147483647} ); // Highest Value
     assert( Int32{0}.ToInt32() == std::int32_t{0} );
@@ -109,8 +90,6 @@ void ToInt32()
 
 void ToSingle()
 {
-    std::cout << __func__ << std::endl;
-
     assert( Int32{22}.ToSingle() == 22.0f );
     assert( Int32{0}.ToInt32() == 0.0f );
     assert( Int32{-1}.ToInt32() == -1.0f );
@@ -118,8 +97,6 @@ void ToSingle()
 
 void ToDouble()
 {
-    std::cout << __func__ << std::endl;
-
     assert( Int32{22}.ToSingle() == 22.0 );
     assert( Int32{0}.ToInt32() == 0.0 );
     assert( Int32{-1}.ToInt32() == -1.0 );
@@ -127,8 +104,6 @@ void ToDouble()
 
 void ToString()
 {
-    std::cout << __func__ << std::endl;
-
     assert( Int32{22}.ToString() == "22" );
     assert( Int32{0}.ToString() == "0" );
     assert( Int32{-1}.ToString() == "-1" );
@@ -136,8 +111,6 @@ void ToString()
 
 void Equality()
 {
-    std::cout << __func__ << std::endl;
-
     Int32 number{65536};
 
     assert( number == 65536 );
@@ -166,10 +139,6 @@ void Equality()
 
 void TestINumberBase()
 {
-    std::cout << __func__ << std::endl;
-
-    using namespace std::literals;
-
     assert( Int32::Zero() == 0 );
     assert( Int32::One() == 1 );
 
@@ -208,17 +177,13 @@ void TestINumberBase()
 
 void Parse()
 {
-    std::cout << __func__ << std::endl;
-
-    using namespace std::literals;
-
-    assert( Int32::Parse("32"sv) == 32);
-    assert( Int32::Parse("32 "sv) == 32); // Trailing whitespace does not matter
+    assert( Int32::Parse("32") == 32);
+    assert( Int32::Parse("32 ") == 32); // Trailing whitespace does not matter
     
     // Leading whitespace matters... (Not allowed)
     try
     {
-        std::int32_t result = Int32::Parse(" 32"sv);
+        std::int32_t result = Int32::Parse(" 32");
 
         UNUSED(result);
     }
@@ -315,12 +280,8 @@ void Parse()
 
 void TryParse()
 {
-    std::cout << __func__ << std::endl;
-
-    using namespace std::literals;
-
     {
-        auto result = Int32::TryParse("32"sv);
+        auto result = Int32::TryParse("32");
 
         assert( result.has_value() );
         assert( result.value() == 32 );
@@ -328,7 +289,7 @@ void TryParse()
 
     // Trailing whitespace does not matter
     {
-        auto result = Int32::TryParse("32 "sv);
+        auto result = Int32::TryParse("32 ");
 
         assert( result );
         assert( result.has_value() );
@@ -337,21 +298,21 @@ void TryParse()
     
     // Leading whitespace matters... (Not allowed)
     {
-        auto result = Int32::TryParse(" 32"sv);
+        auto result = Int32::TryParse(" 32");
 
         assert( !result );
     }
     
     // Parsing an empty string...
     {
-        auto result = Int32::TryParse(""sv);
+        auto result = Int32::TryParse("");
 
         assert( !result );
     }
     
     // Parsing a non-integer...
     {
-        auto result = Int32::TryParse("salad"sv);
+        auto result = Int32::TryParse("salad");
 
         assert( !result );
     }
@@ -359,7 +320,7 @@ void TryParse()
     // Parsing a float...
     {
         // TODO: Is this proper behavior?
-        auto result = Int32::TryParse("3.14"sv);
+        auto result = Int32::TryParse("3.14");
 
         // Gives us the number BEFORE the '.'
         assert( result );
@@ -387,8 +348,6 @@ void TryParse()
 
 void Addition()
 {
-    std::cout << __func__ << std::endl;
-
     {
         Int32 b{ 5 };
         std::int32_t result = 3 + b;
@@ -404,8 +363,6 @@ void Addition()
 
 void Run()
 {
-    std::cout << "Running Int32 Tests..." << std::endl;
-
     DefaultConstructsToZero();
     ConstructingFromAConstantInteger();
     AutomaticConversionToStdInt32WhenCallingFunction();
@@ -423,8 +380,12 @@ void Run()
     Parse();
     TryParse();
     Addition();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestInt32::Run();
+    return EXIT_SUCCESS;
 }

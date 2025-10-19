@@ -1,16 +1,16 @@
-#include "System/Numerics/INumber.hpp"
-#include "System/TypeCode.hpp"
-#include <cstdint>
-#include <cstddef>
-#include <limits>
-#include <string>
-#include <cmath>
-#include <algorithm>
-#include <optional>
-#include <utility>
-#include <compare>
+export module System.Int16;
 
-namespace System
+export import <compare>;
+export import <cstddef>;
+export import <cstdint>;
+export import <limits>;
+export import <optional>;
+export import <string>;
+
+export import System.TypeCode;
+export import System.Numerics.INumber;
+
+export namespace System
 {
 
 class Int16 : public Numerics::INumber<Int16>

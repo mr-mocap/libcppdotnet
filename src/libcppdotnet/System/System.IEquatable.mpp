@@ -1,5 +1,6 @@
+export module System.IEquatable;
 
-namespace System
+export namespace System
 {
 
 template <class Derived>

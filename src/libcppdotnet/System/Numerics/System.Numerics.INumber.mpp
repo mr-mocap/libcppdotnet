@@ -1,9 +1,17 @@
-#include "System/IComparable.hpp"
-#include "System/Numerics/INumberBase.hpp"
-#include <cstdint>
-#include <algorithm>
+module;
 
-namespace System::Numerics
+#include <libcppdotnet/System/PreProcessor/Contracts.hpp>
+
+export module System.Numerics.INumber;
+
+export import <algorithm>;
+export import <cstdint>;
+export import <cmath>;
+
+export import System.IComparable;
+export import System.Numerics.INumberBase;
+
+export namespace System::Numerics
 {
 
 template <class T>

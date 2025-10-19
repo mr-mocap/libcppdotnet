@@ -1,18 +1,19 @@
-module System;
+module System.Int64;
 
-#include "System/Int32.hpp"
-#include "System/Convert.hpp"
+import <string>;
+import <compare>;
 
+import System.Convert;
 
 namespace System
 {
 
-std::string Int32::ToString() const
+std::string Int64::ToString() const
 {
     return Convert::ToString( _value );
 }
 
-int Int32::CompareTo(const Int32 &other) const
+int Int64::CompareTo(const Int64 &other) const
 {
     auto result{ *this <=> other };
 

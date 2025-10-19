@@ -1,9 +1,14 @@
-#include "System/IConvertible.hpp"
-#include "System/Numerics/INumber.hpp"
-#include <string_view>
-#include <compare>
+export module System.Boolean;
 
-namespace System
+export import <cstddef>;
+export import <cstdint>;
+export import <string>;
+export import <string_view>;
+
+export import System.IConvertible;
+export import System.Numerics.INumber;
+
+export namespace System
 {
 
 class Boolean : public IConvertible,

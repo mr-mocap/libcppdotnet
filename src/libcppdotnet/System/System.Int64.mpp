@@ -1,12 +1,17 @@
-#include "System/IConvertible.hpp"
-#include "System/Numerics/INumber.hpp"
-#include <cstdint>
-#include <limits>
-#include <cmath>
-#include <algorithm>
-#include <compare>
+export module System.Int64;
 
-namespace System
+export import <compare>;
+export import <cstddef>;
+export import <cstdint>;
+export import <limits>;
+export import <optional>;
+export import <string>;
+
+export import System.TypeCode;
+export import System.IConvertible;
+export import System.Numerics.INumber;
+
+export namespace System
 {
 
 class Int64 : public IConvertible,

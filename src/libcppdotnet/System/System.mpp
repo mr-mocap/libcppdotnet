@@ -5,6 +5,7 @@ export module System;
 // Import Header Units...
 export import <algorithm>;
 export import <array>;
+export import <charconv>;
 export import <chrono>;
 export import <compare>;
 export import <concepts>;
@@ -15,6 +16,7 @@ export import <format>;
 export import <functional>;
 //export import <initializer_list>;
 export import <iterator>;
+export import <limits>;
 export import <memory>;
 export import <optional>;
 export import <ranges>;
@@ -22,6 +24,7 @@ export import <source_location>;
 export import <span>;
 export import <string>;
 export import <string_view>;
+export import <system_error>;
 export import <tuple>;
 export import <type_traits>;
 //export import <unordered_map>;
@@ -76,7 +79,15 @@ export import System.OperatingSystem;
 
 export import System.Guid;
 
+export import System.IEquatable;
+export import System.Numerics.INumber;
+export import System.Numerics.INumberBase;
+
 export import System.Byte;
+export import System.Boolean;
+export import System.Int16;
+export import System.Int32;
+export import System.Int64;
 
 #if 0
 //export import :Environment;
@@ -114,7 +125,6 @@ export import :LegacyRandomAccessIterator;
 
 // Not Included Yet!
 //export import "Boolean.hpp";
-//export import "Byte.hpp";
 //export import :Concepts;
 //export import "Console.hpp";
 

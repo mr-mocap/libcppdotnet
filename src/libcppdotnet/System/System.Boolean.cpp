@@ -1,7 +1,7 @@
-module System;
+module System.Boolean;
 
-#include "System/Boolean.hpp"
-
+import <string_view>;
+import <compare>;
 
 namespace System
 {

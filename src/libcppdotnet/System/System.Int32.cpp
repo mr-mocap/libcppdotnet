@@ -1,18 +1,19 @@
-module System;
+module System.Int32;
 
-#include "System/Int16.hpp"
-#include "System/Convert.hpp"
+import <string>;
+import <compare>;
 
+import System.Convert;
 
 namespace System
 {
 
-std::string Int16::ToString() const
+std::string Int32::ToString() const
 {
     return Convert::ToString( _value );
 }
 
-int Int16::CompareTo(const Int16 &other) const
+int Int32::CompareTo(const Int32 &other) const
 {
     auto result{ *this <=> other };
 

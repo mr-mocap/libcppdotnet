@@ -1,0 +1,19 @@
+export module System.Numerics;
+
+export import <algorithm>;
+export import <charconv>;
+export import <cmath>;
+export import <cstdint>;
+export import <format>;
+export import <optional>;
+export import <limits>;
+export import <string_view>;
+export import <system_error>;
+export import <type_traits>;
+
+export import System.IEquatable;
+export import System.Exception;
+export import System.IComparable;
+
+export import System.Numerics.INumber;
+export import System.Numerics.INumberBase;
