@@ -1,3 +1,4 @@
 export module System.Collections;
 
 export import System.Collections.Generic;
+export import System.Collections.Specialized;
