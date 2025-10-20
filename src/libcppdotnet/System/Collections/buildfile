@@ -1,3 +1,0 @@
-./: {Generic/} {Specialized/} lib{cppdotnet}
-
-lib{cppdotnet}: {mxx}{**} {cxx}{**}

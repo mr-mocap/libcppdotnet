@@ -11,9 +11,10 @@ include $pub
 pub_hdrs = $($pub/ pub_hdrs)
 
 ./: lib{cppdotnet}
-./: {Numerics/} {Collections/} {IO/} {Text/}
 
-lib{cppdotnet}: {mxx}{**} {cxx}{**} $impl_libs $intf_libs
+#./: {Numerics/} {Collections/} {Text/} {IO/}
+
+lib{cppdotnet}: {mxx cxx}{**} $impl_libs $intf_libs
 
 # Private headers and sources as well as dependencies.
 #

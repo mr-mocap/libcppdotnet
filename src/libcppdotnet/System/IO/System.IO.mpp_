@@ -27,7 +27,6 @@ export import System.IO.UnixFileMode;
 export import System.IO.MatchType;
 export import System.IO.MatchCasing;
 export import System.IO.Stream;
-export import System.IO.NullStream;
 export import System.IO.FileStream;
 export import System.IO.MemoryStream;
 export import System.IO.ConsoleStream;

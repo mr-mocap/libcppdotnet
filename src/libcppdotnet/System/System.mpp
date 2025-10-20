@@ -24,9 +24,9 @@ export import <source_location>;
 export import <span>;
 export import <string>;
 export import <string_view>;
-export import <system_error>;
+//export import <system_error>;
 export import <tuple>;
-export import <type_traits>;
+//export import <type_traits>;
 export import <unordered_map>;
 export import <utility>;
 export import <vector>;
@@ -83,21 +83,71 @@ export import System.Concepts;
 
 export import System.IEquatable;
 
-export import System.Numerics;
-
 export import System.Byte;
 export import System.Boolean;
 export import System.Int16;
 export import System.Int32;
 export import System.Int64;
 
-export import System.Collections;
+export import System.Collections.Generic.Private.ICollectionInterface;
+export import System.Collections.Generic.Private.IDictionaryInterface;
+export import System.Collections.Generic.Private.IListInterface;
+export import System.Collections.Generic.Private.LegacyBidirectionalIteratorBase;
+export import System.Collections.Generic.Private.LegacyForwardIteratorBase;
+export import System.Collections.Generic.Private.LegacyRandomAccessIteratorBase;
+export import System.Collections.Generic.Concepts;
+export import System.Collections.Generic.Dictionary;
+export import System.Collections.Generic.HashSet;
+export import System.Collections.Generic.ICollection;
+export import System.Collections.Generic.IDictionary;
+export import System.Collections.Generic.IList;
+export import System.Collections.Generic.KeyNotFoundException;
+export import System.Collections.Generic.KeyValuePair;
+export import System.Collections.Generic.LinkedList;
+export import System.Collections.Generic.List;
+export import System.Collections.Generic.OrderedDictionary;
+export import System.Collections.Generic.SortedDictionary;
+export import System.Collections.Generic.SortedSet;
+export import System.Collections.Generic.Stack;
+export import System.Collections.Specialized.StringDictionary;
 
 export import System.Environment;
 
 export import System.Console;
-export import System.IO;
-export import System.Text;
+
+// System.Numerics
+export import System.Numerics.INumber;
+export import System.Numerics.INumberBase;
+
+// System.IO
+export import System.IO.Concepts;
+export import System.IO.Exception;
+export import System.IO.Path;
+export import System.IO.SeekOrigin;
+export import System.IO.FileAccess;
+export import System.IO.FileStreamOptions;
+export import System.IO.FileMode;
+export import System.IO.UnixFileMode;
+export import System.IO.MatchType;
+export import System.IO.MatchCasing;
+export import System.IO.Stream;
+export import System.IO.FileStream;
+export import System.IO.MemoryStream;
+export import System.IO.ConsoleStream;
+
+export import System.IO.StreamReader;
+export import System.IO.StreamWriter;
+
+export import System.IO.StringReader;
+export import System.IO.StringWriter;
+
+export import System.IO.TextReader;
+export import System.IO.TextWriter;
+
+export import System.IO.BinaryWriter;
+
+// System.Text
+export import System.Text.StringBuilder;
 
 // Not Included Yet!
 //export import "Diagnostics/Activity.hpp";

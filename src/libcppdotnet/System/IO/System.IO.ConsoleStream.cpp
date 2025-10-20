@@ -7,6 +7,7 @@ namespace System::IO
 
 ConsoleStream::ConsoleStream(Which which)
     :
+    Stream{ ThisIsHereForStdMakeUnique{} },
     _which{ which }
 {
     switch ( which )

@@ -1,3 +1,0 @@
-./: {Private/} lib{cppdotnet}
-
-lib{cppdotnet}: mxx{**} cxx{**}

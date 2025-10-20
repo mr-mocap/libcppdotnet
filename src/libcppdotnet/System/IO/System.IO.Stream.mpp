@@ -1,7 +1,6 @@
 export module System.IO.Stream;
 
-import <iosfwd>;
-//import <iostream>;
+import <iostream>;
 
 export import <cstddef>;
 export import <cstdint>;
@@ -16,7 +15,14 @@ export namespace System::IO
 
 class Stream
 {
+protected:
+    // Idiom that allows our own class to create a default
+    // instance while satisfying std::make_unique, which needs
+    // to use PUBLIC constructors.
+    struct ThisIsHereForStdMakeUnique { };
 public:
+    Stream() = delete;
+    Stream(ThisIsHereForStdMakeUnique );
     Stream(const Stream &) = delete;
     Stream(Stream &&);
     virtual ~Stream();
@@ -52,7 +58,6 @@ protected:
     bool _canWrite = false;
     bool _canSeek  = false;
 
-    Stream() = default;
     Stream(std::unique_ptr<std::iostream> &&stream, bool can_read, bool can_write, bool can_seek);
 
     virtual void   _close();

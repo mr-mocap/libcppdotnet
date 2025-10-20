@@ -2,7 +2,9 @@ import <cstdlib>;
 import <cassert>;
 import <array>;
 
-import System.Collections.Generic;
+import System.Collections.Generic.ICollection;
+import System.Collections.Generic.List;
+import System.Collections.Generic.LinkedList;
 
 using namespace System;
 

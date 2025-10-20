@@ -1,5 +1,28 @@
 export module System.Collections.Generic;
 
+export import <algorithm>;
+export import <concepts>;
+export import <cstddef>;
+export import <format>;
+export import <functional>;
+export import <initializer_list>;
+export import <iterator>;
+export import <memory>;
+export import <ranges>;
+export import <unordered_map>;
+export import <unordered_set>;
+export import <utility>;
+export import <vector>;
+
+export import System.Concepts;
+
+export import System.Collections.Generic.Private.LegacyForwardIteratorBase;
+export import System.Collections.Generic.Private.LegacyBidirectionalIteratorBase;
+export import System.Collections.Generic.Private.LegacyRandomAccessIteratorBase;
+export import System.Collections.Generic.Private.ICollectionInterface;
+export import System.Collections.Generic.Private.IDictionaryInterface;
+export import System.Collections.Generic.Private.IListInterface;
+
 export import System.Collections.Generic.Concepts;
 export import System.Collections.Generic.Dictionary;
 export import System.Collections.Generic.HashSet;

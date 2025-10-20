@@ -7,9 +7,6 @@ import <string_view>;
 import <utility>;
 
 import System.IO.Exception;
-#if 0
-import System.IO.NullStream;
-#endif
 
 namespace System::IO
 {
@@ -25,7 +22,7 @@ Stream::Stream(std::unique_ptr<std::iostream> &&stream, bool can_read, bool can_
 
 Stream::Stream(Stream &&other)
     :
-    _stream{ std::move(other) },
+    _stream{ std::move(other._stream) },
     _canRead{ other._canRead },
     _canWrite{ other._canWrite },
     _canSeek{ other._canSeek }
@@ -47,12 +44,7 @@ Stream &Stream::operator =(Stream &&other)
 
 std::unique_ptr<Stream> Stream::Null()
 {
-#if 0
-    return std::make_unique<NullStream>();
-#else
-    // TODO: FIXME
-    return std::make_unique<Stream>();
-#endif
+    return std::make_unique<Stream>( ThisIsHereForStdMakeUnique{} );
 }
 
 void Stream::Close()
@@ -81,7 +73,6 @@ void Stream::WriteByte(std::byte value)
 {
     if ( _stream && CanWrite() )
         _stream->put( std::bit_cast<char>(value) );
-
 }
 
 void Stream::WriteByte(uint8_t byte)
@@ -107,6 +98,9 @@ int Stream::Read(Span<std::byte> buffer)
 {
     if ( _stream && CanRead() )
     {
+        if ( buffer.Length() == 0 )
+            return 0; // No place to store the data, so don't read anything
+
         _stream->read( reinterpret_cast<char *>(buffer.data()), buffer.Length() );
         return buffer.Length(); // TODO: REALLY check the read byte count!
     }
@@ -115,10 +109,18 @@ int Stream::Read(Span<std::byte> buffer)
 
 int Stream::ReadByte()
 {
-    if ( _stream && CanRead() )
-        return _stream->get();
+    if ( _stream )
+    {
+        if ( !CanRead() )
+            ThrowWithTarget( NotSupportedException("This stream does not support reading") );
 
-    return -1;
+        if ( _stream->eof() )
+            return -1;
+
+        return _stream->get();
+    }
+
+    return 0;
 }
 
 size_t Stream::Length()
@@ -143,23 +145,28 @@ void Stream::_flush()
 
 size_t Stream::_length()
 {
-    // Default behavior: Throw an exception
-    ThrowWithTarget( NotSupportedException("Finding the Length is not supported") );
+    // Default behavior: Throw an exception IF we have a stream and can't seek
+    if ( _stream )
+    {
+        if ( !CanSeek() )
+            ThrowWithTarget( NotSupportedException("Finding the Length is not supported") );
+    }
 
     return 0;
 }
 
 size_t Stream::_position()
 {
-    // Factor out the most common behavior
-    if ( !CanSeek() )
+    if ( _stream )
     {
-        ThrowWithTarget( NotSupportedException("Finding the Position is not supported (Unable to Seek for this stream type)") );
-    }
+        // Factor out the most common behavior
+        if ( !CanSeek() )
+            ThrowWithTarget( NotSupportedException("Finding the Position is not supported (Unable to Seek for this stream type)") );
 
-    if ( _stream->fail() )
-    {
-        ThrowWithTarget( IO::IOException("Stream is in a fail state") );
+        if ( _stream->fail() )
+        {
+            ThrowWithTarget( IO::IOException("Stream is in a fail state") );
+        }
     }
     return 0;
 }
