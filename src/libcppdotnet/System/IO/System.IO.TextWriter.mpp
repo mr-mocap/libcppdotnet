@@ -1,0 +1,69 @@
+export module System.IO.TextWriter;
+
+export import <cstdint>;
+export import <format>;
+export import <string>;
+export import <string_view>;
+
+import System.Environment;
+
+export namespace System::IO
+{
+
+class TextWriter
+{
+public:
+    TextWriter() = default;
+    virtual ~TextWriter();
+
+    std::string_view NewLine() const { return _newLine; }
+    void NewLine(std::string_view new_value) { _newLine = new_value; }
+
+    virtual void Close();
+    virtual void Flush();
+
+    virtual void Write(bool value);
+    virtual void Write(char value) = 0;
+    virtual void Write(std::int16_t value);
+    virtual void Write(std::uint16_t value);
+    virtual void Write(std::int32_t value);
+    virtual void Write(std::uint32_t value);
+    virtual void Write(std::int64_t value);
+    virtual void Write(std::uint64_t value);
+    virtual void Write(float value);
+    virtual void Write(double value);
+    virtual void Write(std::string_view message) = 0;
+
+    template <typename ...Args>
+        requires (sizeof...(Args) > 0)
+    inline void Write(std::format_string<Args...> fmt, Args &&... args)
+    {
+        // Let's use the more primitive Write(std::string_view) underneath
+        Write( std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
+    }
+
+    virtual void WriteLine(bool value);
+    virtual void WriteLine(char value);
+    virtual void WriteLine(std::int16_t value);
+    virtual void WriteLine(std::uint16_t value);
+    virtual void WriteLine(std::int32_t value);
+    virtual void WriteLine(std::uint32_t value);
+    virtual void WriteLine(std::int64_t value);
+    virtual void WriteLine(std::uint64_t value);
+    virtual void WriteLine(float value);
+    virtual void WriteLine(double value);
+    virtual void WriteLine(std::string_view message);
+    
+    template <typename ...Args>
+        requires (sizeof...(Args) > 0)
+    inline void WriteLine(std::format_string<Args...> &&fmt, Args &&... args)
+    {
+        // Let's use the more primitive Write(std::string_view) underneath
+        WriteLine( std::string_view( std::vformat( fmt.get(), std::make_format_args( args... ) ) ) );
+    }
+
+protected:
+    std::string _newLine{ System::Environment::NewLine() };
+};
+
+}

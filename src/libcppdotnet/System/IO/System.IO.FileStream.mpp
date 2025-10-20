@@ -1,0 +1,22 @@
+export module System.IO.FileStream;
+
+export import <string_view>;
+
+export import System.IO.FileMode;
+export import System.IO.Stream;
+
+export namespace System::IO
+{
+
+class FileStream : public Stream
+{
+public:
+    FileStream(std::string_view filename);
+    FileStream(std::string_view filename, const FileMode mode);
+   ~FileStream();
+
+protected:
+    void _close() override;
+};
+
+}

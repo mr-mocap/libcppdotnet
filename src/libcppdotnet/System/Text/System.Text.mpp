@@ -1,0 +1,13 @@
+export module System.Text;
+
+export import <cstddef>;
+export import <cstdint>;
+#if __cplusplus >= 202002L
+export import <concepts>;
+export import <format>;
+#endif
+export import <string>;
+export import <string_view>;
+
+export import System.Exception;
+export import System.Text.StringBuilder;

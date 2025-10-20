@@ -1,0 +1,21 @@
+export module System.IO.TextReader;
+
+export import <string>;
+
+export namespace System::IO
+{
+
+class TextReader
+{
+public:
+    TextReader();
+    virtual ~TextReader() = 0;
+
+    virtual void Close() = 0;
+
+    virtual int Read() = 0;
+
+    virtual std::string ReadLine() = 0;
+};
+
+}

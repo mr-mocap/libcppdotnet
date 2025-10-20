@@ -95,31 +95,11 @@ export import System.Collections;
 
 export import System.Environment;
 
+export import System.Console;
+export import System.IO;
+export import System.Text;
+
 // Not Included Yet!
-//export import "Console.hpp";
-
-//export import "IO/BinaryWriter.hpp";
-//export import "IO/ConsoleStream.hpp";
-//export import "IO/FileAccess.hpp";
-//export import "IO/FileMode.hpp";
-//export import "IO/FileStream.hpp";
-//export import "IO/FileStreamOptions.hpp";
-//export import "IO/IOException.hpp";
-//export import "IO/MatchCasing.hpp";
-//export import "IO/MatchType.hpp";
-//export import "IO/MemoryStream.hpp";
-//export import "IO/NullStream.hpp";
-//export import "IO/Path.hpp";
-//export import "IO/SeekOrigin.hpp";
-//export import "IO/Stream.hpp";
-//export import "IO/StreamReader.hpp";
-//export import "IO/StreamWriter.hpp";
-//export import "IO/StringReader.hpp";
-//export import "IO/StringWriter.hpp";
-//export import "IO/TextReader.hpp";
-//export import "IO/TextWriter.hpp";
-//export import "IO/UnixFileMode.hpp";
-
 //export import "Diagnostics/Activity.hpp";
 //export import "Diagnostics/ActivityListener.hpp";
 //export import "Diagnostics/ActivitySamplingResult.hpp";

@@ -1,0 +1,44 @@
+export module System.IO;
+
+export import <concepts>;
+export import <cstddef>;
+export import <cstdint>;
+export import <exception>;
+export import <filesystem>;
+export import <memory>;
+export import <string>;
+export import <string_view>;
+
+export import System.Environment;
+export import System.Nullable;
+export import System.Private_enum;
+export import System.ReadOnlySpan;
+
+export import System.Text.StringBuilder;
+
+export import System.IO.Concepts;
+export import System.IO.Exception;
+export import System.IO.Path;
+export import System.IO.SeekOrigin;
+export import System.IO.FileAccess;
+export import System.IO.FileStreamOptions;
+export import System.IO.FileMode;
+export import System.IO.UnixFileMode;
+export import System.IO.MatchType;
+export import System.IO.MatchCasing;
+export import System.IO.Stream;
+export import System.IO.NullStream;
+export import System.IO.FileStream;
+export import System.IO.MemoryStream;
+export import System.IO.ConsoleStream;
+
+export import System.IO.StreamReader;
+export import System.IO.StreamWriter;
+
+export import System.IO.StringReader;
+export import System.IO.StringWriter;
+
+export import System.IO.TextReader;
+export import System.IO.TextWriter;
+
+export import System.IO.BinaryWriter;

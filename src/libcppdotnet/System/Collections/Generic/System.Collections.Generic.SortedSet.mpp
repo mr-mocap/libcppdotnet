@@ -4,8 +4,9 @@ module;
 
 export module System.Collections.Generic.SortedSet;
 
-export import <set>;
 export import <functional>;
+export import <set>;
+export import <utility>;
 
 export namespace System::Collections::Generic
 {

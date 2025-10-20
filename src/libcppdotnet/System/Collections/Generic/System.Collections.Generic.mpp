@@ -18,7 +18,3 @@ export import System.Collections.Generic.IList;
 export import System.Collections.Generic.IDictionary;
 
 export import System.Collections.Generic.Private;
-#if 0
-export import :StringDictionary;
-
-#endif

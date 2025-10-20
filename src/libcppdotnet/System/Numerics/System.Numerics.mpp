@@ -15,5 +15,5 @@ export import System.IComparable;
 export import System.IEquatable;
 export import System.Exception;
 
-export import System.Numerics.INumber;
 export import System.Numerics.INumberBase;
+export import System.Numerics.INumber;
