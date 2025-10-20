@@ -1,11 +1,10 @@
-#include "TestConsole.hpp"
-#include "System/Console.hpp"
-#include "System/IO/StringReader.hpp"
-#include "System/IO/StringWriter.hpp"
-#include "System/IO/StreamReader.hpp"
-#include "System/IO/StreamWriter.hpp"
-#include <iostream>
-#include <string_view>
+import <cstdlib>;
+import <string_view>;
+import <cassert>;
+
+import System.Console;
+import System.IO.StreamReader;
+import System.IO.StringReader;
 
 namespace TestConsole
 {
@@ -13,8 +12,6 @@ namespace TestConsole
 void TestOut()
 {
     using namespace std::literals;
-
-    std::cout << __func__ << std::endl;
 
     System::Console::WriteLine("This is a line of text!"sv);
     System::Console::WriteLine("Integer Value: {}"sv, 42);
@@ -36,8 +33,6 @@ void TestOut()
 
 void SetIn()
 {
-    std::cout << __func__ << std::endl;
-
     std::string initial_data = "This is a line\nThe second line.";
 
     // It is NOT redirected initially
@@ -60,8 +55,6 @@ void SetIn()
 
 void SetOut()
 {
-    std::cout << __func__ << std::endl;
-
     // It is NOT redirected initially
     assert( !System::Console::IsOutputRedirected() );
 
@@ -80,8 +73,6 @@ void SetOut()
 
 void SetError()
 {
-    std::cout << __func__ << std::endl;
-
     // It is NOT redirected initially
     assert( !System::Console::IsErrorRedirected() );
 
@@ -100,14 +91,16 @@ void SetError()
 
 void Run()
 {
-    std::cout << "Running Console Tests..." << std::endl;
-
     TestOut();
     SetIn();
     SetOut();
     SetError();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestConsole::Run();
+    return EXIT_SUCCESS;
 }
