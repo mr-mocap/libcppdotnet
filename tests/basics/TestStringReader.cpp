@@ -1,16 +1,21 @@
-#include "TestStringReader.hpp"
-#include <iostream>
-#include <cassert>
+import <cstdlib>;
+import <cassert>;
+
+import System.Console;
+//import System.IO.StringReader;
 
 namespace TestStringReader
 {
 
 void Run()
 {
-    std::cout << "Running StringReader Tests..." << std::endl;
-
-
-    std::cout << "PASSED!" << std::endl;
+    System::Console::WriteLine("NOT IMPLEMENTED: TestStringReader::Run()");
 }
 
+}
+
+int main(void)
+{
+    TestStringReader::Run();
+    return EXIT_SUCCESS;
 }
