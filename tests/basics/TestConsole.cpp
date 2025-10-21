@@ -4,30 +4,30 @@ import <cassert>;
 
 import System.Console;
 import System.IO.StreamReader;
+import System.IO.StreamWriter;
 import System.IO.StringReader;
+import System.IO.StringWriter;
 
 namespace TestConsole
 {
 
 void TestOut()
 {
-    using namespace std::literals;
+    System::Console::WriteLine("This is a line of text!");
+    System::Console::WriteLine("Integer Value: {}", 42);
+    System::Console::WriteLine("Here is a string: \"{}\"", "WaHoo!  We Did It!");
 
-    System::Console::WriteLine("This is a line of text!"sv);
-    System::Console::WriteLine("Integer Value: {}"sv, 42);
-    System::Console::WriteLine("Here is a string: \"{}\""sv, "WaHoo!  We Did It!");
+    System::Console::WriteLine("One Argument: {}", 1);
+    System::Console::WriteLine("Two Arguments: {}, {}", 1, 2);
+    System::Console::WriteLine("Three Arguments: {}, {}, {}", 1, 2, 3);
+    System::Console::WriteLine("Four Arguments: {}, {}, {}, {}", 1, "two", 3.14159, "four");
 
-    System::Console::WriteLine("One Argument: {}"sv, 1);
-    System::Console::WriteLine("Two Arguments: {}, {}"sv, 1, 2);
-    System::Console::WriteLine("Three Arguments: {}, {}, {}"sv, 1, 2, 3);
-    System::Console::WriteLine("Four Arguments: {}, {}, {}, {}"sv, 1, "two", 3.14159, "four"sv);
-
-    System::Console::Write("This is a line of text!"sv);
+    System::Console::Write("This is a line of text!");
     System::Console::Write( System::Console::Out().NewLine() );
 
-    System::Console::Write("Integer Value: {}"sv, 24);
+    System::Console::Write("Integer Value: {}", 24);
     System::Console::Write( System::Console::Out().NewLine() );
-    System::Console::WriteLine("Here is a string: \"{}\""sv, "WaHoo!  We Also Did It!");
+    System::Console::WriteLine("Here is a string: \"{}\"", "WaHoo!  We Also Did It!");
     System::Console::Write( System::Console::Out().NewLine() );
 }
 
