@@ -31,3 +31,4 @@ import lib = libcppdotnet%lib{cppdotnet}
 ./: exe{TestStack}: cxx{TestStack} $lib
 ./: exe{TestStringWriter}: cxx{TestStringWriter} $lib
 ./: exe{TestStringReader}: cxx{TestStringReader} $lib
+./: exe{TestStringBuilder}: cxx{TestStringBuilder} $lib

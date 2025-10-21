@@ -1,15 +1,13 @@
-#include "TestStringBuilder.hpp"
-#include "System/Text/StringBuilder.hpp"
-#include <iostream>
-#include <cassert>
+import <cstdlib>;
+import <cassert>;
+
+import System.Text.StringBuilder;
 
 namespace TestStringBuilder
 {
 
 void ReplaceSubstrings()
 {
-    std::cout << __func__ << std::endl;
-
     const char *init = "This is just a test of the ability of the StringBuilder "
                        "to handle the proper replacement of substrings that are "
                        "larger than what is being searched for";
@@ -20,7 +18,7 @@ void ReplaceSubstrings()
 
         builder.Replace("is", "WAS");
 
-        std::cout << builder.ToString() << std::endl;
+        //std::cout << builder.ToString() << std::endl;
     }
 }
 
@@ -71,12 +69,14 @@ void AppendFormat()
 
 void Run()
 {
-    std::cout << "Running StringBuilder Tests..." << std::endl;
-
     ReplaceSubstrings();
     AppendFormat();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestStringBuilder::Run();
+    return EXIT_SUCCESS;
 }
