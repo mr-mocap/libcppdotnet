@@ -2,7 +2,6 @@
 
 import <cstdlib>;
 import <cassert>;
-import <format>;
 
 import System.Int32;
 
@@ -199,7 +198,7 @@ void Parse()
     // Parsing an empty string...
     try
     {
-        std::int32_t result = Int32::Parse(""sv);
+        std::int32_t result = Int32::Parse("");
 
         UNUSED(result);
     }
@@ -215,7 +214,7 @@ void Parse()
     // Parsing a non-integer...
     try
     {
-        std::int32_t result = Int32::Parse("salad"sv);
+        std::int32_t result = Int32::Parse("salad");
 
         UNUSED(result);
     }
@@ -232,7 +231,7 @@ void Parse()
     try
     {
         // TODO: Is this proper behavior?
-        std::int32_t result = Int32::Parse("3.14"sv);
+        std::int32_t result = Int32::Parse("3.14");
 
         assert( result == 3 );
     }
