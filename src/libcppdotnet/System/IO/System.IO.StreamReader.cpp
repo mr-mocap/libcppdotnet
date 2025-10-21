@@ -15,6 +15,10 @@ StreamReader::StreamReader(std::string_view filename)
 {
 }
 
+StreamReader::~StreamReader()
+{
+}
+
 void StreamReader::Close()
 {
     if ( _stream )

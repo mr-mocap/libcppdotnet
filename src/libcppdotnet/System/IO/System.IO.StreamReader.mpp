@@ -25,7 +25,7 @@ public:
     StreamReader &operator =(const StreamReader &) = delete;
     StreamReader &operator =(StreamReader &&) = default;
 
-   ~StreamReader() override = default;
+   ~StreamReader() override;
 
     void Close() override;
 

@@ -29,6 +29,13 @@ Stream::Stream(Stream &&other)
 {
 }
 
+// This is here for us to be able to make a default constructed object
+// without letting the user be able to do so.
+// Only this class can construct a default version of itself.
+Stream::Stream(ThisIsHereForStdMakeUnique )
+{
+}
+
 Stream::~Stream()
 {
 }

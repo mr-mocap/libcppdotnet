@@ -7,4 +7,8 @@ TextReader::TextReader()
 {
 }
 
+TextReader::~TextReader()
+{
+}
+
 }

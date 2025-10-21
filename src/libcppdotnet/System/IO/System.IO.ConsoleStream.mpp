@@ -10,6 +10,7 @@ class ConsoleStream : public Stream
 public:
     enum Which { In, Out, Error, Log };
 
+    ConsoleStream() = delete;
     ConsoleStream(Which which);
    ~ConsoleStream() override;
 

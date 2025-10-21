@@ -34,6 +34,11 @@ public:
     virtual void Write(double value);
     virtual void Write(std::string_view message) = 0;
 
+            void Write(char const* message)
+            {
+                Write( std::string_view( message ) );
+            }
+
     template <typename ...Args>
         requires (sizeof...(Args) > 0)
     inline void Write(std::format_string<Args...> fmt, Args &&... args)
@@ -54,6 +59,11 @@ public:
     virtual void WriteLine(double value);
     virtual void WriteLine(std::string_view message);
     
+            void WriteLine(char const* message)
+            {
+                WriteLine( std::string_view( message ) );
+            }
+
     template <typename ...Args>
         requires (sizeof...(Args) > 0)
     inline void WriteLine(std::format_string<Args...> &&fmt, Args &&... args)

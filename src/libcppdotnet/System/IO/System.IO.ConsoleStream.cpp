@@ -2,12 +2,14 @@ module System.IO.ConsoleStream;
 
 import <iostream>;
 
+import System.IO.Stream;
+
 namespace System::IO
 {
 
 ConsoleStream::ConsoleStream(Which which)
     :
-    Stream{ ThisIsHereForStdMakeUnique{} },
+    Stream{ Stream::ThisIsHereForStdMakeUnique{} },
     _which{ which }
 {
     switch ( which )

@@ -22,3 +22,4 @@ import lib = libcppdotnet%lib{cppdotnet}
 ./: exe{TestDictionary}: cxx{TestDictionary} $lib
 ./: exe{TestIDictionary}: cxx{TestIDictionary} $lib
 ./: exe{TestICollection}: cxx{TestICollection} $lib
+./: exe{TestBinaryWriter}: cxx{TestBinaryWriter} $lib

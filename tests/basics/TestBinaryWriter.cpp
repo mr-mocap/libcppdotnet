@@ -1,11 +1,9 @@
-#include "TestBinaryWriter.hpp"
-#include "System/Console.hpp"
-#include "System/IO/MemoryStream.hpp"
-#include "System/IO/BinaryWriter.hpp"
-#include "System/IO/TextWriter.hpp"
-#include "System/ReadOnlySpan.hpp"
-#include <cassert>
+import <cstdlib>;
+import <cassert>;
 
+import System.Console;
+import System.IO.BinaryWriter;
+import System.IO.MemoryStream;
 
 namespace TestBinaryWriter
 {
@@ -101,4 +99,10 @@ void Run()
     System::Console::Out().WriteLine("PASSED!");
 }
 
+}
+
+int main(void)
+{
+    TestBinaryWriter::Run();
+    return EXIT_SUCCESS;
 }
