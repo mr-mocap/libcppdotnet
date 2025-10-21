@@ -1,10 +1,11 @@
-#include <numbers>
-//#include <cstdlib>
-#include <cmath>
-#include <algorithm>
-#include <type_traits>
+export module System.Math;
 
-namespace System
+import <algorithm>;
+import <cmath>;
+import <numbers>;
+import <type_traits>;
+
+export namespace System
 {
 
 class Math
