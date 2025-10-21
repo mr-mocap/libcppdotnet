@@ -1,16 +1,15 @@
-#include "TestStack.hpp"
-#include "System/Collections/Generic/Stack.hpp"
-#include <iostream>
-#include <cassert>
+#include <libcppdotnet/System/PreProcessor/Contracts.hpp>
 
+import <cstdlib>;
+import <cassert>;
+
+import System.Collections.Generic.Stack;
 
 namespace TestStack
 {
 
 void DefaultConstructed()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::Stack<int> default_constructed;
 
     assert( default_constructed.Count() == 0 );
@@ -19,8 +18,6 @@ void DefaultConstructed()
 
 void PushIncreasesTheCountByOne()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::Stack<int> stack;
 
     assert( stack.Count() == 0 );
@@ -32,8 +29,6 @@ void PushIncreasesTheCountByOne()
 
 void PushAddsTheItemToTheTop()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::Stack<int> stack;
 
     assert( stack.Count() == 0 );
@@ -46,8 +41,6 @@ void PushAddsTheItemToTheTop()
 
 void PeekReturnsTheObjectAtTheTopOfTheStackWithoutRemovingIt()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::Stack<int> stack;
 
     stack.Push(10);
@@ -59,8 +52,6 @@ void PeekReturnsTheObjectAtTheTopOfTheStackWithoutRemovingIt()
 
 void PopRemovesAndReturnsTheTopItem()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::Stack<int> stack;
 
     stack.Push(10);
@@ -76,8 +67,6 @@ void PopRemovesAndReturnsTheTopItem()
 
 void PoppingAnEmptyStackThrowsAnException()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::Stack<int> stack;
 
     assert( stack.Count() == 0 );
@@ -91,7 +80,7 @@ void PoppingAnEmptyStackThrowsAnException()
     }
     catch(const System::InvalidOperationException &e)
     {
-        std::cout << e.ToString() << std::endl;
+        assert( true );
     }
     
     assert( stack.Count() == 0 );
@@ -99,8 +88,6 @@ void PoppingAnEmptyStackThrowsAnException()
 
 void PeekingAnEmptyStackThrowsAnException()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::Stack<int> stack;
 
     assert( stack.Count() == 0 );
@@ -114,7 +101,7 @@ void PeekingAnEmptyStackThrowsAnException()
     }
     catch(const System::InvalidOperationException &e)
     {
-        std::cout << e.ToString() << std::endl;
+        assert( true );
     }
     
     assert( stack.Count() == 0 );
@@ -122,8 +109,6 @@ void PeekingAnEmptyStackThrowsAnException()
 
 void ContainsReturnsTrueWhenTheItemIsInTheStack()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::Stack<int> stack;
 
     stack.Push(10);
@@ -136,8 +121,6 @@ void ContainsReturnsTrueWhenTheItemIsInTheStack()
 
 void TryPeekReturnsTrueAndCopiesValueToOutputParameter()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::Stack<int> stack;
 
     stack.Push(10);
@@ -155,8 +138,6 @@ void TryPeekReturnsTrueAndCopiesValueToOutputParameter()
 
 void TryPeekReturnsFalseWhenStackIsEmpty()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::Stack<int> stack;
 
     assert( stack.Count() == 0 );
@@ -170,8 +151,6 @@ void TryPeekReturnsFalseWhenStackIsEmpty()
 
 void TryPopReturnsTrueAndCopiesValueToOutputParameter()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::Stack<int> stack;
 
     stack.Push(30);
@@ -187,8 +166,6 @@ void TryPopReturnsTrueAndCopiesValueToOutputParameter()
 
 void TryPopReturnsFalseWhenStackIsEmpty()
 {
-    std::cout << __func__ << std::endl;
-
     System::Collections::Generic::Stack<int> stack;
 
     assert( stack.Count() == 0 );
@@ -202,8 +179,6 @@ void TryPopReturnsFalseWhenStackIsEmpty()
 
 void Run()
 {
-    std::cout << "Running Version Tests..." << std::endl;
-
     DefaultConstructed();
     PushIncreasesTheCountByOne();
     PushAddsTheItemToTheTop();
@@ -216,8 +191,12 @@ void Run()
     TryPeekReturnsFalseWhenStackIsEmpty();
     TryPopReturnsTrueAndCopiesValueToOutputParameter();
     TryPopReturnsFalseWhenStackIsEmpty();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestStack::Run();
+    return EXIT_SUCCESS;
 }

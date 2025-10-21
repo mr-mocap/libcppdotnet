@@ -28,3 +28,5 @@ import lib = libcppdotnet%lib{cppdotnet}
 ./: exe{TestEnvironment}: cxx{TestEnvironment} $lib
 ./: exe{TestInt32}: cxx{TestInt32} $lib
 ./: exe{TestPath}: cxx{TestPath} $lib
+./: exe{TestStack}: cxx{TestStack} $lib
+./: exe{TestStringWriter}: cxx{TestStringWriter} $lib
