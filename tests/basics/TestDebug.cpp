@@ -1,7 +1,8 @@
-#include "TestDebug.hpp"
-#include "System/Diagnostics/ConsoleTraceListener.hpp"
-#include "System/Diagnostics/Debug.hpp"
-#include <string_view>
+import <cstdlib>;
+import <string_view>;
+
+import System.Debug;
+import System.Diagnostics.ConsoleTraceListener;
 
 namespace TestDebug
 {
@@ -10,8 +11,6 @@ void CommonUsage()
 {
     using namespace std::literals;
     using namespace System::Diagnostics;
-
-    std::cout << __func__ << std::endl;
 
     std::unique_ptr<System::Diagnostics::ConsoleTraceListener> consoleListener = std::make_unique<System::Diagnostics::ConsoleTraceListener>();
     
@@ -60,11 +59,13 @@ void CommonUsage()
 
 void Run()
 {
-    std::cout << "Running Debug Tests..." << std::endl;
-
     CommonUsage();
-
-    std::cout << "PASSED!" << std::endl;
 }
 
+}
+
+int main(void)
+{
+    TestDebug::Run();
+    return EXIT_SUCCESS;
 }
