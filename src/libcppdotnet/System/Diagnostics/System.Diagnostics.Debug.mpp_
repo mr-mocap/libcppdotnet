@@ -1,10 +1,10 @@
 export module System.Diagnostics.Debug;
 
 export import <concepts>;
-#include <string>
-export import <string_view>;
 export import <format>;
 export import <source_location>;
+export import <string>;
+export import <string_view>;
 
 import System.Diagnostics.TraceListenerCollection;
 

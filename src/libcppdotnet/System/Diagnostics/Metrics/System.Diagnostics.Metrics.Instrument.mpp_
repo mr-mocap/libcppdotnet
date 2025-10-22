@@ -14,8 +14,6 @@ export import <utility>;
 export namespace System::Diagnostics::Metrics
 {
 
-class Meter;
-
 class Instrument
 {
 public:
