@@ -1,0 +1,22 @@
+export module System.Diagnostics.SourceSwitch;
+
+export import System.Diagnostics.Switch;
+export import System.Diagnostics.SourceLevels;
+
+export namespace System::Diagnostics
+{
+
+class SourceSwitch : public Switch
+{
+public:
+    SourceSwitch(std::string_view display_name, std::string_view default_switch_value);
+    SourceSwitch(std::string_view display_name);
+
+    static SourceSwitch Make(std::string_view display_name, std::string_view default_switch_value);
+
+    SourceLevels Level();
+
+    void OnValueChanged() override;
+};
+
+}

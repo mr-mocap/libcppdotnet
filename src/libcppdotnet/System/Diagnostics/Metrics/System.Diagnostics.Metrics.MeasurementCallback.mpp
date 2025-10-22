@@ -1,0 +1,15 @@
+export module System.Diagnostics.Metrics.MeasurementCallback;
+
+export import System.Delegates;
+export import System.Diagnostics.Metrics.Instrument;
+
+export namespace System::Diagnostics::Metrics
+{
+
+template <class T>
+class MeasurementCallback : Delegate<Instrument &, const T &>
+{
+    using Delegate<Instrument &, const T &>::Delegate;
+};
+
+}

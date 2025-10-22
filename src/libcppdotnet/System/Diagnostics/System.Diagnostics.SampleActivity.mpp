@@ -1,0 +1,17 @@
+export module System.Diagnostics.SampleActivity;
+
+export import <concepts>;
+
+export import System.Delegates;
+
+export namespace System::Diagnostics
+{
+
+template <typename RetType, typename ...ArgTypes>
+    requires ( !std::same_as<RetType, void> )
+struct SampleActivity : Delegate<RetType, ArgTypes...>
+{
+    using Delegate<RetType, ArgTypes...>::Delegate;
+};
+
+}

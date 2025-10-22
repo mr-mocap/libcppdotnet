@@ -1,0 +1,30 @@
+module;
+
+#include <libcppdotnet/System/PreProcessor/Contracts.hpp>
+
+module System.Diagnostics.TraceFilter;
+
+import <string_view>;
+
+import System.Diagnostics.TraceEventType;
+import System.Diagnostics.TraceEventCache;
+
+namespace System::Diagnostics
+{
+
+bool TraceFilter::ShouldTrace(const TraceEventCache  &cache,
+                                    std::string_view  source,
+                                      TraceEventType  eventType,
+                                                 int  id,
+                                    std::string_view  formatOrMessage)
+{
+    UNUSED(cache);
+    UNUSED(source);
+    UNUSED(eventType);
+    UNUSED(id);
+    UNUSED(formatOrMessage);
+
+    return true;
+}
+
+}

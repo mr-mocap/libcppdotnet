@@ -16,10 +16,10 @@ export import <vector>;
 
 export import System.Base;
 export import System.Exception;
+export import System.Diagnostics.SourceLevels;
 
 //import System:Boolean;
 
-// #include "System/Diagnostics/SourceLevels.hpp"
 // #include "System/Diagnostics/TraceLevel.hpp"
 // #include "System/Diagnostics/TraceOptions.hpp"
 
@@ -66,7 +66,7 @@ public:
     // From IConvertable  (move there)
     // static Diagnostics::TraceLevel   ToType(std::string_view value, Diagnostics::TraceLevel   this_is_here_to_select_the_correct_function);
     // static Diagnostics::TraceOptions ToType(std::string_view value, Diagnostics::TraceOptions this_is_here_to_select_the_correct_function);
-    // static Diagnostics::SourceLevels ToType(std::string_view value, Diagnostics::SourceLevels this_is_here_to_select_the_correct_function);
+    static Diagnostics::SourceLevels ToType(std::string_view value, Diagnostics::SourceLevels this_is_here_to_select_the_correct_function);
 
     // C++ specific
     static std::string ToChars(auto ...format_args);
@@ -512,6 +512,7 @@ catch (const std::out_of_range &)
     ThrowWithTarget( ArgumentOutOfRangeException( "string_value"sv ) );
     return {};
 }
+#endif
 
 Diagnostics::SourceLevels ToType(std::string_view string_value, Diagnostics::SourceLevels)
 try
@@ -538,7 +539,6 @@ catch(const std::exception& e)
     ThrowWithTarget( ArgumentOutOfRangeException( "string_value"sv ) );
     return {};
 }
-#endif
 
 std::vector<std::byte> Convert::FromHexString(std::string_view input_string)
 {

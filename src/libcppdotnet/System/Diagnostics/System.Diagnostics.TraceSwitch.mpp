@@ -1,0 +1,28 @@
+export module System.Diagnostics.TraceSwitch;
+
+export import <string_view>;
+
+export import System.Diagnostics.Switch;
+export import System.Diagnostics.TraceLevel;
+
+export namespace System::Diagnostics
+{
+
+class TraceSwitch : public Switch
+{
+public:
+    TraceSwitch(std::string_view display_name, std::string_view description);
+    TraceSwitch(std::string_view display_name, std::string_view description, std::string_view default_switch_value);
+
+    TraceLevel Level() const;
+    void       Level(TraceLevel new_level);
+
+    bool TraceError()   const;
+    bool TraceWarning() const;
+    bool TraceInfo()    const;
+    bool TraceVerbose() const;
+protected:
+    TraceLevel _trace_level{ TraceLevel::Off };
+};
+
+}

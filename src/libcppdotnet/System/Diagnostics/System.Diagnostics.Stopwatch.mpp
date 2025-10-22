@@ -1,0 +1,75 @@
+export module System.Diagnostics.Stopwatch;
+
+export import <chrono>;
+export import <format>;
+export import <string>;
+
+export import System.TimeSpan;
+
+export namespace System::Diagnostics
+{
+
+class Stopwatch
+{
+public:
+    using clock_type = std::chrono::steady_clock;
+
+    Stopwatch() = default;
+    Stopwatch(const Stopwatch &) = default;
+    Stopwatch(Stopwatch &&) = default;
+
+    Stopwatch &operator =(const Stopwatch &) = default;
+    Stopwatch &operator =(Stopwatch &&) = default;
+
+    static constexpr long Frequency()        { return clock_type::period::den; }
+    static constexpr bool IsHighResolution() { return false; }
+
+    static Stopwatch StartNew();
+
+    void Start();
+
+    void Stop();
+
+    void Restart();
+
+    void Reset();
+
+    bool IsRunning() const;
+
+    static long GetTimestamp();
+
+    static TimeSpan GetElapsedTime(long starting_time_stamp);
+
+    static TimeSpan GetElapsedTime(long starting_time_stamp, long ending_time_stamp);
+
+    TimeSpan Elapsed();
+
+    long ElapsedMilliseconds();
+
+    long ElapsedTicks();
+
+    std::string ToString() const;
+protected:
+    clock_type::time_point _start_time;
+    clock_type::duration   _accumulated_time = clock_type::duration::zero();
+    bool                   _is_running = false;
+
+    Stopwatch(bool startnow);
+};
+
+}
+
+template <>
+struct std::formatter<System::Diagnostics::Stopwatch>
+{
+    constexpr auto parse(std::format_parse_context &ctx)
+    {
+        return ctx.begin();
+    }
+
+    template <typename FormatContext>
+    auto format(const System::Diagnostics::Stopwatch &object, FormatContext &ctx) const
+    {
+        return std::format_to( ctx.out(), "{}", object.ToString());
+    }
+};
