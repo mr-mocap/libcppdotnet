@@ -1,33 +1,77 @@
-module;
-
-#include <libcppdotnet/System/PreProcessor/Contracts.hpp>
-
-module System.Diagnostics.DefaultTraceListener;
+export module System.Diagnostics.DebugAndTraceCommon:DefaultTraceListener;
 
 import <format>;
 import <memory>;
-import <string>;
-import <string_view>;
+
+export import <string>;
+export import <string_view>;
 
 import System.Console;
 import System.IO.StreamWriter;
 import System.Diagnostics.Debugger;
-import System.Diagnostics.TraceListener;
 
+export import :TraceListener;
 
-static std::string GenerateMessage(std::string_view message, std::string_view category)
+export namespace System::Diagnostics
+{
+
+class DefaultTraceListener : public TraceListener
+{
+public:
+    DefaultTraceListener();
+   ~DefaultTraceListener();
+
+    std::string_view LogFileName() const;
+    void             LogFileName(std::string_view filename);
+
+    void Close() override;
+    void Flush() override;
+
+    void Write(std::string_view message) override;
+    void Write(std::string_view message, std::string_view category) override;
+
+    void WriteLine(std::string_view message) override;
+    void WriteLine(std::string_view message, std::string_view category) override;
+    
+    void Fail(std::string_view message) override;
+    void Fail(std::string_view message, std::string_view detail) override;
+
+    void WriteIndent() override;
+
+    bool AssertUiEnabled() const { return _ui_enabled; }
+    void AssertUiEnabled(bool new_value) { _ui_enabled = new_value; }
+
+protected:
+    std::string _logFileName;
+    std::string _line_buffer;
+    std::unique_ptr<System::IO::StreamWriter> _log_stream;
+    bool        _ui_enabled = false;
+
+    void WriteRaw(std::string_view data);
+    void WriteLineRaw(std::string_view data);
+};
+
+}
+
+// Implementation
+namespace
+{
+
+std::string GenerateMessage(std::string_view message, std::string_view category)
 {
     return std::format("[{}] {}", category, message);
 }
 
-static std::string GenerateFailMessage(std::string_view message, std::string_view detail)
+std::string GenerateFailMessage(std::string_view message, std::string_view detail)
 {
     return std::format("[Fail] {} [{}]", message, detail);
 }
 
-static std::string GenerateFailMessage(std::string_view message)
+std::string GenerateFailMessage(std::string_view message)
 {
     return std::format("[Fail] {}", message);
+}
+
 }
 
 namespace System::Diagnostics

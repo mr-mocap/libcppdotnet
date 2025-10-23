@@ -3,8 +3,7 @@ export module System.Diagnostics.SourceFilter;
 export import <string>;
 export import <string_view>;
 
-export import System.Diagnostics.TraceFilter;
-export import System.Diagnostics.TraceEventCache;
+export import System.Diagnostics.DebugAndTraceCommon;
 export import System.Diagnostics.TraceEventType;
 
 export namespace System::Diagnostics

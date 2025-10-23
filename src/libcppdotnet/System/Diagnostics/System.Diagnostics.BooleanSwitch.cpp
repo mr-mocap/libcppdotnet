@@ -2,7 +2,6 @@ module System.Diagnostics.BooleanSwitch;
 
 import System.Boolean;
 
-
 namespace System::Diagnostics
 {
 

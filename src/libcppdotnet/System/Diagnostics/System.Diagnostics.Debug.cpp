@@ -8,7 +8,7 @@ import <algorithm>;
 import <source_location>;
 import <string_view>;
 
-import System.Diagnostics.Private.DebugAndTraceCommon;
+import System.Diagnostics.DebugAndTraceCommon;
 
 namespace System::Diagnostics
 {

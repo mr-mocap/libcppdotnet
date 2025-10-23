@@ -6,7 +6,7 @@ module System.Diagnostics.EventTypeFilter;
 
 import <string_view>;
 
-import System.Diagnostics.TraceEventCache;
+import System.Diagnostics.DebugAndTraceCommon;
 import System.Diagnostics.TraceEventType;
 
 namespace System::Diagnostics

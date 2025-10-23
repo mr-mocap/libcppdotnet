@@ -1,0 +1,49 @@
+module;
+
+#include <libcppdotnet/System/PreProcessor/Contracts.hpp>
+
+export module System.Diagnostics.DebugAndTraceCommon:TraceFilter;
+
+export import <string_view>;
+
+export import :TraceEventCache;
+export import System.Diagnostics.TraceEventType;
+
+export namespace System::Diagnostics
+{
+
+class TraceFilter
+{
+public:
+    TraceFilter() = default;
+    virtual ~TraceFilter() = default;
+
+    virtual bool ShouldTrace(const TraceEventCache  &cache,
+                                   std::string_view  source,
+                                     TraceEventType  eventType,
+                                                int  id,
+                                   std::string_view  formatOrMessage);
+};
+
+}
+
+// Implementation
+namespace System::Diagnostics
+{
+
+bool TraceFilter::ShouldTrace(const TraceEventCache  &cache,
+                                    std::string_view  source,
+                                      TraceEventType  eventType,
+                                                 int  id,
+                                    std::string_view  formatOrMessage)
+{
+    UNUSED(cache);
+    UNUSED(source);
+    UNUSED(eventType);
+    UNUSED(id);
+    UNUSED(formatOrMessage);
+
+    return true;
+}
+
+}

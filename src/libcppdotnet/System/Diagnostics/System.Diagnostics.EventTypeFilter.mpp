@@ -2,8 +2,7 @@ export module System.Diagnostics.EventTypeFilter;
 
 export import <string_view>;
 
-export import System.Diagnostics.TraceFilter;
-export import System.Diagnostics.TraceEventCache;
+export import System.Diagnostics.DebugAndTraceCommon;
 export import System.Diagnostics.TraceEventType;
 export import System.Diagnostics.SourceLevels;
 

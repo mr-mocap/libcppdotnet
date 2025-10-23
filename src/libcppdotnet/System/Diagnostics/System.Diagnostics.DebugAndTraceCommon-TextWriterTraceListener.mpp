@@ -1,30 +1,76 @@
-module System.Diagnostics.TextWriterTraceListener;
+export module System.Diagnostics.DebugAndTraceCommon:TextWriterTraceListener;
 
 import <format>;
-import <memory>;
-import <string>;
-import <string_view>;
 
-import System.IO.TextWriter;
-import System.IO.Stream;
+export import <memory>;
+export import <string>;
+export import <string_view>;
+
 import System.IO.StreamWriter;
 
+export import :TraceListener;
+export import System.IO.TextWriter;
+export import System.IO.Stream;
+
+export namespace System::Diagnostics
+{
+
+class TextWriterTraceListener : public TraceListener
+{
+public:
+    TextWriterTraceListener();
+    TextWriterTraceListener(std::unique_ptr<System::IO::TextWriter> &&new_writer);
+    TextWriterTraceListener(std::unique_ptr<System::IO::TextWriter> &&new_writer, std::string_view name);
+    TextWriterTraceListener(std::unique_ptr<System::IO::Stream> &&new_stream);
+    TextWriterTraceListener(std::unique_ptr<System::IO::Stream> &&new_stream, std::string_view name);
+
+    void Close() override;
+    void Flush() override;
+
+    void Write(std::string_view message) override;
+    void Write(std::string_view message, std::string_view category) override;
+
+    void WriteLine(std::string_view message) override;
+    void WriteLine(std::string_view message, std::string_view category) override;
+
+    System::IO::TextWriter *Writer();
+    
+    void Fail(std::string_view message) override;
+    void Fail(std::string_view message, std::string_view detail) override;
+
+    void WriteIndent() override;
+protected:
+    std::unique_ptr<System::IO::TextWriter> _text_writer;
+    std::string _line_buffer;
+
+    void WriteRaw(std::string_view data);
+    void WriteLineRaw(std::string_view data);
+};
+
+}
+
+namespace
+{
+
 // TODO: Merge with DefaultTraceListener.cpp version
-static std::string GenerateMessage(std::string_view message, std::string_view category)
+std::string GenerateMessage(std::string_view message, std::string_view category)
 {
     return std::format("[{}] {}", category, message);
 }
 
-static std::string GenerateFailMessage(std::string_view message, std::string_view detail)
+std::string GenerateFailMessage(std::string_view message, std::string_view detail)
 {
     return std::format("[Fail] {} [{}]", message, detail);
 }
 
-static std::string GenerateFailMessage(std::string_view message)
+std::string GenerateFailMessage(std::string_view message)
 {
     return std::format("[Fail] {}", message);
 }
 
+}
+
+// Implementation
 namespace System::Diagnostics
 {
 

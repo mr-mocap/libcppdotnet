@@ -2,7 +2,7 @@ module System.Diagnostics.ConsoleTraceListener;
 
 import <memory>;
 
-import System.Diagnostics.TextWriterTraceListener;
+import System.Diagnostics.DebugAndTraceCommon;
 import System.IO.ConsoleStream;
 
 

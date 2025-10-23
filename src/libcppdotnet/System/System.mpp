@@ -5,6 +5,7 @@ export module System;
 // Import Header Units...
 export import <algorithm>;
 export import <array>;
+export import <bit>;
 export import <charconv>;
 export import <chrono>;
 export import <compare>;
@@ -24,12 +25,13 @@ export import <source_location>;
 export import <span>;
 export import <string>;
 export import <string_view>;
-//export import <system_error>;
+export import <system_error>;
 export import <tuple>;
-//export import <type_traits>;
+export import <type_traits>;
 export import <unordered_map>;
 export import <utility>;
 export import <vector>;
+export import <uuid/uuid.h>;
 
 // NOTE: These are ORDERED
 

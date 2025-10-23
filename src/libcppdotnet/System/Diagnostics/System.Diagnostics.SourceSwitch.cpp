@@ -41,9 +41,12 @@ SourceLevels SourceSwitch::Level()
 
 void SourceSwitch::OnValueChanged()
 {
+    // TODO: FIXME
+#if 0
     Diagnostics::SourceLevels converted = Convert::ToType(_value, Diagnostics::SourceLevels::Off);
 
     SwitchSetting( static_cast<int>(converted) );
+#endif
 }
 
 }

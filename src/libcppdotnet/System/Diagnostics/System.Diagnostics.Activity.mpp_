@@ -14,41 +14,12 @@ export import System.DateTime;
 export import System.TimeSpan;
 export import System.Diagnostics.ActivityTraceId;
 export import System.Diagnostics.ActivitySpanId;
+export import System.Diagnostics.Activity.Enums;
 
 export namespace System::Diagnostics
 {
 
 class ActivitySource;
-
-enum class ActivityTraceFlags
-{
-    None = 0,    ///@< The activity has not been marked
-    Recorded = 1 ///@< The activity (or more likely its parents) has been marked as useful to record
-};
-
-enum class ActivityStatusCode
-{
-    Unset = 0,  ///@< Unset status code is the default value indicating the status code is not initialized
-    Ok    = 1,  ///@< Status code indicating the operation has been validated and completed successfully
-    Error = 2   ///@< Status code indicating an error is encountered during the operation
-};
-
-enum class ActivityKind
-{
-    Internal = 0, ///@< Internal operation within an application, as opposed to operations with remote parents or children. This is the default value.
-    Server   = 1, ///@< Requests incoming from external component
-    Client   = 2, ///@< Outgoing request to the external component
-    Producer = 3, ///@< Output provided to external components
-    Consumer = 4  ///@< Output received from an external component
-};
-
-enum class ActivityIdFormat
-{
-    Unknown      = 0,
-    Hierarchical = 1,
-    W3C          = 2
-};
-
 
 class ActivityContext
 {
@@ -225,62 +196,6 @@ protected:
     DateTime           _start_time;
     DateTime           _end_time;
     bool               _stopped = true;
-};
-
-}
-
-export namespace System
-{
-
-template <>
-struct EnumPolicy<Diagnostics::ActivityTraceFlags> : EnumTraitTypes<Diagnostics::ActivityTraceFlags>
-{
-public:
-
-    static constexpr std::string_view EnumName = "ActivityTraceFlags";
-
-    static constexpr name_value_pair_type NameValueArray[] = {
-            { "None",     Diagnostics::ActivityTraceFlags::None     },
-            { "Recorded", Diagnostics::ActivityTraceFlags::Recorded }
-        };
-};
-
-template <>
-struct EnumPolicy<Diagnostics::ActivityStatusCode> : EnumTraitTypes<Diagnostics::ActivityStatusCode>
-{
-    static constexpr std::string_view EnumName = "ActivityStatusCode";
-
-    static constexpr name_value_pair_type NameValueArray[] = {
-            { "Unset", Diagnostics::ActivityStatusCode::Unset },
-            { "Ok",    Diagnostics::ActivityStatusCode::Ok },
-            { "Error", Diagnostics::ActivityStatusCode::Error }
-        };
-};
-
-template <>
-struct EnumPolicy<Diagnostics::ActivityKind> : EnumTraitTypes<Diagnostics::ActivityKind>
-{
-    static constexpr std::string_view EnumName = "ActivityKind";
-
-    static constexpr name_value_pair_type NameValueArray[] = {
-            { "Internal", Diagnostics::ActivityKind::Internal },
-            { "Server",   Diagnostics::ActivityKind::Server },
-            { "Client",   Diagnostics::ActivityKind::Client },
-            { "Producer", Diagnostics::ActivityKind::Producer },
-            { "Consumer", Diagnostics::ActivityKind::Consumer }
-        };
-};
-
-template <>
-struct EnumPolicy<Diagnostics::ActivityIdFormat> : EnumTraitTypes<Diagnostics::ActivityIdFormat>
-{
-    static constexpr std::string_view EnumName = "ActivityIdFormat";
-
-    static constexpr name_value_pair_type NameValueArray[] = {
-            { "Unknown",      Diagnostics::ActivityIdFormat::Unknown },
-            { "Hierarchical", Diagnostics::ActivityIdFormat::Hierarchical },
-            { "W3C",          Diagnostics::ActivityIdFormat::W3C }
-        };
 };
 
 }

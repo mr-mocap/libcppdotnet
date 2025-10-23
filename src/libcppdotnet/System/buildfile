@@ -14,7 +14,7 @@ pub_hdrs = $($pub/ pub_hdrs)
 
 #./: {Numerics/} {Collections/} {Text/} {IO/}
 
-lib{cppdotnet}: {mxx cxx}{**} $impl_libs $intf_libs
+lib{cppdotnet}: mxx{**} cxx{**} $impl_libs $intf_libs
 
 # Private headers and sources as well as dependencies.
 #

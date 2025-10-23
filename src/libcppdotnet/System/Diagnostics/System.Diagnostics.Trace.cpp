@@ -3,8 +3,7 @@ module System.Diagnostics.Trace;
 import <string_view>;
 import <source_location>;
 
-import System.Diagnostics.TraceListenerCollection;
-import System.Diagnostics.Private.DebugAndTraceCommon;
+import System.Diagnostics.DebugAndTraceCommon;
 
 namespace System::Diagnostics
 {

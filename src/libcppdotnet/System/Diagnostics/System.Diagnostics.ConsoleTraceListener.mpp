@@ -1,6 +1,6 @@
 export module System.Diagnostics.ConsoleTraceListener;
 
-export import System.Diagnostics.TextWriterTraceListener;
+export import System.Diagnostics.DebugAndTraceCommon;
 
 export namespace System::Diagnostics
 {

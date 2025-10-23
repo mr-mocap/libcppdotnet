@@ -1,4 +1,4 @@
-export module System.Diagnostics.TraceSource;
+export module System.Diagnostics.DebugAndTraceCommon:TraceSource;
 
 export import <string>;
 export import <string_view>;

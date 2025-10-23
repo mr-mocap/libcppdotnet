@@ -4,7 +4,7 @@ export import <string_view>;
 
 export import System.Diagnostics.Switch;
 
-namespace System::Diagnostics
+export namespace System::Diagnostics
 {
 
 class BooleanSwitch : public Switch

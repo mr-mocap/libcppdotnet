@@ -5,6 +5,7 @@ import <cstddef>;
 
 export import <string>;
 
+export import System.Exception;
 export import System.ReadOnlySpan;
 
 export namespace System::Diagnostics

@@ -1,0 +1,24 @@
+export module System.Diagnostics.DebugAndTraceCommon;
+
+export import <concepts>;
+export import <format>;
+export import <memory>;
+export import <set>;
+export import <source_location>;
+export import <string>;
+export import <string_view>;
+
+export import System.DateTime;
+export import System.IO.TextWriter;
+export import System.IO.Stream;
+export import System.Diagnostics.TraceEventType;
+export import System.Diagnostics.TraceOptions;
+
+export import :TraceListenerCollection;
+export import :CommonOutput;
+export import :TraceListener;
+export import :TraceFilter;
+export import :TraceEventCache;
+export import :DefaultTraceListener;
+export import :TextWriterTraceListener;
+export import :TraceSource;

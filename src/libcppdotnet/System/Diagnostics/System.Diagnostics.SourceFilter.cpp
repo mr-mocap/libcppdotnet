@@ -4,6 +4,8 @@ module;
 
 module System.Diagnostics.SourceFilter;
 
+import System.Diagnostics.DebugAndTraceCommon;
+
 namespace System::Diagnostics
 {
 
