@@ -12,14 +12,12 @@ export import <cstdint>;
 export import <span>;
 export import <string>;
 export import <string_view>;
+export import <type_traits>;
 export import <vector>;
 
 export import System.Base;
 export import System.Exception;
-//export import System.Diagnostics.SourceLevels;
-
-// #include "System/Diagnostics/TraceLevel.hpp"
-// #include "System/Diagnostics/TraceOptions.hpp"
+export import System.Enum;
 
 export namespace System
 {
@@ -62,9 +60,12 @@ public:
     static std::vector<std::byte> FromBase85String(std::span<const char> input_string);
 
     // From IConvertable  (move there)
-    // static Diagnostics::TraceLevel   ToType(std::string_view value, Diagnostics::TraceLevel   this_is_here_to_select_the_correct_function);
-    // static Diagnostics::TraceOptions ToType(std::string_view value, Diagnostics::TraceOptions this_is_here_to_select_the_correct_function);
-    //static Diagnostics::SourceLevels ToType(std::string_view value, Diagnostics::SourceLevels this_is_here_to_select_the_correct_function);
+    template <class EnumType>
+        requires std::is_enum_v<EnumType>
+    static EnumType To(std::string_view value)
+    {
+        return System::Enum< System::EnumPolicy<EnumType> >::Parse( value );
+    }
 
     // C++ specific
     static std::string ToChars(auto ...format_args);

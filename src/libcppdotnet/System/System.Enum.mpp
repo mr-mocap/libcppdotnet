@@ -51,12 +51,12 @@ public:
 
     static std::string_view GetName(typename EnumPolicy::value_type value)
     {
-        auto found = std::ranges::find( EnumPolicy::NameValueArray(),
+        auto found = std::ranges::find( EnumPolicy::NameValueArray,
                                         value,
                                         &EnumPolicy::name_value_pair_type::second
                                       );
 
-        if ( found == EnumPolicy::NameValueArray().end() )
+        if ( found == std::end( EnumPolicy::NameValueArray ) )
             return {};
 
         return found->first;
@@ -90,13 +90,13 @@ public:
     static typename EnumPolicy::value_type Parse(std::string_view value_string)
     {
         if ( value_string.empty() )
-            ThrowWithTarget( System::ArgumentException{ "Argument is empty", "value_string" } );
+            ThrowWithTarget( System::ArgumentException( "Argument is empty", "value_string" ) );
 
         if ( !IsDefined(value_string) )
-            ThrowWithTarget( System::ArgumentException{ "Argument does not name a defined constant", "value_string" } );
+            ThrowWithTarget( System::ArgumentException( "Argument does not name a defined constant", "value_string" ) );
 
         // First, check for a name...
-        for (const typename EnumPolicy::name_value_pair_type &i : EnumPolicy::NameValueArray())
+        for (const typename EnumPolicy::name_value_pair_type &i : EnumPolicy::NameValueArray)
             if ( i.first == value_string )
                 return i.second;
         
@@ -107,18 +107,18 @@ public:
                                           converted);
         
         if ( ec == std::errc::invalid_argument )
-            ThrowWithTarget( System::ArgumentException{ "Argument does not contain Enumeration information", "value_string" } );
+            ThrowWithTarget( System::ArgumentException( "Argument does not contain Enumeration information", "value_string" ) );
         else if ( ec == std::errc::result_out_of_range )
             ThrowWithTarget( System::ArgumentOutOfRangeException{ "value_string" } );
         else if ( ec != std::errc() )
-            ThrowWithTarget( System::ArgumentException{ "Argument does not contain Enumeration information", "value_string" } );
+            ThrowWithTarget( System::ArgumentException( "Argument does not contain Enumeration information", "value_string" ) );
 
         INVARIANT( ec == std::errc() );
 
         typename EnumPolicy::value_type casted{ static_cast<typename EnumPolicy::value_type>(converted) };
 
         if ( !IsDefined( casted ) )
-            ThrowWithTarget( System::ArgumentOutOfRangeException{ "value_string" } );
+            ThrowWithTarget( System::ArgumentOutOfRangeException( "value_string" ) );
 
         // We have one of the valid values!
         return casted;
@@ -127,7 +127,7 @@ public:
     static std::optional<typename EnumPolicy::value_type> TryParse(std::string_view value_string)
     {
         // First, check for a name...
-        for (const typename EnumPolicy::name_value_pair_type &i : EnumPolicy::NameValueArray())
+        for (const typename EnumPolicy::name_value_pair_type &i : EnumPolicy::NameValueArray)
             if ( i.first == value_string )
                 return i.second;
         
@@ -229,24 +229,24 @@ protected:
 
     static const std::ranges::view auto MakeNames()
     {
-        return std::views::keys( EnumPolicy::NameValueArray() );
+        return std::views::keys( EnumPolicy::NameValueArray );
     }
 
     static const std::ranges::view auto MakeValues()
     {
-        return std::views::values( EnumPolicy::NameValueArray() );
+        return std::views::values( EnumPolicy::NameValueArray );
     }
 
     static typename EnumPolicy::value_type ParseCommon(std::string_view value_string)
     {
         if ( value_string.empty() )
-            ThrowWithTarget( System::ArgumentException{ "Argument is empty", "value_string" } );
+            ThrowWithTarget( System::ArgumentException( "Argument is empty", "value_string" ) );
 
         if ( !IsDefined(value_string) )
-            ThrowWithTarget( System::ArgumentException{ "Argument does not name a defined constant", "value_string" } );
+            ThrowWithTarget( System::ArgumentException( "Argument does not name a defined constant", "value_string" ) );
 
         // First, check for a name...
-        for (const typename EnumPolicy::name_value_pair_type &i : EnumPolicy::NameValueArray())
+        for (const typename EnumPolicy::name_value_pair_type &i : EnumPolicy::NameValueArray)
             if ( i.first == value_string )
                 return i.second;
         
@@ -257,11 +257,11 @@ protected:
                                           converted);
         
         if ( ec == std::errc::invalid_argument )
-            ThrowWithTarget( System::ArgumentException{ "Argument does not contain Enumeration information", "value_string" } );
+            ThrowWithTarget( System::ArgumentException( "Argument does not contain Enumeration information", "value_string" ) );
         else if ( ec == std::errc::result_out_of_range )
             ThrowWithTarget( System::ArgumentOutOfRangeException{ "value_string" } );
         else if ( ec != std::errc() )
-            ThrowWithTarget( System::ArgumentException{ "Argument does not contain Enumeration information", "value_string" } );
+            ThrowWithTarget( System::ArgumentException( "Argument does not contain Enumeration information", "value_string" ) );
 
         INVARIANT( ec == std::errc() );
 
