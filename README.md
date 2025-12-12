@@ -4,7 +4,7 @@ The `libcppdotnet` C++ library provides a reimplementation of some .NET classes 
 using modern C++ methods.
 
 This repository is currently an experiment to port another repository, 'cppdotnet' to use C++20
-modules and the 'build2' build system (https/www.build2.org).
+modules and the 'build2' build system (https://www.build2.org).
 
 **NOTE:** *The current state of g++ (as of 14) has led me to abandon this project, as there are too
 many compiler crashes currently and I just got tired of running into them.  I am sad to say that g++ is not ready for
