@@ -8,7 +8,7 @@ modules and the `build2` build system (https://www.build2.org).
 
 **NOTE:** *The current state of g++ (as of 14) has led me to abandon this project, as there are too
 many compiler crashes currently and I just got tired of running into them.  I am sad to say that g++ is not ready for
-a medium-sized library that uses modules, and probably will not be for some years to come.  I will revisis this around 2030
+a medium-sized library that uses modules, and probably will not be for some years to come.  I will revisit this around 2030
 and see if the situation has improved.*
 
 ## Questions
